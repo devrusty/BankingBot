@@ -61,4 +61,4 @@ Bot.on("messageCreate", async (message: Message) => {
     }
 })
 
-Bot.login("MTAwMjY5ODg5MTUzNzQyNDM4NA.G2Qhug.9zWU78aOGtoFTEF6JmOCnciILT1nzJ5cN6Oc4E")
+Bot.login("YOUR TOKEN")
