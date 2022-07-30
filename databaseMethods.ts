@@ -4,6 +4,19 @@ import { User } from "discord.js"
 
 const PClient: PrismaClient = new PrismaClient()
 
+export async function GetUserRecord(user: User) {
+    const id = Number(user.id)
+
+    const userResult = await PClient.user.findFirst({
+        where: {
+            id: id
+        }
+    })
+
+    if (!userResult) return undefined
+    return userResult
+}
+
 export async function UserRecordExists(user: User): Promise<boolean> {
     const userResult = await PClient.user.count({
         where: {
@@ -37,11 +50,7 @@ export async function GetUserBalance(user: User) {
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return 0
 
-    const userRecord = await PClient.user.findFirst({
-        where: {
-            id: id
-        }
-    })
+    const userRecord = await GetUserRecord(user)
     if (!userRecord) return 0
 
     return userRecord.cash
