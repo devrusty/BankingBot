@@ -24,30 +24,17 @@ Bot.on("messageCreate", async (message: Message) => {
     const command = args[0].slice("b!".length).toLowerCase()
 
     if (command == "create") {
-        const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.member)
-        if (recordExists) {
-            message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
-            return
-        }
 
-        const newRecord: boolean | void = await DatabaseMethods.CreateUserRecord(message.member)
-        if (!newRecord) {
-            message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
-            return
-        }
-
-        message.channel.send("Account created! Use `b!balance` to view your balance.")
-        return
     }
 
     if (command == "balance") {
-        const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.member)
+        const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
         if (!recordExists) {
             message.channel.send("You do not have a BankingBot account! Please use `b!create` to initialise one.")
             return
         }
 
-        const balance: number = await DatabaseMethods.GetUserBalance(message.member)
+        const balance: number = await DatabaseMethods.GetUserBalance(message.author)
         const embed: EmbedBuilder = new EmbedBuilder()
 
         embed.setTitle(`${message.member.user.username}'s Balance`)

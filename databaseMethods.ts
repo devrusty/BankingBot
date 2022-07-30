@@ -1,10 +1,10 @@
-import { prisma, PrismaClient } from "@prisma/client"
-import { User } from "@prisma/client"
-import { GuildMember } from "discord.js"
+import { PrismaClient } from "@prisma/client"
+import * as Prisma from "@prisma/client"
+import { User } from "discord.js"
 
 const PClient: PrismaClient = new PrismaClient()
 
-export async function UserRecordExists(user: GuildMember): Promise<boolean> {
+export async function UserRecordExists(user: User): Promise<boolean> {
     const userResult = await PClient.user.count({
         where: {
             id: Number(user.id)
@@ -14,7 +14,7 @@ export async function UserRecordExists(user: GuildMember): Promise<boolean> {
     return userResult > 0
 }
 
-export async function CreateUserRecord(user: GuildMember): Promise<boolean> {
+export async function CreateUserRecord(user: User): Promise<boolean> {
     const id: number = Number(user.id)
 
     const userExists: boolean = await UserRecordExists(user)
@@ -31,7 +31,7 @@ export async function CreateUserRecord(user: GuildMember): Promise<boolean> {
     return true
 }
 
-export async function GetUserBalance(user: GuildMember) {
+export async function GetUserBalance(user: User) {
     const id: number = Number(user.id)
 
     const userExists: boolean = await UserRecordExists(user)
