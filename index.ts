@@ -1,5 +1,6 @@
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "./databaseMethods"
+import * as dotenv from "dotenv"
 
 const Bot: Client = new Client({
     intents: [
@@ -61,4 +62,4 @@ Bot.on("messageCreate", async (message: Message) => {
     }
 })
 
-Bot.login("YOUR TOKEN")
+Bot.login(process.env.BOT_TOKEN)
