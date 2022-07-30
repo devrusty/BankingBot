@@ -30,7 +30,7 @@ Bot.on("messageCreate", async (message: Message) => {
         return
     }
 
-    await require(commandFilePath).default.Invoke(Bot, message)
+    await require(commandFilePath).default.Invoke(Bot, message, args)
 })
 
 Bot.login("MTAwMjY5ODg5MTUzNzQyNDM4NA.GQoqi1.QJkAaT1b75YIFd0hCqH54dTYPuV3nzN9luyNt4")

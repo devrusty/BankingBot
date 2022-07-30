@@ -6,8 +6,8 @@ import { EmbedBuilder } from "discord.js";
 const Cmd: Command = {
     Name: "balance",
     Description: "Shows your balance if you have a BankingBot account initialised.",
-    Usage: `${process.env.PREFIS}balance`,
-    Invoke: async (client: Client, message: Message) => {
+    Usage: `b!balance`,
+    Invoke: async (client: Client, message: Message, args: string[]) => {
         const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
         if (!recordExists) {
             message.channel.send("You do not have a BankingBot account! Please use `b!create` to initialise one.")

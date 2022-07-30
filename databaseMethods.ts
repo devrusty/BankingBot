@@ -46,3 +46,49 @@ export async function GetUserBalance(user: User) {
 
     return userRecord.coins
 }
+
+export async function RemoveFromBalance(user: User, amount: number) {
+    const id: number = Number(user.id)
+    const userExists: boolean = await UserRecordExists(user)
+    if (!userExists) return false
+
+    const userRecord = await PClient.user.findFirst({
+        where: {
+            id: id
+        }
+    })
+
+    if (!userRecord) return console.log("User doesn't exist.")
+
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: {
+            coins: userRecord.coins - amount
+        }
+    })
+}
+
+export async function AddToBalance(user: User, amount: number) {
+    const id: number = Number(user.id)
+    const userExists: boolean = await UserRecordExists(user)
+    if (!userExists) return false
+
+    const userRecord = await PClient.user.findFirst({
+        where: {
+            id: id
+        }
+    })
+
+    if (!userRecord) return console.log("User doesn't exist.")
+
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: {
+            coins: userRecord.coins + amount
+        }
+    })
+}

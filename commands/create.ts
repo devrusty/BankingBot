@@ -6,7 +6,7 @@ const Cmd: Command = {
     Name: "create",
     Description: "Initialises a BankingBot account if you don't already have one.",
     Usage: `${process.env.PREFIS}create`,
-    Invoke: async (client: Client, message: Message) => {
+    Invoke: async (client: Client, message: Message, args: string[]) => {
         const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
         if (recordExists) {
             message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
