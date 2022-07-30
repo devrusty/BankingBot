@@ -14,3 +14,11 @@ model User {
   id    Int @id @unique
   coins Int @default(100)
 }
+
+model Item {
+  id          Int     @id @unique @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  onSale      Boolean @default(false)
+}
