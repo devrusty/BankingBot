@@ -44,7 +44,7 @@ export async function GetUserBalance(user: User) {
     })
     if (!userRecord) return 0
 
-    return userRecord.coins
+    return userRecord.cash
 }
 
 export async function RemoveFromBalance(user: User, amount: number) {
@@ -65,7 +65,7 @@ export async function RemoveFromBalance(user: User, amount: number) {
             id: id
         },
         data: {
-            coins: Math.floor(userRecord.coins - amount)
+            cash: Math.floor(userRecord.cash - amount)
         }
     })
 }
@@ -88,7 +88,7 @@ export async function AddToBalance(user: User, amount: number) {
             id: id
         },
         data: {
-            coins: Math.floor(userRecord.coins + amount)
+            cash: Math.floor(userRecord.cash + amount)
         }
     })
 }
