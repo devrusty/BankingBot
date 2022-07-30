@@ -92,3 +92,14 @@ export async function AddToBalance(user: User, amount: number) {
         }
     })
 }
+
+export async function GetItems() {
+    return await PClient.item.findMany()
+}
+
+export async function GetOnsaleItems() {
+    const items = await GetItems()
+    const onsaleItems = items.filter(item => item.onSale)
+
+    return onsaleItems
+}
