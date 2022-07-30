@@ -65,7 +65,7 @@ export async function RemoveFromBalance(user: User, amount: number) {
             id: id
         },
         data: {
-            coins: userRecord.coins - amount
+            coins: Math.floor(userRecord.coins - amount)
         }
     })
 }
@@ -88,7 +88,7 @@ export async function AddToBalance(user: User, amount: number) {
             id: id
         },
         data: {
-            coins: userRecord.coins + amount
+            coins: Math.floor(userRecord.coins + amount)
         }
     })
 }
