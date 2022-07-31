@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, User } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
+import FormatMoney from "../methods/FormatMoney";
 
 const Cmd: Command = {
     Name: "gamble",
@@ -31,13 +32,13 @@ const Cmd: Command = {
 
         if (chanceResult !== chanceGoal) {
             await DatabaseMethods.RemoveFromBalance(user, gambleAmount)
-            message.channel.send(`You lost $${gambleAmount}!`)
+            message.channel.send(`You lost $${FormatMoney(gambleAmount)}!`)
             return
         }
 
         const earnAmount: number = Math.floor(gambleAmount * 1.25)
         await DatabaseMethods.AddToBalance(user, earnAmount)
-        message.channel.send(`You won $${earnAmount}!`)
+        message.channel.send(`You won $${FormatMoney(earnAmount)}!`)
     }
 }
 
