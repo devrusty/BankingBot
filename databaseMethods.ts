@@ -61,11 +61,7 @@ export async function RemoveFromBalance(user: User, amount: number) {
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return false
 
-    const userRecord = await PClient.user.findFirst({
-        where: {
-            id: id
-        }
-    })
+    const userRecord = await GetUserRecord(user)
 
     if (!userRecord) return console.log("User doesn't exist.")
 
@@ -111,4 +107,34 @@ export async function GetOnsaleItems() {
     const onsaleItems = items.filter(item => item.onSale)
 
     return onsaleItems
+}
+
+export async function PurchaseItem(user: User, item: string) {
+    const recordExists = await UserRecordExists(user)
+    if (!recordExists) return "User doesn't exist!"
+
+    const userRecord = await GetUserRecord(user)
+    if (!userRecord) return "User doesn't exist!"
+
+    const items = await GetItems()
+    const itemData = items.find(i => {
+        return i.name.toLowerCase() == item
+    })
+
+    if (!itemData) return "Invalid item"
+    if (itemData.price > userRecord.cash) return "User cannot afford that item!"
+
+    userRecord.inventory.push(itemData.id)
+
+    await PClient.user.update({
+        where: {
+            id: userRecord.id
+        },
+        data: {
+            inventory: userRecord.inventory
+        }
+    }).catch(err => {
+        console.trace(err)
+        return err
+    })
 }
