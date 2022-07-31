@@ -1,8 +1,9 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, User } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import { PersonalShop } from "@prisma/client";
 
-const RenderPersonalShopEmbed = async (user: User) => {
+const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
     const embed = new EmbedBuilder()
     return embed
 }
@@ -20,7 +21,19 @@ const Cmd: Command = {
             return
         }
 
-        const shopEmbed = await RenderPersonalShopEmbed(author)
+        const shopExists = await DatabaseMethods.UserShopExists(author)
+        if (!shopExists) {
+            message.channel.send("You do not have a personal shop. Use `b!myshop create` to create one.")
+            return
+        }
+
+        const shop = await DatabaseMethods.GetUserShop(author)
+        if (!shop) {
+            message.channel.send("You do not have a personal shop. Use `b!myshop create` to create one.")
+            return
+        }
+
+        const shopEmbed = await RenderPersonalShopEmbed(author, shop)
 
         message.channel.send({
             embeds: [shopEmbed]

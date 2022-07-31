@@ -141,3 +141,50 @@ export async function PurchaseItem(user: User, item: string) {
 
     await RemoveFromBalance(user, itemData.price)
 }
+
+export async function UserShopExists(user: User) {
+    const userExists = await UserRecordExists(user)
+    if (!userExists) return
+
+    const userShop = PClient.personalShop.findFirst({
+        where: {
+            ownerId: user.id
+        }
+    })
+
+    if (!userShop) return
+    return true
+}
+
+export async function CreateUserShop(user: User) {
+    const id = user.id
+    const userExists = await UserRecordExists(user)
+    if (!userExists) return "User doesn't exist."
+
+    const isPremium = await IsUserPremium(user)
+    if (!isPremium) return "User is not premium."
+
+    const userShopExists = await UserShopExists(user)
+    if (userShopExists) return "User already has a shop."
+
+    await PClient.personalShop.create({
+        data: {
+            ownerId: user.id
+        }
+    }).catch(e => {
+        console.log(e)
+    })
+}
+
+export async function GetUserShop(user: User) {
+    const userShopExists = await UserShopExists(user)
+    if (!userShopExists) return
+
+    const shop = await PClient.personalShop.findFirst({
+        where: {
+            ownerId: user.id
+        }
+    })
+
+    return shop
+}
