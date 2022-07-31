@@ -23,7 +23,7 @@ const Embeds = {
         .addFields(
             { name: "Commands", value: "`b!help commands`", inline: true },
             { name: "Earning", value: "`b!help earning`", inline: true },
-            { name: "Credits", value: "`b!help credits`", inline: true }
+            { name: "Premium", value: "`b!help premium`", inline: true }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
