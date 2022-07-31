@@ -56,6 +56,13 @@ export async function GetUserBalance(user: User) {
     return userRecord.cash
 }
 
+export async function IsUserPremium(user: User) {
+    const userRecord = await GetUserRecord(user)
+    if (!userRecord) return "User doesn't exist."
+
+    return userRecord.premium
+}
+
 export async function RemoveFromBalance(user: User, amount: number) {
     const id: number = Number(user.id)
     const userExists: boolean = await UserRecordExists(user)
