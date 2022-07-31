@@ -1,2 +1,2 @@
-ts-node .
+nodemon index.ts
 pause
