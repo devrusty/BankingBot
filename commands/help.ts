@@ -24,6 +24,7 @@ const Embeds = {
             { name: "Earning", value: "`b!help earning`", inline: true },
             { name: "Premium", value: "`b!help premium`", inline: true }
         )
+        .setImage("attachment://HelpEmbedImage.png")
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
         }),
@@ -52,6 +53,13 @@ const Embeds = {
         )
 }
 
+const SendDefaultEmbed = (message: Message) => {
+    message.channel.send({
+        embeds: [Embeds.index],
+        files: ["./assets/images/HelpEmbedImage.png"]
+    })
+}
+
 const Cmd: Command = {
     Name: "help",
     Description: "Displays information about the bot.",
@@ -59,9 +67,7 @@ const Cmd: Command = {
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const helpSectioArgument = args[1]
         if (!helpSectioArgument || helpSectioArgument.toLowerCase() == "index") {
-            message.channel.send({
-                embeds: [Embeds.index]
-            })
+            SendDefaultEmbed(message)
             return
         }
 
