@@ -26,7 +26,6 @@ Bot.on("messageCreate", async (message: Message) => {
     const commandFilePath: string = `./commands/${command}.ts`
     if (!fs.existsSync(commandFilePath)) {
         message.channel.send(`Invalid command \`${command}\`. Please use \`b!help\` to view a list of commands.`)
-        console.log(commandFilePath)
         return
     }
 
