@@ -1,5 +1,4 @@
 import { Client, Message } from "discord.js"
-import * as dotenv from "dotenv"
 import * as fs from "fs"
 
 const Bot: Client = new Client({
