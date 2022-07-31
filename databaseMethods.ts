@@ -137,4 +137,6 @@ export async function PurchaseItem(user: User, item: string) {
         console.trace(err)
         return err
     })
+
+    await RemoveFromBalance(user, itemData.price)
 }
