@@ -4,7 +4,6 @@ import * as fs from "fs"
 
 const GetCommandFields = () => {
     const commands = fs.readdirSync("./commands/").filter(file => file !== "help.ts")
-    console.log(commands)
     return commands.map(command => {
         const data: Command = require(`./${command}`).default
         return {
