@@ -47,7 +47,7 @@ const Embeds = {
     premium: new EmbedBuilder()
         .setTitle("BankingBot - Premium")
         .setColor("Red")
-        .setDescription("BankingBot Premium gives you access to personal shops, +25% on gambling, and item shop leaks.")
+        .setDescription("BankingBot Premium gives you access to personal shops, premium role in the support server, +25% on gambling, and item shop leaks.")
         .addFields(
             { name: "Become a premium member", value: "[Link](https://www.google.com)" }
         )
