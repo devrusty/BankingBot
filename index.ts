@@ -11,14 +11,14 @@ const Bot: Client = new Client({
     ]
 })
 
-const InitiateUpdateItemShop = () => {
-    UpdateItemShop()
+const InitiateUpdateItemShop = async () => {
+    await UpdateItemShop()
     setTimeout(InitiateUpdateItemShop, 86400000)
 }
 
-Bot.on("ready", () => {
+Bot.on("ready", async () => {
     console.log(`${Bot.user?.tag} is now online.`)
-    InitiateUpdateItemShop()
+    await InitiateUpdateItemShop()
 })
 
 Bot.on("messageCreate", async (message: Message) => {
