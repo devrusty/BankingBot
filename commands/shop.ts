@@ -14,11 +14,34 @@ const GetItemFields = async () => {
     })
 }
 
+const Purchase = async (client: Client, message: Message, args: string[]) => {
+    const item: string = args.slice(2).join(" ")
+    if (!item) {
+        message.channel.send("Please specify an item that you would like to purchase.")
+        return
+    }
+
+    const author = message.author
+    const response = await DatabaseMethods.PurchaseItem(author, item)
+
+    if (!response) {
+        message.channel.send(`Successfully purchased ${item}`)
+        return
+    }
+
+    message.channel.send(response)
+}
+
 const Cmd: Command = {
     Name: "shop",
     Description: "Shop interface",
-    Usage: "b!shop <?buy> <?item>",
+    Usage: "b!shop ?purchase <?item>",
     Invoke: async (client: Client, message: Message, args: string[]) => {
+        if (args[1] == "purchase") {
+            await Purchase(client, message, args)
+            return
+        }
+
         const shopEmbed: EmbedBuilder = new EmbedBuilder()
         shopEmbed.setTitle("Item Shop")
         shopEmbed.setColor("Red")

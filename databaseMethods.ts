@@ -118,7 +118,7 @@ export async function PurchaseItem(user: User, item: string) {
 
     const items = await GetItems()
     const itemData = items.find(i => {
-        return i.name.toLowerCase() == item
+        return i.name.toLowerCase() == item.toLowerCase()
     })
 
     if (!itemData) return "Invalid item"
