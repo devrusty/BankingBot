@@ -3,9 +3,10 @@ import { Client, Message, EmbedBuilder } from "discord.js"
 import * as fs from "fs"
 
 const GetCommandFields = () => {
-    const commands = fs.readdirSync("./commands/").filter(file => file !== "help.ts")
+    const commands = fs.readdirSync("./commands/").filter(command => command !== "help.ts")
     return commands.map(command => {
         const data: Command = require(`./${command}`).default
+
         return {
             name: data.Name,
             value: data.Usage,
