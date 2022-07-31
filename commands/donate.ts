@@ -29,7 +29,7 @@ const Cmd: Command = {
         }
 
         if (!recieverRecord) {
-            message.channel.send("The member you're donating to does not have a BankingBot account initialised!")
+            message.channel.send("The member you're try to donate to does not have a BankingBot account initialised!")
             return
         }
 
