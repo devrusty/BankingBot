@@ -1,5 +1,6 @@
 import { Client, Message } from "discord.js"
 import * as fs from "fs"
+import UpdateItemShop from "./methods/UpdateItemShop"
 
 const Bot: Client = new Client({
     intents: [
@@ -10,8 +11,14 @@ const Bot: Client = new Client({
     ]
 })
 
+const InitiateUpdateItemShop = () => {
+    UpdateItemShop()
+    setTimeout(InitiateUpdateItemShop, 86400000)
+}
+
 Bot.on("ready", () => {
     console.log(`${Bot.user?.tag} is now online.`)
+    InitiateUpdateItemShop()
 })
 
 Bot.on("messageCreate", async (message: Message) => {
