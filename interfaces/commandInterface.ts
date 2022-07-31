@@ -3,5 +3,6 @@ export default interface Command {
     Description?: string,
     Args?: string[],
     Usage: string,
-    Invoke: Function
+    Invoke: Function,
+    Listed: Boolean
 }

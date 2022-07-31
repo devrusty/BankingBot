@@ -6,6 +6,7 @@ const Cmd: Command = {
     Name: "donate",
     Description: "Give money to another member",
     Usage: "b!donate <user> <amount>",
+    Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
         const reciever = message.mentions.members?.first()

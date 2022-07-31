@@ -37,6 +37,7 @@ const Cmd: Command = {
     Name: "shop",
     Description: "Shop interface",
     Usage: "b!shop ?purchase <?item>",
+    Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         if (args[1] == "purchase") {
             await Purchase(client, message, args)

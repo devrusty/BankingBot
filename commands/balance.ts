@@ -8,6 +8,7 @@ const Cmd: Command = {
     Name: "balance",
     Description: "Shows your balance if you have a BankingBot account initialised.",
     Usage: `b!balance`,
+    Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
         if (!recordExists) {

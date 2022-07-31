@@ -6,6 +6,7 @@ const Cmd: Command = {
     Name: "gamble",
     Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25",
     Usage: "b!gamble <amount>",
+    Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         if (!DatabaseMethods.UserRecordExists(message.author)) {
             message.channel.send("You must have a BankingBot account initialised before you can gamble! Use `b!create`.")

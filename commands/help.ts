@@ -64,6 +64,7 @@ const Cmd: Command = {
     Name: "help",
     Description: "Displays information about the bot.",
     Usage: "b!help <?section>",
+    Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const helpSectioArgument = args[1]
         if (!helpSectioArgument || helpSectioArgument.toLowerCase() == "index") {
