@@ -11,9 +11,10 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @unique
-  cash      Int   @default(100)
+  id        Int     @id @unique
+  cash      Int     @default(100)
   inventory Int[]
+  premium   Boolean @default(false)
 }
 
 model Item {
