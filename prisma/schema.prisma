@@ -11,22 +11,22 @@ datasource db {
 }
 
 model User {
-  id        BigInt   @id @unique
-  cash      BigInt   @default(100)
-  inventory BigInt[]
-  premium   Boolean  @default(false)
+  id        String  @unique
+  cash      Int     @default(100)
+  inventory Int[]
+  premium   Boolean @default(false)
 }
 
 model Item {
-  id          BigInt  @id @unique @default(autoincrement())
+  id          Int     @id @unique @default(autoincrement())
   name        String
   description String
-  price       BigInt
+  price       Int
   onSale      Boolean @default(false)
 }
 
 model PersonalShop {
-  id      BigInt   @id @unique @default(autoincrement())
-  ownerId BigInt   @unique
-  items   BigInt[]
+  id      Int    @id @unique @default(autoincrement())
+  ownerId String @unique
+  items   Int[]
 }

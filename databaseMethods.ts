@@ -5,7 +5,7 @@ import { User } from "discord.js"
 const PClient: PrismaClient = new PrismaClient()
 
 export async function GetUserRecord(user: User) {
-    const id = Number(user.id)
+    const id = user.id
 
     const userResult = await PClient.user.findFirst({
         where: {
@@ -20,7 +20,7 @@ export async function GetUserRecord(user: User) {
 export async function UserRecordExists(user: User): Promise<boolean> {
     const userResult = await PClient.user.count({
         where: {
-            id: Number(user.id)
+            id: user.id
         }
     })
 
@@ -28,7 +28,7 @@ export async function UserRecordExists(user: User): Promise<boolean> {
 }
 
 export async function CreateUserRecord(user: User): Promise<boolean> {
-    const id: number = Number(user.id)
+    const id = user.id
 
     const userExists: boolean = await UserRecordExists(user)
     if (userExists) return false
@@ -45,8 +45,6 @@ export async function CreateUserRecord(user: User): Promise<boolean> {
 }
 
 export async function GetUserBalance(user: User) {
-    const id: number = Number(user.id)
-
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return 0
 
@@ -64,7 +62,7 @@ export async function IsUserPremium(user: User) {
 }
 
 export async function RemoveFromBalance(user: User, amount: number) {
-    const id: number = Number(user.id)
+    const id = user.id
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return false
 
@@ -83,15 +81,11 @@ export async function RemoveFromBalance(user: User, amount: number) {
 }
 
 export async function AddToBalance(user: User, amount: number) {
-    const id: number = Number(user.id)
+    const id = user.id
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return false
 
-    const userRecord = await PClient.user.findFirst({
-        where: {
-            id: id
-        }
-    })
+    const userRecord = await GetUserRecord(user)
 
     if (!userRecord) return console.log("User doesn't exist.")
 
