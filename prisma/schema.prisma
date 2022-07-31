@@ -24,3 +24,9 @@ model Item {
   price       Int
   onSale      Boolean @default(false)
 }
+
+model PersonalShop {
+  id      Int   @id @unique @default(autoincrement())
+  ownerId Int   @unique
+  items   Int[]
+}
