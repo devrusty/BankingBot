@@ -18,6 +18,7 @@ const Cmd: Command = {
         const embed: EmbedBuilder = new EmbedBuilder()
 
         embed.setTitle(`${message.author.username}'s Balance`)
+        embed.setColor("Red")
         embed.setThumbnail(message.author.displayAvatarURL())
         embed.setFields(
             { name: "Balance", value: String(balance) }
