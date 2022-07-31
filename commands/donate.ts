@@ -11,6 +11,11 @@ const Cmd: Command = {
         const reciever = message.mentions.members?.first()
         const amount = Number(args[2])
 
+        if (reciever?.id == message.author.id) {
+            message.channel.send("You cannot donate to yourself silly!")
+            return
+        }
+
         if (!reciever) {
             message.channel.send("Please mention someone to donate to.")
             return
