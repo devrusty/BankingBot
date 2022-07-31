@@ -21,7 +21,7 @@ const Cmd: Command = {
         embed.setColor("Red")
         embed.setThumbnail(message.author.displayAvatarURL())
         embed.setFields(
-            { name: "Balance", value: String(balance) }
+            { name: "Balance", value: `$${String(balance)}` }
         )
 
         message.channel.send({
