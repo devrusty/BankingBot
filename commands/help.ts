@@ -17,7 +17,7 @@ const GetCommandFields = () => {
 const Embeds = {
     index: new EmbedBuilder()
         .setTitle("BankingBot")
-        .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and ")
+        .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and many other features. (see `b!help commands`)")
         .setColor("Red")
         .addFields(
             { name: "Commands", value: "`b!help commands`", inline: true },
@@ -31,6 +31,25 @@ const Embeds = {
         .setTitle("BankingBot - Commands")
         .addFields(GetCommandFields())
         .setColor("Red")
+        .setFooter({
+            text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
+        }),
+    earning: new EmbedBuilder()
+        .setTitle("BankingBot - Earning")
+        .setDescription("There are many ways to earn money inside of BankingBot. Here's a list of the recommended methods.")
+        .addFields(
+            { name: "Gambling", value: "You are able to gmable using `b!gamble <amount>` with a 1/4 chance of winning x1.25 the amount that you gambled.", inline: true }
+        )
+        .setFooter({
+            text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
+        }),
+    premium: new EmbedBuilder()
+        .setTitle("BankingBot - Premium")
+        .setColor("Red")
+        .setDescription("BankingBot Premium gives you access to personal shops, +25% on gambling, and item shop leaks.")
+        .addFields(
+            { name: "Become a premium member", value: "[Link](https://www.google.com)" }
+        )
 }
 
 const Cmd: Command = {
