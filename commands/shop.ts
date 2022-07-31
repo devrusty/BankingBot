@@ -1,13 +1,14 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, messageLink } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import FormatMoney from "../methods/FormatMoney";
 
 const GetItemFields = async () => {
     const items = await DatabaseMethods.GetOnsaleItems()
 
     return items.map(item => {
         return {
-            name: `${item.name} - $${item.price}`,
+            name: `${item.name} - $${FormatMoney(item.price)}`,
             value: `${item.description}`,
             inline: true
         }

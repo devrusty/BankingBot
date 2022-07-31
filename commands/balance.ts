@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js";
 import * as DatabaseMethods from "..//databaseMethods"
 import { EmbedBuilder } from "discord.js";
+import FormatMoney from "../methods/FormatMoney";
 
 const Cmd: Command = {
     Name: "balance",
@@ -16,12 +17,13 @@ const Cmd: Command = {
 
         const balance: number = await DatabaseMethods.GetUserBalance(message.author)
         const embed: EmbedBuilder = new EmbedBuilder()
+        const balanceString = `$${FormatMoney(balance)}`
 
         embed.setTitle(`${message.author.username}'s Balance`)
         embed.setColor("Red")
         embed.setThumbnail(message.author.displayAvatarURL())
         embed.setFields(
-            { name: "Balance", value: `$${String(balance)}` }
+            { name: "Balance", value: balanceString }
         )
 
         message.channel.send({
