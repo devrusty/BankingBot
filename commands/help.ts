@@ -6,7 +6,7 @@ const GetCommandFields = () => {
     const commands = fs.readdirSync("./commands/").filter(file => file !== "help.ts")
     console.log(commands)
     return commands.map(command => {
-        const data: Command = require(`./commands/${command}`).default
+        const data: Command = require(`./${command}`).default
         return {
             name: data.Name,
             value: data.Usage,
@@ -21,7 +21,9 @@ const Embeds = {
         .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and ")
         .setColor("Red")
         .addFields(
-            { name: "Commands", value: "`b!help commands`", inline: true }
+            { name: "Commands", value: "`b!help commands`", inline: true },
+            { name: "Earning", value: "`b!help earning`", inline: true },
+            { name: "Credits", value: "`b!help credits`", inline: true }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
