@@ -11,7 +11,7 @@ const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
 const CreateShop = async (client: Client, message: Message) => {
     const author = message.author
     const shopExists = await DatabaseMethods.UserShopExists(author)
-    console.log(shopExists)
+
     if (shopExists) {
         message.channel.send("You already have a shop! Use `b!myshop` to view details.")
         return
@@ -40,7 +40,7 @@ const Cmd: Command = {
         }
 
         // b!myshop create
-        if (action.toLowerCase() == "create") {
+        if (action && action.toLowerCase() == "create") {
             CreateShop(client, message)
             return
         }
