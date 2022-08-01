@@ -14,7 +14,7 @@ const Cmd: Command = {
             return
         }
 
-        const newRecord: boolean | void = await DatabaseMethods.CreateUserRecord(message.author)
+        const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author)
         if (!newRecord) {
             message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
             return
