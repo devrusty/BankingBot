@@ -9,6 +9,7 @@ let Users = new Array()
 let LotteryMax = 100000000
 let LotteryAmount = Math.floor(Math.random() * LotteryMax)
 
+const Time = 3600000
 const LotteryAnnouncementChannel = "1003737671908204644"
 
 const SendInfo = (message: Message) => {
@@ -17,7 +18,7 @@ const SendInfo = (message: Message) => {
     Embed.setTitle("BankingBot Lottery")
     Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)}`)
     Embed.addFields(
-        { name: "Amount", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
+        { name: "Jackpot", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
         { name: "Users", value: String(Users.length), inline: true }
     )
     Embed.setColor("Yellow")
@@ -51,18 +52,27 @@ const Cmd: Command = {
     }
 }
 
-const GetWinner = async () => {
-    const randomNum = Math.floor(Math.random() * Users.length)
-    const winner = Users[randomNum]
-    //const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
-
-    DatabaseMethods.AddToBalance(winner, LotteryAmount)
+const ResetLottery = () => {
     LotteryAmount = Math.floor(Math.random() * LotteryMax)
     Users = new Array()
-
-    setTimeout(GetWinner, 3600000)
+    setTimeout(GetWinner, Time)
 }
 
-setTimeout(GetWinner, 3600000)
+const GetWinner = async () => {
+    const randomNum = Math.floor(Math.random() * Users.length)
+    const winnerId = Users[randomNum]
+    const winner = Bot.users.cache.get(winnerId)
+    //const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
+
+    if (!winner) {
+        console.log("There was an issue while getting the lottery winner!")
+        return
+    }
+
+    await DatabaseMethods.AddToBalance(winner, LotteryAmount)
+    ResetLottery()
+}
+
+setTimeout(GetWinner, Time)
 
 export default Cmd
