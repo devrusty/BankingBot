@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface"
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import FormatMoney from "../methods/FormatMoney"
 
 let Bot: Client
 let Users = new Array()
@@ -14,9 +15,9 @@ const SendInfo = (message: Message) => {
     const Embed = new EmbedBuilder()
 
     Embed.setTitle("BankingBot Lottery")
-    Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${LotteryAmount}`)
+    Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)}`)
     Embed.addFields(
-        { name: "Amount", value: String(LotteryAmount), inline: true },
+        { name: "Amount", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
         { name: "Users", value: String(Users.length), inline: true }
     )
     Embed.setColor("Yellow")
