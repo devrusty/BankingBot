@@ -69,6 +69,7 @@ export async function RemoveFromBalance(user: User, amount: number) {
     const userRecord = await GetUserRecord(user)
 
     if (!userRecord) return console.log("User doesn't exist.")
+    if (amount) return console.log("Invalid amount.")
 
     await PClient.user.update({
         where: {
