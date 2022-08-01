@@ -5,6 +5,12 @@ import { PersonalShop } from "@prisma/client";
 
 const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
     const embed = new EmbedBuilder()
+    embed.setTitle(`${user.tag}'s Shop`)
+    embed.setColor("Red")
+    embed.setFooter({
+        text: "Want your own shop? Learn more about premium with b!help premium."
+    })
+
     return embed
 }
 
