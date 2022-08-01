@@ -39,8 +39,9 @@ const Embeds = {
     earning: new EmbedBuilder()
         .setTitle("BankingBot - Earning")
         .setDescription("There are many ways to earn money inside of BankingBot. Here's a list of the recommended methods.")
+        .setColor("Red")
         .addFields(
-            { name: "Gambling", value: "You are able to gmable using `b!gamble <amount>` with a 1/4 chance of winning x1.25 the amount that you gambled.", inline: true }
+            { name: "Gambling", value: "You're able to gamble using `b!gamble <amount>` with a 1/4 chance of winning x1.25 the amount that you gambled." }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
