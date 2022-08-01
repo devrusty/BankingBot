@@ -39,6 +39,11 @@ const Cmd: Command = {
             return
         }
 
+        if (amount <= 0) {
+            message.channel.send("Please specify an amount larger than 0.")
+            return
+        }
+
         if (userRecord.cash < amount) {
             message.channel.send("You cannot afford to donate that much cash!")
             return

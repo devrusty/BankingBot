@@ -22,6 +22,11 @@ const Cmd: Command = {
         const user: User = message.author
         const balance: number = await DatabaseMethods.GetUserBalance(user)
 
+        if (gambleAmount <= 0) {
+            message.channel.send("Please gamble an amount larger than 0.")
+            return
+        }
+
         if (balance < gambleAmount) {
             message.channel.send("You cannot afford to gamble that much money.")
             return
