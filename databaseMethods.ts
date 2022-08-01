@@ -146,14 +146,13 @@ export async function UserShopExists(user: User) {
     const userExists = await UserRecordExists(user)
     if (!userExists) return
 
-    const userShop = PClient.personalShop.findFirst({
+    const userShop = await PClient.personalShop.count({
         where: {
             ownerId: user.id
         }
     })
 
-    if (!userShop) return
-    return true
+    return userShop > 0
 }
 
 export async function CreateUserShop(user: User) {
@@ -169,7 +168,7 @@ export async function CreateUserShop(user: User) {
 
     await PClient.personalShop.create({
         data: {
-            ownerId: user.id
+            ownerId: id
         }
     }).catch(e => {
         console.log(e)
