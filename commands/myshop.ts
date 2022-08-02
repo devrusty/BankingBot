@@ -34,7 +34,7 @@ const CreateShop = async (client: Client, message: Message) => {
 const Cmd: Command = {
     Name: "myshop",
     Description: "Premium only command that allows you to create and manage your personal shop.",
-    Usage: "b!myshop ?create ?manage ?add ?remove <?item>",
+    Usage: "b!myshop ?create ?add ?remove <?item>",
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const action = args[1]
