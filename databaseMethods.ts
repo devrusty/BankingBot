@@ -1,7 +1,7 @@
 import { Item, PrismaClient } from "@prisma/client"
-import * as Prisma from "@prisma/client"
 import { User } from "discord.js"
 import Donation from "./interfaces/donation"
+import { GetLevelMaxXP } from "./methods/Levels"
 
 const PClient: PrismaClient = new PrismaClient()
 
@@ -115,7 +115,7 @@ export async function AddToBalance(user: User, amount: number) {
     })
 }
 
-export async function GiveXP(user: User, xp: number) {
+export async function SetUserLevel(user: User, level: number) {
     const recordExists = await UserRecordExists(user)
     if (!recordExists) return "User doesn't exist."
 
@@ -127,7 +127,35 @@ export async function GiveXP(user: User, xp: number) {
             id: user.id
         },
         data: {
-            xp: userRecord.xp + xp
+            xp: 0,
+            level: level
+        }
+    })
+}
+
+export async function GiveXP(user: User, xp: number) {
+    const recordExists = await UserRecordExists(user)
+    if (!recordExists) return "User doesn't exist."
+
+    const userRecord = await GetUserRecord(user)
+    if (!userRecord) return "User doesn't exist."
+
+    userRecord.xp += xp
+
+    const maxXp = GetLevelMaxXP(userRecord.level)
+
+    if (userRecord.xp >= maxXp) {
+        userRecord.level += 1
+        await SetUserLevel(user, userRecord.level)
+        return
+    }
+
+    await PClient.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            xp: userRecord.xp
         }
     })
 }
