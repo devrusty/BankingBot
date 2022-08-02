@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import Donation from "../interfaces/donation";
 
 const Cmd: Command = {
     Name: "donate",
@@ -48,6 +49,14 @@ const Cmd: Command = {
             message.channel.send("You cannot afford to donate that much cash!")
             return
         }
+
+        const Data: Donation = {
+            donator: author.id,
+            reciever: reciever.user.id,
+            amount: amount
+        }
+
+        await DatabaseMethods.CreateDonationRecord(Data)
 
         await DatabaseMethods.RemoveFromBalance(author, amount).catch(err => {
             console.trace(err)

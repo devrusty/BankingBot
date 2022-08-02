@@ -1,5 +1,5 @@
 export default interface Donation {
-    donator: String,
-    reciever: String
-    amount: Number
+    donator: string,
+    reciever: string
+    amount: number
 }

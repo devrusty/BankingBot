@@ -1,6 +1,7 @@
 import { Item, PrismaClient } from "@prisma/client"
 import * as Prisma from "@prisma/client"
 import { User } from "discord.js"
+import Donation from "./interfaces/donation"
 
 const PClient: PrismaClient = new PrismaClient()
 
@@ -215,4 +216,12 @@ export async function GetUserShop(user: User) {
     return shop
 }
 
-export async function CreateDonationRecord() { }
+export async function CreateDonationRecord(data: Donation) {
+    await PClient.donation.create({
+        data: {
+            donator: data.donator,
+            reciever: data.reciever,
+            amount: data.amount
+        }
+    })
+}
