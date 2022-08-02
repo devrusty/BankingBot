@@ -8,6 +8,7 @@ let Users = new Array()
 
 let LotteryDefault = 10000
 let LotteryAmount = LotteryDefault
+let LotteryXP = LotteryAmount / 100
 
 const Time = 3600000
 const LotteryAnnouncementChannel = "1003737671908204644"
@@ -48,7 +49,9 @@ const Cmd: Command = {
         }
 
         Users.push(author.id)
+
         LotteryAmount *= 2
+        LotteryXP = LotteryAmount / 100
 
         message.channel.send("You have been added to the lottery list. You can see who won in the BankingBot support server.")
     }
@@ -56,6 +59,8 @@ const Cmd: Command = {
 
 const ResetLottery = () => {
     LotteryAmount = LotteryDefault
+    LotteryXP = LotteryDefault / 100
+
     Users = new Array()
     setTimeout(GetWinner, Time)
 }
