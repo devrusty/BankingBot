@@ -53,14 +53,14 @@ const Cmd: Command = {
         let param = args[1]
 
         if (!param) {
-            DisplayAccountEmbed(message, message.author)
+            await DisplayAccountEmbed(message, message.author)
             return
         }
 
         param = param.toLowerCase()
 
         if (param == "create") {
-            CreateAccount(message)
+            await CreateAccount(message)
             return
         }
 
