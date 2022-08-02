@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { Item, PrismaClient } from "@prisma/client"
 import * as Prisma from "@prisma/client"
 import { User } from "discord.js"
 
@@ -141,6 +141,17 @@ export async function PurchaseItem(user: User, item: string) {
     })
 
     await RemoveFromBalance(user, itemData.price)
+}
+
+export async function UpdateItemShop(data: Item[]) {
+    data.forEach(async (item: Item) => {
+        await PClient.item.update({
+            where: {
+                id: item.id
+            },
+            data: item
+        })
+    })
 }
 
 export async function UserShopExists(user: User) {
