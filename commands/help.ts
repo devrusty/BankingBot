@@ -18,7 +18,7 @@ const GetCommandFields = () => {
 const Embeds = {
     index: new EmbedBuilder()
         .setTitle("BankingBot")
-        .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and many other features. (see `b!help commands`)")
+        .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and many other features. (see `b!help commands`). Use `b!account create` to get started.")
         .setColor("Red")
         .addFields(
             { name: "Commands", value: "`b!help commands`", inline: true },
