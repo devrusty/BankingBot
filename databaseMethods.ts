@@ -115,6 +115,23 @@ export async function AddToBalance(user: User, amount: number) {
     })
 }
 
+export async function GiveXP(user: User, xp: number) {
+    const recordExists = await UserRecordExists(user)
+    if (!recordExists) return "User doesn't exist."
+
+    const userRecord = await GetUserRecord(user)
+    if (!userRecord) return "User doesn't exist."
+
+    await PClient.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            xp: userRecord.xp + xp
+        }
+    })
+}
+
 export async function GetItems() {
     return await PClient.item.findMany()
 }
