@@ -44,6 +44,20 @@ export async function CreateUserRecord(user: User): Promise<boolean> {
     return true
 }
 
+export async function DeleteUserRecord(user: User) {
+    const id = user.id
+    const userExists = await UserRecordExists(user)
+    if (!userExists) return false
+
+    await PClient.user.delete({
+        where: {
+            id: id
+        }
+    })
+
+    return true
+}
+
 export async function GetUserBalance(user: User) {
     const userExists: boolean = await UserRecordExists(user)
     if (!userExists) return 0
