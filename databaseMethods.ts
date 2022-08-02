@@ -124,6 +124,7 @@ export async function PurchaseItem(user: User, item: string) {
     })
 
     if (!itemData) return "Invalid item"
+    if (!itemData.onSale) return "That item is currently off sale. Use `b!shop` to see the current item shop."
     if (itemData.price > userRecord.cash) return "User cannot afford that item!"
 
     userRecord.inventory.push(itemData.id)
