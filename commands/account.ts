@@ -27,6 +27,22 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
     })
 }
 
+const CreateAccount = async (message: Message) => {
+    const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
+    if (recordExists) {
+        message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
+        return
+    }
+
+    const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author)
+    if (!newRecord) {
+        message.channel.send("You already have a BankingBot account. Use `b!balance` to view your balance.")
+        return
+    }
+
+    message.channel.send("Account created! Use `b!balance` to view your balance.")
+}
+
 const Cmd: Command = {
     Name: "account",
     Description: "Shows information about your BankingBot account.",
@@ -34,11 +50,20 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const mention = message.mentions.users.first()
+        let param = args[1]
 
-        if (!message.mentions.users.first()) {
+        if (!param) {
             DisplayAccountEmbed(message, message.author)
             return
         }
+
+        param = param.toLowerCase()
+
+        if (param == "create") {
+            CreateAccount(message)
+            return
+        }
+
         if (!mention) {
             message.channel.send("Invalid member.")
             return
