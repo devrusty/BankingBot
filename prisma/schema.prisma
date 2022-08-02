@@ -30,3 +30,11 @@ model PersonalShop {
   ownerId String @unique
   items   Int[]
 }
+
+model Donation {
+  id       Int      @id @unique @default(autoincrement())
+  donator  String
+  reciever String
+  amount   Int
+  time     DateTime @default(now())
+}
