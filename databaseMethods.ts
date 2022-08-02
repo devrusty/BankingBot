@@ -214,3 +214,5 @@ export async function GetUserShop(user: User) {
 
     return shop
 }
+
+export async function CreateDonationRecord() { }
