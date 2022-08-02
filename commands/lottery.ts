@@ -6,8 +6,8 @@ import FormatMoney from "../methods/FormatMoney"
 let Bot: Client
 let Users = new Array()
 
-let LotteryMax = 100000000
-let LotteryAmount = Math.floor(Math.random() * LotteryMax)
+let LotteryDefault = 10000
+let LotteryAmount = LotteryDefault
 
 const Time = 3600000
 const LotteryAnnouncementChannel = "1003737671908204644"
@@ -48,12 +48,14 @@ const Cmd: Command = {
         }
 
         Users.push(author.id)
+        LotteryAmount *= 2
+
         message.channel.send("You have been added to the lottery list. You can see who won in the BankingBot support server.")
     }
 }
 
 const ResetLottery = () => {
-    LotteryAmount = Math.floor(Math.random() * LotteryMax)
+    LotteryAmount = LotteryDefault
     Users = new Array()
     setTimeout(GetWinner, Time)
 }
