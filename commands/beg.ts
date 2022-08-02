@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import FormatMoney from "../methods/FormatMoney";
 
 const Cooldown = 120000
 const MaxAmount = 1000
@@ -26,7 +27,7 @@ const Cmd: Command = {
 
         const randomAmount = Math.floor(Math.random() * MaxAmount)
         DatabaseMethods.AddToBalance(author, randomAmount).then(() => {
-            message.channel.send(`You got ${randomAmount} from begging.`)
+            message.channel.send(`You got $${FormatMoney(randomAmount)} from begging.`)
             RecentlyBegged.add(author.id)
 
             setTimeout(() => {
