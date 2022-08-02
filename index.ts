@@ -1,6 +1,6 @@
 import { Client, Message } from "discord.js"
 import * as fs from "fs"
-import UpdateItemShop from "./methods/UpdateItemShop"
+import * as ItemShopMethods from "./methods/ItemShop"
 
 const Bot: Client = new Client({
     intents: [
@@ -12,7 +12,7 @@ const Bot: Client = new Client({
 })
 
 const InitiateUpdateItemShop = async () => {
-    await UpdateItemShop()
+    await ItemShopMethods.UpdateItemShop()
     setTimeout(InitiateUpdateItemShop, 86400000)
 }
 
