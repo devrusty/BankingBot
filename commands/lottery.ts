@@ -72,6 +72,8 @@ const GetWinner = async () => {
     }
 
     await DatabaseMethods.AddToBalance(winner, LotteryAmount)
+    await DatabaseMethods.GiveXP(winner, 100)
+
     ResetLottery()
 }
 
