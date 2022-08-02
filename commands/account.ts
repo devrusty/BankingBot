@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, User, EmbedBuilder, GuildEmoji } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
+import { GetLevelMaxXP } from "../methods/Levels";
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
     const record = await DatabaseMethods.GetUserRecord(user)
@@ -18,7 +19,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
     embed.setThumbnail(user.displayAvatarURL())
     embed.setFields(
         { name: "Balance", value: balanceString },
-        { name: "Level", value: String(record.level) },
+        { name: "Level", value: `${String(record.level)} (${record.xp}/${GetLevelMaxXP(record.level)})` },
         { name: "Premium", value: String(record.premium) }
     )
 
