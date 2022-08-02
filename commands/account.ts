@@ -18,7 +18,8 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
     embed.setThumbnail(user.displayAvatarURL())
     embed.setFields(
         { name: "Balance", value: balanceString },
-        { name: "Premium", value: String(record?.premium) }
+        { name: "Level", value: String(record.level) },
+        { name: "Premium", value: String(record.premium) }
     )
 
     message.channel.send({
