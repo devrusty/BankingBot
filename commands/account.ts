@@ -1,7 +1,6 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, User } from "discord.js";
+import { Client, Message, User, EmbedBuilder, GuildEmoji } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
-import { EmbedBuilder } from "discord.js";
 import FormatMoney from "../methods/FormatMoney";
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
