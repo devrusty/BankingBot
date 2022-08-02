@@ -17,7 +17,7 @@ const SendInfo = (message: Message) => {
     const Embed = new EmbedBuilder()
 
     Embed.setTitle("BankingBot Lottery")
-    Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)}`)
+    Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)} and ${FormatMoney(LotteryXP)} XP`)
     Embed.addFields(
         { name: "Jackpot", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
         { name: "Users", value: String(Users.length), inline: true }
