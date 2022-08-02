@@ -122,12 +122,14 @@ export async function SetUserLevel(user: User, level: number) {
     const userRecord = await GetUserRecord(user)
     if (!userRecord) return "User doesn't exist."
 
+    const remainingXP = GetLevelMaxXP(level) - userRecord.xp
+
     await PClient.user.update({
         where: {
             id: user.id
         },
         data: {
-            xp: 0,
+            xp: remainingXP,
             level: level
         }
     })
