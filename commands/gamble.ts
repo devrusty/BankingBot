@@ -43,7 +43,9 @@ const Cmd: Command = {
 
         const earnAmount: number = Math.floor(gambleAmount * 1.25)
         await DatabaseMethods.AddToBalance(user, earnAmount)
-        message.channel.send(`You won $${FormatMoney(earnAmount)}!`)
+        await DatabaseMethods.GiveXP(user, 10)
+
+        message.channel.send(`You won $${FormatMoney(earnAmount)} and 10 XP!`)
     }
 }
 
