@@ -33,7 +33,7 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
     const fields = jobs.map(job => {
         return {
             name: job.name,
-            value: `About: ${job.description}\nIncome: $${FormatMoney(job.income)}`,
+            value: `Description: ${job.description}\nIncome: $${FormatMoney(job.income)}\nLevel: ${job.requiredLevel}`,
             inline: true
         }
     })
