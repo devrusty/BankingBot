@@ -13,6 +13,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 
     const embed: EmbedBuilder = new EmbedBuilder()
     const balanceString = `$${FormatMoney(record?.cash)}`
+    const occupation = await DatabaseMethods.GetJobNameById(record.occupation)
 
     embed.setTitle(`${user.tag}`)
     embed.setColor("Red")
@@ -20,6 +21,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
     embed.setFields(
         { name: "Balance", value: balanceString },
         { name: "Level", value: `${String(record.level)} (${record.xp}/${GetLevelMaxXP(record.level)})` },
+        { name: "Occupation", value: occupation || "Unemployed" },
         { name: "Premium", value: String(record.premium) }
     )
 
