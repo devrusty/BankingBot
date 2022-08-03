@@ -270,3 +270,8 @@ export async function CreateDonationRecord(data: Donation) {
         }
     })
 }
+
+export async function GetJobs() {
+    const jobs = await PClient.job.findMany()
+    return jobs
+}
