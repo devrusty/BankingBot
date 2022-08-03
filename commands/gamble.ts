@@ -27,6 +27,11 @@ const Cmd: Command = {
             return
         }
 
+        if (gambleAmount > 100000) {
+            message.channel.send("You cannot gamble over 100k.")
+            return
+        }
+
         if (balance < gambleAmount) {
             message.channel.send("You cannot afford to gamble that much money.")
             return
