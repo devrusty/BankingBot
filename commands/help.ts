@@ -4,15 +4,19 @@ import * as fs from "fs"
 
 const GetCommandFields = () => {
     const commands = fs.readdirSync("./commands/").filter(command => command !== "help.ts")
-    return commands.map(command => {
-        const data: Command = require(`./${command}`).default
+    const commandFields = new Array()
 
-        return {
+    commands.forEach(command => {
+        const data: Command = require(`./${command}`).default
+        if (!data.Listed) return
+        commandFields.push({
             name: data.Name,
             value: data.Usage,
             inline: true
-        }
+        })
     })
+
+    return commandFields
 }
 
 const Embeds = {
