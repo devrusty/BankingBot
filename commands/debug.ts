@@ -38,8 +38,42 @@ const AddMoney = async (message: Message, args: string[]) => {
         return
     }
 
-    await DatabaseMethods.AddToBalance(author, Number(amount)).then(() => {
+    await DatabaseMethods.AddToBalance(mention.user, Number(amount)).then(() => {
         message.channel.send(`Gave $${amount} to ${mention.user.tag}`)
+    })
+}
+
+const ClearMoney = async (message: Message, args: string[]) => {
+    const author = message.author
+    const mention = message.mentions.members?.first()
+
+    if (!mention) {
+        const recordExists = await DatabaseMethods.UserRecordExists(author)
+        if (!recordExists) {
+            message.channel.send("Please use `b!account create`.")
+            return
+        }
+
+        const record = await DatabaseMethods.GetUserRecord(author)
+        if (!record) {
+            message.channel.send("Please use `b!account create`.")
+            return
+        }
+
+        await DatabaseMethods.RemoveFromBalance(author, record.cash).then(() => {
+            message.channel.send(`Cleared ${author.tag}'s cash.`)
+        })
+        return
+    }
+
+    const record = await DatabaseMethods.GetUserRecord(mention.user)
+    if (!record) {
+        message.channel.send("The user that you're trying to clear does not have a BankingBot account initialised.")
+        return
+    }
+
+    await DatabaseMethods.RemoveFromBalance(mention.user, record.cash).then(() => {
+        message.channel.send(`Cleared ${mention.user.tag}'s cash.`)
     })
 }
 
@@ -81,6 +115,10 @@ const Cmd: Command = {
         if (action == "stop") process.exit(1)
         if (action == "add_money") {
             await AddMoney(message, args)
+            return
+        }
+        if (action == "clear_money") {
+            await ClearMoney(message, args)
             return
         }
     }
