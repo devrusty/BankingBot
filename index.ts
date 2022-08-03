@@ -33,6 +33,8 @@ Bot.on("ready", async () => {
 })
 
 Bot.on("messageCreate", async (message: Message) => {
+    message.content = message.content.toLowerCase()
+
     if (message.author.bot) return
     if (!message.content.startsWith(Config.prefix)) return
     if (!message.member) return
