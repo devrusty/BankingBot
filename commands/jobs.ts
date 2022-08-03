@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
+import FormatMoney from "../methods/FormatMoney";
 
 const DisplayAllJobs = async (message: Message) => {
     const jobs = await DatabaseMethods.GetJobs()
@@ -11,7 +12,7 @@ const DisplayAllJobs = async (message: Message) => {
     const fields = jobs.map(job => {
         return {
             name: job.name,
-            value: `About: ${job.description}\nIncome: ${job.income}`,
+            value: `About: ${job.description}\nIncome: $${FormatMoney(job.income)}`,
             inline: true
         }
     })
@@ -32,7 +33,7 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
     const fields = jobs.map(job => {
         return {
             name: job.name,
-            value: `About: ${job.description}\nIncome: ${job.income}`,
+            value: `About: ${job.description}\nIncome: $${FormatMoney(job.income)}`,
             inline: true
         }
     })
