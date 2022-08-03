@@ -1,4 +1,4 @@
-import { Client, Message } from "discord.js"
+import { Client, Message, ActivityType } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 
@@ -18,6 +18,16 @@ const InitiateUpdateItemShop = async () => {
 
 Bot.on("ready", async () => {
     console.log(`${Bot.user?.tag} is now online.`)
+    Bot.user?.setPresence({
+        status: "online",
+        activities: [
+            {
+                name: `${Bot.guilds.cache.size} servers`,
+                type: ActivityType.Watching
+            }
+        ]
+    })
+
     await InitiateUpdateItemShop()
 })
 
