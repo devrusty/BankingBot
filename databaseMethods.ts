@@ -324,3 +324,9 @@ export async function GetJobIdByName(name: string) {
     if (!job) return false
     return job.id
 }
+
+export async function GetJobNameById(id: number) {
+    const job = await GetJobById(id)
+    if (!job) return false
+    return job.name
+}
