@@ -275,3 +275,10 @@ export async function GetJobs() {
     const jobs = await PClient.job.findMany()
     return jobs
 }
+
+export async function GetJobsForLevel(level: number) {
+    const jobs = await GetJobs()
+    return jobs.filter(job => {
+        return job.requiredLevel <= level
+    })
+}
