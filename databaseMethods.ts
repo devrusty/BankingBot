@@ -282,3 +282,45 @@ export async function GetJobsForLevel(level: number) {
         return job.requiredLevel <= level
     })
 }
+
+export async function GetJobById(id: number) {
+    const jobs = await GetJobs()
+    const job = jobs.find(job => job.id == id)
+    return job
+}
+
+export async function GiveJob(user: User, jobId: number) {
+    const recordExists = await UserRecordExists(user)
+    if (!recordExists) return false
+
+    const record = await GetUserRecord(user)
+    if (!record) return false
+
+    const job = await GetJobById(jobId)
+    if (!job) return false
+
+    record.occupation = job.id
+
+    await PClient.user.update({
+        where: {
+            id: record.id
+        },
+        data: record
+    })
+
+    return true
+}
+
+export async function GetJobByName(name: string) {
+    name = name.toLowerCase()
+    const jobs = await GetJobs()
+    const job = jobs.find(job => job.name.toLowerCase() == name)
+
+    return job
+}
+
+export async function GetJobIdByName(name: string) {
+    const job = await GetJobByName(name)
+    if (!job) return false
+    return job.id
+}

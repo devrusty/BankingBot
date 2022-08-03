@@ -45,6 +45,45 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
     })
 }
 
+const GetJob = async (message: Message, args: string[]) => {
+    const author = message.author
+    const record = await DatabaseMethods.GetUserRecord(author)
+
+    if (!record) {
+        message.channel.send("You do not have a BankingBot account initialised! Use `b!account create` to create one.")
+        return
+    }
+
+    const currentOccupation = await DatabaseMethods.GetJobById(record.occupation)
+    if (currentOccupation) {
+        message.channel.send("You currently have a job! Please use `b!jobs resign` to quit your job before changing it.")
+        return
+    }
+
+    const jobName = args.slice(2).join(" ")
+    if (!jobName) {
+        message.channel.send("Please specify a job.")
+        return
+    }
+
+    const jobs = await DatabaseMethods.GetJobs()
+
+    if (!jobs.find(job => job.name.toLowerCase() == jobName.toLowerCase())) {
+        message.channel.send("Invalid job. Please use `b!jobs` to see a list of avaliable jobs for your level.")
+        return
+    }
+
+    const jobId = await DatabaseMethods.GetJobIdByName(jobName)
+    if (!jobId) {
+        message.channel.send("Invalid job. Please use `b!jobs` to see a list of avaliable jobs for your level.")
+        return
+    }
+
+    await DatabaseMethods.GiveJob(author, jobId).then(() => {
+        message.channel.send(`You have became a ${jobName}! Your income will be apart of your daily reward.`)
+    })
+}
+
 const Cmd: Command = {
     Name: "jobs",
     Description: "Lists all avaliable jobs for the user's level.",
@@ -53,6 +92,8 @@ const Cmd: Command = {
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
         const recordExists = await DatabaseMethods.UserRecordExists(author)
+
+        let action = args[1]
 
         if (!recordExists) {
             await DisplayAllJobs(message)
@@ -65,7 +106,17 @@ const Cmd: Command = {
             return
         }
 
-        await DisplayJobsForLevel(message, record.level)
+        if (!action) {
+            await DisplayJobsForLevel(message, record.level)
+            return
+        }
+
+        action = action.toLowerCase()
+
+        if (action == "get") {
+            await GetJob(message, args)
+            return
+        }
     }
 }
 
