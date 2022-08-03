@@ -3,13 +3,15 @@ import { Client, Message, User } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 
+const RecentlyUsed = new Set()
+
 const Cmd: Command = {
     Name: "gamble",
     Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25",
     Usage: "b!gamble <amount>",
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-        if (!DatabaseMethods.UserRecordExists(message.author)) {
+        if (!await DatabaseMethods.UserRecordExists(message.author)) {
             message.channel.send("You must have a BankingBot account initialised before you can gamble! Use `b!create`.")
             return
         }
@@ -21,6 +23,11 @@ const Cmd: Command = {
         const gambleAmount: number = Number(args[1])
         const user: User = message.author
         const balance: number = await DatabaseMethods.GetUserBalance(user)
+
+        if (RecentlyUsed.has(user.id)) {
+            message.channel.send("Please wait 30 seconds before gambling again.")
+            return
+        }
 
         if (gambleAmount <= 0) {
             message.channel.send("Please gamble an amount larger than 0.")
@@ -36,6 +43,12 @@ const Cmd: Command = {
             message.channel.send("You cannot afford to gamble that much money.")
             return
         }
+
+        RecentlyUsed.add(user.id)
+
+        setTimeout(() => {
+            RecentlyUsed.delete(user.id)
+        }, 30000)
 
         const chanceGoal: number = Math.floor(Math.random() * 4)
         const chanceResult: number = Math.floor(Math.random() * 4)
