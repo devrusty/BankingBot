@@ -48,7 +48,8 @@ const Embeds = {
             { name: "Gambling", value: "You're able to gamble using `b!gamble <amount>` with a 1/4 chance of winning x1.25 the amount that you gambled." },
             { name: "Begging", value: "You can use the `b!beg` every 2 minutes to get a random amount of money from 1 - 1,000." },
             { name: "Lottery", value: "You can participate in the lottery using the `b!lottery` command. Lottery jackpots can range from 1 - 100,000,000." },
-            { name: "Daily Rewards", value: "You can claim your daily reward every 24 hours using the `b!daily` command." }
+            { name: "Daily Rewards", value: "You can claim your daily reward every 24 hours using the `b!daily` command." },
+            { name: "Jobs", value: "You can get a job by using `b!jobs get <jobName>`, and `b!work` every 5 minutes." }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
