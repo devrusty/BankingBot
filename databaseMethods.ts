@@ -7,7 +7,6 @@ const PClient: PrismaClient = new PrismaClient()
 
 export async function GetUserRecord(user: User) {
     const id = user.id
-
     const userResult = await PClient.user.findFirst({
         where: {
             id: id
@@ -30,9 +29,7 @@ export async function UserRecordExists(user: User): Promise<boolean> {
 
 export async function CreateUserRecord(user: User): Promise<boolean> {
     const id = user.id
-
-    const userExists: boolean = await UserRecordExists(user)
-    if (userExists) return false
+    if (!await GetUserRecord(user)) return false
 
     await PClient.user.create({
         data: {
@@ -72,7 +69,6 @@ export async function GetUserBalance(user: User) {
 export async function IsUserPremium(user: User) {
     const userRecord = await GetUserRecord(user)
     if (!userRecord) return "User doesn't exist."
-
     return userRecord.premium
 }
 
