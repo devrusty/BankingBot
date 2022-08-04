@@ -330,3 +330,21 @@ export async function GetJobNameById(id: number) {
     if (!job) return false
     return job.name
 }
+
+export async function ResignUser(user: User) {
+    const recordExists = await UserRecordExists(user)
+    if (!recordExists) return false
+
+    const record = await GetUserRecord(user)
+    if (!record) return false
+
+    record.occupation = 0
+
+    await PClient.user.update({
+        where: {
+            id: user.id
+        },
+        data: record
+    })
+    return true
+}

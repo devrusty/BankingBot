@@ -87,7 +87,23 @@ const GetJob = async (message: Message, args: string[]) => {
 }
 
 const Resign = async (message: Message) => {
-    message.channel.send("wip")
+    const author = message.author
+    const record = await DatabaseMethods.GetUserRecord(author)
+    if (!record) {
+        message.channel.send("You must have a BankingBot account initialised to use that command!")
+        return
+    }
+
+    if (record.occupation === 0) {
+        message.channel.send("You're already unemployed.")
+        return
+    }
+
+    const jobName = await DatabaseMethods.GetJobNameById(record.occupation)
+
+    await DatabaseMethods.ResignUser(author).then(() => {
+        message.channel.send(`You've resigned from your position as a ${jobName}.`)
+    })
 }
 
 const Cmd: Command = {
