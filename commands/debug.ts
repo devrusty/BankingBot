@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import Config from "../config.json"
+import { Bot } from "../index"
 
 const AddMoney = async (message: Message, args: string[]) => {
     const author = message.author
@@ -77,6 +78,38 @@ const ClearMoney = async (message: Message, args: string[]) => {
     })
 }
 
+const GetUptime = (message: Message) => {
+    const uptimeMs = Bot.uptime
+    if (!uptimeMs) {
+        message.channel.send("`client.uptime` is undefined.")
+        return
+    }
+
+    let seconds = Math.floor(uptimeMs / 1000)
+    interface Uptime {
+        days: number,
+        hours: number,
+        minutes: number,
+        seconds: number
+    }
+
+    let time: Uptime = {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    }
+
+    time.days = Math.floor(seconds / 86400);
+    seconds %= 86400;
+    time.hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    time.minutes = Math.floor(seconds / 60);
+    time.seconds = Math.floor(seconds % 60);
+
+    message.channel.send(`${time.days}d, ${time.hours}h, ${time.minutes}m, ${time.seconds}s`)
+}
+
 const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
@@ -119,6 +152,10 @@ const Cmd: Command = {
         }
         if (action == "clear_money") {
             await ClearMoney(message, args)
+            return
+        }
+        if (action == "uptime") {
+            GetUptime(message)
             return
         }
     }
