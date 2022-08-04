@@ -85,6 +85,10 @@ const Resign = async (message: Message) => {
     })
 }
 
+const Work = async (message: Message) => {
+
+}
+
 const Cmd: Command = {
     Name: "jobs",
     Description: "Lists all avaliable jobs for the user's level.",
@@ -114,6 +118,11 @@ const Cmd: Command = {
 
         if (action == "resign") {
             await Resign(message)
+            return
+        }
+
+        if (action == "work") {
+            await Work(message)
             return
         }
     }
