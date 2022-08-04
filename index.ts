@@ -17,8 +17,7 @@ const InitiateUpdateItemShop = async () => {
     setTimeout(InitiateUpdateItemShop, 86400000)
 }
 
-Bot.on("ready", async () => {
-    console.log(`${Bot.user?.tag} is now online.`)
+const SetStatus = () => {
     Bot.user?.setPresence({
         status: "online",
         activities: [
@@ -28,6 +27,11 @@ Bot.on("ready", async () => {
             }
         ]
     })
+}
+
+Bot.on("ready", async () => {
+    console.log(`${Bot.user?.tag} is now online.`)
+    SetStatus()
 
     await InitiateUpdateItemShop()
 })
@@ -49,6 +53,14 @@ Bot.on("messageCreate", async (message: Message) => {
     }
 
     await require(commandFilePath).default.Invoke(Bot, message, args)
+})
+
+Bot.on("guildCreate", () => {
+    SetStatus()
+})
+
+Bot.on("guildDelete", () => {
+    SetStatus()
 })
 
 Bot.login(Config.token)
