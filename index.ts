@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
 
-const Bot: Client = new Client({
+export const Bot: Client = new Client({
     intents: [
         "GuildMessages",
         "MessageContent",
