@@ -28,9 +28,19 @@ const Cmd: Command = {
         }
 
         const userRecord = await DatabaseMethods.GetUserRecord(author)
-        let amount = DefaultDailyReward
+        if (!userRecord) {
+            message.channel.send("You must initialise a BankingBot account before you can claim a daily reward. Use `b!account create`")
+            return
+        }
 
-        if (userRecord?.premium) amount = PremiumDailyReward
+        let amount = DefaultDailyReward
+        let job
+
+        if (userRecord.occupation !== 0)
+            job = await DatabaseMethods.GetJobById(userRecord.occupation)
+
+        if (userRecord.premium) amount = PremiumDailyReward
+        if (job) amount += job.income * 12
 
         RecentlyClaimed.add(author.id)
 
