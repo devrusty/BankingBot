@@ -3,6 +3,8 @@ import { Client, Message, EmbedBuilder } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 
+const RecentlyWorked = new Set()
+
 const DisplayAllJobs = async (message: Message) => {
     const jobs = await DatabaseMethods.GetJobs()
     const jobsEmbed = new EmbedBuilder()
@@ -84,7 +86,9 @@ const GetJob = async (message: Message, args: string[]) => {
     })
 }
 
-const Resign = async (message: Message) => { }
+const Resign = async (message: Message) => {
+    message.channel.send("wip")
+}
 
 const Cmd: Command = {
     Name: "jobs",
