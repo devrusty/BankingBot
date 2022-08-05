@@ -37,6 +37,7 @@ const Embeds = {
         }),
     commands: new EmbedBuilder()
         .setTitle("BankingBot - Commands")
+        .setDescription("`?` = optional parameter")
         .addFields(GetCommandFields())
         .setColor("Red")
         .setFooter({
