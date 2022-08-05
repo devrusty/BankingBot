@@ -9,6 +9,7 @@ const RecentlyWorked = new Set()
 const DisplayJobsForLevel = async (message: Message, level: number) => {
     const jobs = await DatabaseMethods.GetJobsForLevel(level)
     const jobsEmbed = new EmbedBuilder()
+    jobsEmbed.setDescription(`Use \`${Config.prefix}jobs get <jobName>\` to get a job.`)
     jobsEmbed.setTitle("Jobs")
     jobsEmbed.setColor("Red")
 
