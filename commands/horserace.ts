@@ -9,7 +9,11 @@ const Cmd: Command = {
     Usage: `\`${Config.prefix}horserace <color> <amount>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-
+        const author = message.author
+        if (RecentlyUsed.has(author.id)) {
+            message.channel.send("You must wait 10 minutes before you can horse race again.")
+            return
+        }
     }
 }
 

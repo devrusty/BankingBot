@@ -29,7 +29,8 @@ export async function UserRecordExists(user: User): Promise<boolean> {
 
 export async function CreateUserRecord(user: User): Promise<boolean> {
     const id = user.id
-    if (!await GetUserRecord(user)) return false
+    const record = await GetUserRecord(user)
+    if (record) return false
 
     await PClient.user.create({
         data: {
