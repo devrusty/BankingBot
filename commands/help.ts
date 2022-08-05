@@ -26,9 +26,10 @@ const Embeds = {
         .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and many other features. (see `b!help commands`). Use `b!account create` to get started.")
         .setColor("Red")
         .addFields(
-            { name: "Commands", value: `\`${Config.prefix}help commands\``, inline: true },
-            { name: "Earning", value: `\`${Config.prefix}help earning\``, inline: true },
-            { name: "Premium", value: `\`${Config.prefix}!help premium\``, inline: true }
+            { name: "💻 Commands", value: `\`${Config.prefix}help commands\``, inline: true },
+            { name: "💵 Earning", value: `\`${Config.prefix}help earning\``, inline: true },
+            { name: "💎 Premium", value: `\`${Config.prefix}!help premium\``, inline: true },
+            { name: "🌐 Nexus", value: "[Support Server](https://discord.gg/Za5j3xvAzf) • [Website](https://www.google.com)" }
         )
         .setImage("attachment://HelpEmbedImage.png")
         .setFooter({
