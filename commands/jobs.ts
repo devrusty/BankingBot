@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
+import Config from "../config.json"
 
 const RecentlyWorked = new Set()
 
@@ -31,13 +32,13 @@ const GetJob = async (message: Message, args: string[]) => {
     const record = await DatabaseMethods.GetUserRecord(author)
 
     if (!record) {
-        message.channel.send("You do not have a BankingBot account initialised! Use `b!account create` to create one.")
+        message.channel.send(`You do not have a BankingBot account initialised! Use \`${Config.prefix}account create\` to create one.`)
         return
     }
 
     const currentOccupation = await DatabaseMethods.GetJobById(record.occupation)
     if (currentOccupation) {
-        message.channel.send("You currently have a job! Please use `b!jobs resign` to quit your job before changing it.")
+        message.channel.send(`You currently have a job! Please use \`${Config.prefix}jobs resign\` to quit your job before changing it.`)
         return
     }
 
@@ -50,18 +51,18 @@ const GetJob = async (message: Message, args: string[]) => {
     const jobs = await DatabaseMethods.GetJobs()
 
     if (!jobs.find(job => job.name.toLowerCase() == jobName.toLowerCase())) {
-        message.channel.send("Invalid job. Please use `b!jobs` to see a list of avaliable jobs for your level.")
+        message.channel.send(`Invalid job. Please use \`${Config.prefix}jobs\` to see a list of avaliable jobs for your level.`)
         return
     }
 
     const jobId = await DatabaseMethods.GetJobIdByName(jobName)
     if (!jobId) {
-        message.channel.send("Invalid job. Please use `b!jobs` to see a list of avaliable jobs for your level.")
+        message.channel.send(`Invalid job. Please use \`${Config.prefix}jobs\` to see a list of avaliable jobs for your level.`)
         return
     }
 
     await DatabaseMethods.GiveJob(author, jobId).then(() => {
-        message.channel.send(`You have became a ${jobName}! Your income will be apart of your daily reward.`)
+        message.channel.send(`You have become a ${jobName}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 2 hours.`)
     })
 }
 
@@ -92,7 +93,7 @@ const Work = async (message: Message) => {
 const Cmd: Command = {
     Name: "jobs",
     Description: "Lists all avaliable jobs for the user's level.",
-    Usage: "`b!jobs`",
+    Usage: `\`${Config.prefix}jobs\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
@@ -100,7 +101,7 @@ const Cmd: Command = {
 
         const record = await DatabaseMethods.GetUserRecord(author)
         if (!record) {
-            message.channel.send("You must have a BankingBot account initialised before you can view the jobs. Use `b!account create`.")
+            message.channel.send(`You must have a BankingBot account initialised before you can view the jobs. Use \`${Config.prefix}account create\`.`)
             return
         }
 

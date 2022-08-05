@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
+import Config from "../config.json"
 
 const Cooldown = 120000
 const MaxAmount = 1000
@@ -10,13 +11,13 @@ const RecentlyBegged = new Set<string>()
 const Cmd: Command = {
     Name: "beg",
     Description: "Gives you a random amount of cash from 1 - 1000. Can only be used once every 2 minutes.",
-    Usage: "b!beg",
+    Usage: `\`${Config.prefix}beg\``,
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
         const author = message.author
         const userRecordExists = await DatabaseMethods.UserRecordExists(author)
         if (!userRecordExists) {
-            message.channel.send("You must have a BankingBot account initialised to use `b!beg`. Please use `b!create`")
+            message.channel.send(`You must have a BankingBot account initialised to use \`${Config.prefix}beg\`. Please use \`${Config.prefix}create\``)
             return
         }
 

@@ -1,6 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as fs from "fs"
+import Config from "../config.json"
 
 const GetCommandFields = () => {
     const commands = fs.readdirSync("./commands/").filter(command => command !== "help.ts")
@@ -25,9 +26,9 @@ const Embeds = {
         .setDescription("BankingBot is a Discord bot that utilises economy commands, a item shop that updates daily, and many other features. (see `b!help commands`). Use `b!account create` to get started.")
         .setColor("Red")
         .addFields(
-            { name: "Commands", value: "`b!help commands`", inline: true },
-            { name: "Earning", value: "`b!help earning`", inline: true },
-            { name: "Premium", value: "`b!help premium`", inline: true }
+            { name: "Commands", value: `\`${Config.prefix}help commands\``, inline: true },
+            { name: "Earning", value: `\`${Config.prefix}help earning\``, inline: true },
+            { name: "Premium", value: `\`${Config.prefix}!help premium\``, inline: true }
         )
         .setImage("attachment://HelpEmbedImage.png")
         .setFooter({
@@ -45,11 +46,11 @@ const Embeds = {
         .setDescription("There are many ways to earn money inside of BankingBot. Here's a list of the recommended methods.")
         .setColor("Red")
         .addFields(
-            { name: "Gambling", value: "You're able to gamble using `b!gamble <amount>` with a 1/4 chance of winning x1.25 the amount that you gambled." },
-            { name: "Begging", value: "You can use the `b!beg` every 2 minutes to get a random amount of money from 1 - 1,000." },
-            { name: "Lottery", value: "You can participate in the lottery using the `b!lottery` command. Lottery jackpots can range from 1 - 100,000,000." },
-            { name: "Daily Rewards", value: "You can claim your daily reward every 24 hours using the `b!daily` command." },
-            { name: "Jobs", value: "You can get a job by using `b!jobs get <jobName>`, and `b!work` every 5 minutes." }
+            { name: "Gambling", value: `You're able to gamble using \`${Config.prefix}gamble <amount>\` with a 1/4 chance of winning x1.25 the amount that you gambled.` },
+            { name: "Begging", value: `You can use the \`${Config.prefix}beg\` every 2 minutes to get a random amount of money from 1 - 1,000.` },
+            { name: "Lottery", value: `You can participate in the lottery using the \`${Config.prefix}lottery\` command. Lottery jackpots can range from 1 - 100,000,000.` },
+            { name: "Daily Rewards", value: `You can claim your daily reward every 24 hours using the \`${Config.prefix}daily\` command.` },
+            { name: "Jobs", value: `You can get a job by using \`${Config.prefix}jobs get <jobName>\`, and \`${Config.prefix}work\` every 2 hours.` }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
@@ -73,7 +74,7 @@ const SendDefaultEmbed = (message: Message) => {
 const Cmd: Command = {
     Name: "help",
     Description: "Displays information about the bot.",
-    Usage: "b!help <?section>",
+    Usage: `\`${Config.prefix}help <?section>\``,
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const helpSectioArgument = args[1]
@@ -84,7 +85,7 @@ const Cmd: Command = {
 
         const helpSection = (Embeds as any)[helpSectioArgument.toLowerCase()]
         if (!helpSection) {
-            message.channel.send("Invalid help argument. Use `b!help` to view all help sections.")
+            message.channel.send(`Invalid help argument. Use \`${Config.prefix}help\` to view all help sections.`)
             return
         }
 

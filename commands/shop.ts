@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, messageLink } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
+import Config from "../config.json"
 
 const GetItemFields = async () => {
     const items = await DatabaseMethods.GetOnsaleItems()
@@ -36,7 +37,7 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
 const Cmd: Command = {
     Name: "shop",
     Description: "Shop interface",
-    Usage: "b!shop ?purchase <?item>",
+    Usage: `\`${Config.prefix}shop ?purchase <?item>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         if (args[1] == "purchase") {

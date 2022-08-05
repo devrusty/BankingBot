@@ -2,17 +2,18 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, User } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
+import Config from "../config.json"
 
 const RecentlyUsed = new Set()
 
 const Cmd: Command = {
     Name: "gamble",
     Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25",
-    Usage: "b!gamble <amount>",
+    Usage: `\`${Config.prefix}gamble <amount>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         if (!await DatabaseMethods.UserRecordExists(message.author)) {
-            message.channel.send("You must have a BankingBot account initialised before you can gamble! Use `b!create`.")
+            message.channel.send(`You must have a BankingBot account initialised before you can gamble! Use \`${Config.prefix}account create\`.`)
             return
         }
         if (!args[1]) {

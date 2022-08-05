@@ -2,13 +2,14 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, User } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import { PersonalShop } from "@prisma/client";
+import Config from "../config.json"
 
 const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
     const embed = new EmbedBuilder()
     embed.setTitle(`${user.tag}'s Shop`)
     embed.setColor("Red")
     embed.setFooter({
-        text: "Want your own shop? Learn more about premium with b!help premium."
+        text: `Want your own shop? Learn more about premium with \`${Config.prefix}help\` premium.`
     })
 
     return embed
@@ -19,29 +20,29 @@ const CreateShop = async (client: Client, message: Message) => {
     const shopExists = await DatabaseMethods.UserShopExists(author)
 
     if (shopExists) {
-        message.channel.send("You already have a shop! Use `b!myshop` to view details.")
+        message.channel.send(`You already have a shop! Use \`${Config.prefix}myshop\` to view details.`)
         return
     }
 
     await DatabaseMethods.CreateUserShop(author).then(() => {
-        message.channel.send("Successfully created your personal shop! Use `b!myshop` to view it.")
+        message.channel.send(`Successfully created your personal shop! Use \`${Config.prefix}myshop\` to view it.`)
     }).catch(e => {
         console.log(e)
-        message.channel.send("An error occured while creating your personal shop. Please report the bug.")
+        message.channel.send("An error occured while creating your personal shop. The error has been logged, please report it to bring our attention..")
     })
 }
 
 const Cmd: Command = {
     Name: "myshop",
     Description: "Premium only command that allows you to create and manage your personal shop.",
-    Usage: "b!myshop ?create ?add ?remove <?item>",
+    Usage: `\`${Config.prefix}myshop ?create ?add ?remove <?item>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const action = args[1]
         const author = message.author
         const isPremium = await DatabaseMethods.IsUserPremium(author)
         if (!isPremium) {
-            message.channel.send("You must be a premium member to use `b!myshop`. Learn more about BankingBot premium using `b!help premium`.")
+            message.channel.send(`You must be a premium member to use \`${Config.prefix}myshop\`. Learn more about BankingBot premium using \`${Config.prefix}help premium\`.`)
             return
         }
 
@@ -53,13 +54,13 @@ const Cmd: Command = {
 
         const shopExists = await DatabaseMethods.UserShopExists(author)
         if (!shopExists) {
-            message.channel.send("You do not have a personal shop. Use `b!myshop create` to create one.")
+            message.channel.send(`You do not have a personal shop. Use \`${Config.prefix}myshop create\` to create one.`)
             return
         }
 
         const shop = await DatabaseMethods.GetUserShop(author)
         if (!shop) {
-            message.channel.send("You do not have a personal shop. Use `b!myshop create` to create one.")
+            message.channel.send(`You do not have a personal shop. Use \`${Config.prefix}myshop create\` to create one.`)
             return
         }
 

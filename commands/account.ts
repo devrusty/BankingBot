@@ -1,8 +1,9 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, User, EmbedBuilder, GuildEmoji } from "discord.js";
+import { Client, Message, User, EmbedBuilder } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 import { GetLevelMaxXP } from "../methods/Levels";
+import Config from "../config.json"
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
     const record = await DatabaseMethods.GetUserRecord(user)
@@ -33,23 +34,23 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 const CreateAccount = async (message: Message) => {
     const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
     if (recordExists) {
-        message.channel.send("You already have a BankingBot account. Use `b!account` to view your balance.")
+        message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
         return
     }
 
     const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author)
     if (!newRecord) {
-        message.channel.send("You already have a BankingBot account. Use `b!account` to view your balance.")
+        message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
         return
     }
 
-    message.channel.send("Account created! Use `b!account` to view your balance.")
+    message.channel.send(`Account created! Use \`${Config.prefix}account\` to view your balance.`)
 }
 
 const Cmd: Command = {
     Name: "account",
     Description: "Shows information about your BankingBot account.",
-    Usage: `b!account`,
+    Usage: `\`${Config.prefix}account ?<@user> ?create\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const mention = message.mentions.users.first()

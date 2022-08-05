@@ -12,7 +12,7 @@ const AddMoney = async (message: Message, args: string[]) => {
         const amount = args[2]
         const recordExists = await DatabaseMethods.UserRecordExists(author)
         if (!recordExists) {
-            message.channel.send("Please use `b!account create`.")
+            message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
@@ -51,13 +51,13 @@ const ClearMoney = async (message: Message, args: string[]) => {
     if (!mention) {
         const recordExists = await DatabaseMethods.UserRecordExists(author)
         if (!recordExists) {
-            message.channel.send("Please use `b!account create`.")
+            message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
         const record = await DatabaseMethods.GetUserRecord(author)
         if (!record) {
-            message.channel.send("Please use `b!account create`.")
+            message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
@@ -113,13 +113,13 @@ const GetUptime = (message: Message) => {
 const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
-    Usage: "`b!debug`",
+    Usage: `\`${Config.prefix}debug\``,
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
 
         if (!Config.developers.includes(author.id)) {
-            message.channel.send("You are not allowed to use `b!debug`.")
+            message.channel.send(`You are not allowed to use \`${Config.prefix}debug\`.`)
             return
         }
 
@@ -129,11 +129,11 @@ const Cmd: Command = {
             const infoEmbed = new EmbedBuilder()
             infoEmbed.setTitle("BankingBot Debugging")
             infoEmbed.setColor("Red")
-            infoEmbed.setDescription("`b!debug` is a command that is only avaliable to developers of BankingBot.")
+            infoEmbed.setDescription(`\`${Config.prefix}debug\` is a command that is only avaliable to developers of BankingBot.`)
             infoEmbed.addFields(
-                { name: "Adding Money", value: "`b!debug add_money @user 100`", inline: true },
-                { name: "Clearing Money", value: "`b!debug clear_money @user`", inline: true },
-                { name: "Crashing", value: "`b!debug stop`", inline: true }
+                { name: "Adding Money", value: `\`${Config.prefix}debug add_money @user 100\``, inline: true },
+                { name: "Clearing Money", value: `\`${Config.prefix}debug clear_money @user\``, inline: true },
+                { name: "Crashing", value: `\`${Config.prefix}debug stop\``, inline: true }
             )
 
             message.channel.send({

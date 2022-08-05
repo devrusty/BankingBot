@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface"
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney"
+import Config from "../config.json"
 
 let Bot: Client
 let Users = new Array()
@@ -17,7 +18,7 @@ const SendInfo = (message: Message) => {
     const Embed = new EmbedBuilder()
 
     Embed.setTitle("BankingBot Lottery")
-    Embed.setDescription(`Use the command \`b!lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)} and ${FormatMoney(LotteryXP)} XP`)
+    Embed.setDescription(`Use the command \`${Config.prefix}lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)} and ${FormatMoney(LotteryXP)} XP`)
     Embed.addFields(
         { name: "Jackpot", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
         { name: "Users", value: String(Users.length), inline: true }
@@ -32,7 +33,7 @@ const SendInfo = (message: Message) => {
 const Cmd: Command = {
     Name: "lottery",
     Description: "Picks a random user from a list of the enrolled users every hour to recieve a random amount of cash from 10,000 - 100,000,000",
-    Usage: "lottery ?info",
+    Usage: `\`${Config.prefix}lottery ?info\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         Bot = client
@@ -44,7 +45,7 @@ const Cmd: Command = {
             return
         }
         if (Users.includes(author.id)) {
-            message.channel.send("You're already in the lottery list. Use `b!lottery info` to see the lottery info.")
+            message.channel.send(`You're already in the lottery list. Use \`${Config.prefix}lottery info\` to see the lottery info.`)
             return
         }
 

@@ -2,11 +2,12 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import Donation from "../interfaces/donation";
+import Config from "../config.json"
 
 const Cmd: Command = {
     Name: "donate",
     Description: "Give money to another member",
-    Usage: "b!donate <user> <amount>",
+    Usage: `\`${Config.prefix}donate <user> <amount>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
@@ -31,7 +32,7 @@ const Cmd: Command = {
         const userRecord = await DatabaseMethods.GetUserRecord(author)
         const recieverRecord = await DatabaseMethods.GetUserRecord(reciever.user)
         if (!userRecord) {
-            message.channel.send("Use `b!create` to initialise a BankingBot account!")
+            message.channel.send(`Use \`${Config.prefix}account create\` to initialise a BankingBot account!`)
             return
         }
 

@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney"
+import Config from "../config.json"
 
 let RecentlyClaimed = new Set()
 
@@ -11,14 +12,14 @@ const PremiumDailyReward = DefaultDailyReward * 2
 const Cmd: Command = {
     Name: "daily",
     Description: "Lets you claim your daily reward.",
-    Usage: "b!daily",
+    Usage: `\`${Config.prefix}daily\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
         const recordExists = await DatabaseMethods.UserRecordExists(author)
 
         if (!recordExists) {
-            message.channel.send("You must initialise a BankingBot account before you can claim a daily reward. Use `b!account create`")
+            message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
             return
         }
 
@@ -29,7 +30,7 @@ const Cmd: Command = {
 
         const userRecord = await DatabaseMethods.GetUserRecord(author)
         if (!userRecord) {
-            message.channel.send("You must initialise a BankingBot account before you can claim a daily reward. Use `b!account create`")
+            message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
             return
         }
 
