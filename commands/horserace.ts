@@ -13,12 +13,8 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        if (RecentlyUsed.has(author.id)) {
-            message.channel.send("You must wait 10 minutes before you can horse race again.")
-            return
-        }
-
         const userRecord = await DatabaseMethods.GetUserRecord(author)
+
         if (!userRecord) {
             message.channel.send(`You must have a BankingBot account initialised to horse race! Use \`${Config.prefix}account create\`.`)
             return
@@ -36,6 +32,11 @@ const Cmd: Command = {
             message.channel.send({
                 embeds: [helpEmbed]
             })
+            return
+        }
+
+        if (RecentlyUsed.has(author.id)) {
+            message.channel.send("You must wait 10 minutes before you can horse race again.")
             return
         }
 
