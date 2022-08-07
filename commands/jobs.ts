@@ -110,10 +110,10 @@ const Work = async (message: Message) => {
         message.channel.send("Invalid job.")
         return
     }
-    const cooldown = Math.floor(job.income / 10 * 100000)
+    const cooldown = 7200000
 
     if (RecentlyWorked.has(author.id)) {
-        message.channel.send(`Please wait ${cooldown / 100000}s before working again.`)
+        message.channel.send(`Please wait 2 hours before working again.`)
         return
     }
 
