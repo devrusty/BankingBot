@@ -10,7 +10,7 @@ const Cmd: Command = {
     Name: "horserace",
     Description: "Allows you to bet on a horse",
     Usage: `\`${Config.prefix}horserace <color> <amount>\``,
-    Listed: true,
+    Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
         const userRecord = await DatabaseMethods.GetUserRecord(author)
