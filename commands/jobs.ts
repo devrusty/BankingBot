@@ -88,7 +88,46 @@ const Resign = async (message: Message) => {
 }
 
 const Work = async (message: Message) => {
+    const author = message.author
+    const record = await DatabaseMethods.GetUserRecord(author)
+    if (!record) {
+        message.channel.send(`You must have a BankingBot account initialised to use that command! \`${Config.prefix}account create\``)
+        return
+    }
+    if (record.occupation == 0) {
+        message.channel.send(`You must have a job to work. Use \`${Config.prefix}jobs\` to see a list of jobs that you can get.`)
+        return
+    }
 
+    const jobName = await DatabaseMethods.GetJobNameById(record.occupation)
+    if (!jobName) {
+        message.channel.send("Invalid job.")
+        return
+    }
+
+    const job = await DatabaseMethods.GetJobByName(jobName)
+    if (!job) {
+        message.channel.send("Invalid job.")
+        return
+    }
+    const cooldown = Math.floor(job.income / 10 * 100000)
+
+    if (RecentlyWorked.has(author.id)) {
+        message.channel.send(`Please wait ${cooldown / 100000}s before working again.`)
+        return
+    }
+
+    await DatabaseMethods.AddToBalance(author, job.income).then(() => {
+        message.channel.send(`You made $${FormatMoney(job.income)} from working as a ${job.name}.`)
+        RecentlyWorked.add(author.id)
+    }).catch((err) => {
+        console.log(err)
+        message.channel.send(`An error occurred. Please report it `)
+    })
+
+    setTimeout(() => {
+        RecentlyWorked.delete(author.id)
+    }, cooldown)
 }
 
 const Cmd: Command = {
