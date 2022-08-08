@@ -5,8 +5,7 @@ import { GetLevelMaxXP } from "./methods/Levels"
 
 const PClient: PrismaClient = new PrismaClient()
 
-export async function GetUserRecord(user: User) {
-    const id = user.id
+export async function GetUserRecord(id: string) {
     const userResult = await PClient.user.findFirst({
         where: {
             id: id
@@ -17,19 +16,18 @@ export async function GetUserRecord(user: User) {
     return userResult
 }
 
-export async function UserRecordExists(user: User): Promise<boolean> {
+export async function UserRecordExists(id: string) {
     const userResult = await PClient.user.count({
         where: {
-            id: user.id
+            id: id
         }
     })
 
     return userResult > 0
 }
 
-export async function CreateUserRecord(user: User): Promise<boolean> {
-    const id = user.id
-    const record = await GetUserRecord(user)
+export async function CreateUserRecord(id: string) {
+    const record = await GetUserRecord(id)
     if (record) return false
 
     await PClient.user.create({
@@ -43,9 +41,8 @@ export async function CreateUserRecord(user: User): Promise<boolean> {
     return true
 }
 
-export async function DeleteUserRecord(user: User) {
-    const id = user.id
-    const userExists = await UserRecordExists(user)
+export async function DeleteUserRecord(id: string) {
+    const userExists = await UserRecordExists(id)
     if (!userExists) return false
 
     await PClient.user.delete({
@@ -57,28 +54,27 @@ export async function DeleteUserRecord(user: User) {
     return true
 }
 
-export async function GetUserBalance(user: User) {
-    const userExists: boolean = await UserRecordExists(user)
+export async function GetUserBalance(id: string) {
+    const userExists: boolean = await UserRecordExists(id)
     if (!userExists) return 0
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
     if (!userRecord) return 0
 
     return userRecord.cash
 }
 
-export async function IsUserPremium(user: User) {
-    const userRecord = await GetUserRecord(user)
+export async function IsUserPremium(id: string) {
+    const userRecord = await GetUserRecord(id)
     if (!userRecord) return "User doesn't exist."
     return userRecord.premium
 }
 
-export async function RemoveFromBalance(user: User, amount: number) {
-    const id = user.id
-    const userExists: boolean = await UserRecordExists(user)
+export async function RemoveFromBalance(id: string, amount: number) {
+    const userExists: boolean = await UserRecordExists(id)
     if (!userExists) return false
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
 
     if (!userRecord) return console.log("User doesn't exist.")
     if (!amount) return console.log("Invalid amount.")
@@ -93,12 +89,11 @@ export async function RemoveFromBalance(user: User, amount: number) {
     })
 }
 
-export async function AddToBalance(user: User, amount: number) {
-    const id = user.id
-    const userExists: boolean = await UserRecordExists(user)
+export async function AddToBalance(id: string, amount: number) {
+    const userExists: boolean = await UserRecordExists(id)
     if (!userExists) return false
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
 
     if (!userRecord) return console.log("User doesn't exist.")
 
@@ -112,16 +107,16 @@ export async function AddToBalance(user: User, amount: number) {
     })
 }
 
-export async function SetUserLevel(user: User, level: number) {
-    const recordExists = await UserRecordExists(user)
+export async function SetUserLevel(id: string, level: number) {
+    const recordExists = await UserRecordExists(id)
     if (!recordExists) return "User doesn't exist."
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
     if (!userRecord) return "User doesn't exist."
 
     await PClient.user.update({
         where: {
-            id: user.id
+            id: id
         },
         data: {
             xp: 0,
@@ -130,11 +125,11 @@ export async function SetUserLevel(user: User, level: number) {
     })
 }
 
-export async function GiveXP(user: User, xp: number) {
-    const recordExists = await UserRecordExists(user)
+export async function GiveXP(id: string, xp: number) {
+    const recordExists = await UserRecordExists(id)
     if (!recordExists) return "User doesn't exist."
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
     if (!userRecord) return "User doesn't exist."
 
     userRecord.xp += xp
@@ -143,13 +138,13 @@ export async function GiveXP(user: User, xp: number) {
 
     if (userRecord.xp >= maxXp) {
         userRecord.level += 1
-        await SetUserLevel(user, userRecord.level)
+        await SetUserLevel(id, userRecord.level)
         return
     }
 
     await PClient.user.update({
         where: {
-            id: user.id
+            id: id
         },
         data: {
             xp: userRecord.xp
@@ -168,11 +163,11 @@ export async function GetOnsaleItems() {
     return onsaleItems
 }
 
-export async function PurchaseItem(user: User, item: string) {
-    const recordExists = await UserRecordExists(user)
+export async function PurchaseItem(id: string, item: string) {
+    const recordExists = await UserRecordExists(id)
     if (!recordExists) return "User doesn't exist!"
 
-    const userRecord = await GetUserRecord(user)
+    const userRecord = await GetUserRecord(id)
     if (!userRecord) return "User doesn't exist!"
 
     const items = await GetItems()
@@ -198,7 +193,7 @@ export async function PurchaseItem(user: User, item: string) {
         return err
     })
 
-    await RemoveFromBalance(user, itemData.price)
+    await RemoveFromBalance(id, itemData.price)
 }
 
 export async function UpdateItemShop(data: Item[]) {
@@ -212,28 +207,27 @@ export async function UpdateItemShop(data: Item[]) {
     })
 }
 
-export async function UserShopExists(user: User) {
-    const userExists = await UserRecordExists(user)
+export async function UserShopExists(id: string) {
+    const userExists = await UserRecordExists(id)
     if (!userExists) return
 
     const userShop = await PClient.personalShop.count({
         where: {
-            ownerId: user.id
+            ownerId: id
         }
     })
 
     return userShop > 0
 }
 
-export async function CreateUserShop(user: User) {
-    const id = user.id
-    const userExists = await UserRecordExists(user)
+export async function CreateUserShop(id: string) {
+    const userExists = await UserRecordExists(id)
     if (!userExists) return "User doesn't exist."
 
-    const isPremium = await IsUserPremium(user)
+    const isPremium = await IsUserPremium(id)
     if (!isPremium) return "User is not premium."
 
-    const userShopExists = await UserShopExists(user)
+    const userShopExists = await UserShopExists(id)
     if (userShopExists) return "User already has a shop."
 
     await PClient.personalShop.create({
@@ -245,13 +239,13 @@ export async function CreateUserShop(user: User) {
     })
 }
 
-export async function GetUserShop(user: User) {
-    const userShopExists = await UserShopExists(user)
+export async function GetUserShop(id: string) {
+    const userShopExists = await UserShopExists(id)
     if (!userShopExists) return
 
     const shop = await PClient.personalShop.findFirst({
         where: {
-            ownerId: user.id
+            ownerId: id
         }
     })
 
@@ -286,11 +280,11 @@ export async function GetJobById(id: number) {
     return job
 }
 
-export async function GiveJob(user: User, jobId: number) {
-    const recordExists = await UserRecordExists(user)
+export async function GiveJob(id: string, jobId: number) {
+    const recordExists = await UserRecordExists(id)
     if (!recordExists) return false
 
-    const record = await GetUserRecord(user)
+    const record = await GetUserRecord(id)
     if (!record) return false
 
     const job = await GetJobById(jobId)
@@ -328,18 +322,18 @@ export async function GetJobNameById(id: number) {
     return job.name
 }
 
-export async function ResignUser(user: User) {
-    const recordExists = await UserRecordExists(user)
+export async function ResignUser(id: string) {
+    const recordExists = await UserRecordExists(id)
     if (!recordExists) return false
 
-    const record = await GetUserRecord(user)
+    const record = await GetUserRecord(id)
     if (!record) return false
 
     record.occupation = 0
 
     await PClient.user.update({
         where: {
-            id: user.id
+            id: id
         },
         data: record
     })

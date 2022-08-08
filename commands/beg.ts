@@ -15,7 +15,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
         const author = message.author
-        const userRecordExists = await DatabaseMethods.UserRecordExists(author)
+        const userRecordExists = await DatabaseMethods.UserRecordExists(author.id)
         if (!userRecordExists) {
             message.channel.send(`You must have a BankingBot account initialised to use \`${Config.prefix}beg\`. Please use \`${Config.prefix}create\``)
             return
@@ -27,7 +27,7 @@ const Cmd: Command = {
         }
 
         const randomAmount = Math.floor(Math.random() * MaxAmount)
-        DatabaseMethods.AddToBalance(author, randomAmount).then(() => {
+        DatabaseMethods.AddToBalance(author.id, randomAmount).then(() => {
             message.channel.send(`You got $${FormatMoney(randomAmount)} from begging.`)
             RecentlyBegged.add(author.id)
 

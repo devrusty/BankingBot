@@ -17,14 +17,14 @@ const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
 
 const CreateShop = async (client: Client, message: Message) => {
     const author = message.author
-    const shopExists = await DatabaseMethods.UserShopExists(author)
+    const shopExists = await DatabaseMethods.UserShopExists(author.id)
 
     if (shopExists) {
         message.channel.send(`You already have a shop! Use \`${Config.prefix}myshop\` to view details.`)
         return
     }
 
-    await DatabaseMethods.CreateUserShop(author).then(() => {
+    await DatabaseMethods.CreateUserShop(author.id).then(() => {
         message.channel.send(`Successfully created your personal shop! Use \`${Config.prefix}myshop\` to view it.`)
     }).catch(e => {
         console.log(e)
@@ -40,7 +40,7 @@ const Cmd: Command = {
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const action = args[1]
         const author = message.author
-        const isPremium = await DatabaseMethods.IsUserPremium(author)
+        const isPremium = await DatabaseMethods.IsUserPremium(author.id)
         if (!isPremium) {
             message.channel.send(`You must be a premium member to use \`${Config.prefix}myshop\`. Learn more about BankingBot premium using \`${Config.prefix}help premium\`.`)
             return
@@ -52,13 +52,13 @@ const Cmd: Command = {
             return
         }
 
-        const shopExists = await DatabaseMethods.UserShopExists(author)
+        const shopExists = await DatabaseMethods.UserShopExists(author.id)
         if (!shopExists) {
             message.channel.send(`You do not have a personal shop. Use \`${Config.prefix}myshop create\` to create one.`)
             return
         }
 
-        const shop = await DatabaseMethods.GetUserShop(author)
+        const shop = await DatabaseMethods.GetUserShop(author.id)
         if (!shop) {
             message.channel.send(`You do not have a personal shop. Use \`${Config.prefix}myshop create\` to create one.`)
             return

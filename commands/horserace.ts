@@ -13,7 +13,7 @@ const Cmd: Command = {
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const userRecord = await DatabaseMethods.GetUserRecord(author)
+        const userRecord = await DatabaseMethods.GetUserRecord(author.id)
 
         if (!userRecord) {
             message.channel.send(`You must have a BankingBot account initialised to horse race! Use \`${Config.prefix}account create\`.`)

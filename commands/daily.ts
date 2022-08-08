@@ -16,7 +16,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const recordExists = await DatabaseMethods.UserRecordExists(author)
+        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
 
         if (!recordExists) {
             message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
@@ -28,7 +28,7 @@ const Cmd: Command = {
             return
         }
 
-        const userRecord = await DatabaseMethods.GetUserRecord(author)
+        const userRecord = await DatabaseMethods.GetUserRecord(author.id)
         if (!userRecord) {
             message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
             return
@@ -45,7 +45,7 @@ const Cmd: Command = {
 
         RecentlyClaimed.add(author.id)
 
-        await DatabaseMethods.AddToBalance(author, amount).then(() => {
+        await DatabaseMethods.AddToBalance(author.id, amount).then(() => {
             setTimeout(() => {
                 RecentlyClaimed.delete(author.id)
             }, 86400000)

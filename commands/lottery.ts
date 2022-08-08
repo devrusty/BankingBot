@@ -1,5 +1,5 @@
 import Command from "../interfaces/commandInterface"
-import { Client, Message, EmbedBuilder } from "discord.js"
+import { Client, Message, EmbedBuilder, User } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney"
 import Config from "../config.json"
@@ -77,8 +77,8 @@ const GetWinner = async () => {
         return
     }
 
-    await DatabaseMethods.AddToBalance(winner, LotteryAmount)
-    await DatabaseMethods.GiveXP(winner, LotteryXP)
+    await DatabaseMethods.AddToBalance(winner.id, LotteryAmount)
+    await DatabaseMethods.GiveXP(winner.id, LotteryXP)
 
     ResetLottery()
 }

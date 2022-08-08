@@ -29,8 +29,8 @@ const Cmd: Command = {
             return
         }
 
-        const userRecord = await DatabaseMethods.GetUserRecord(author)
-        const recieverRecord = await DatabaseMethods.GetUserRecord(reciever.user)
+        const userRecord = await DatabaseMethods.GetUserRecord(author.id)
+        const recieverRecord = await DatabaseMethods.GetUserRecord(reciever.user.id)
         if (!userRecord) {
             message.channel.send(`Use \`${Config.prefix}account create\` to initialise a BankingBot account!`)
             return
@@ -59,11 +59,11 @@ const Cmd: Command = {
 
         await DatabaseMethods.CreateDonationRecord(Data)
 
-        await DatabaseMethods.RemoveFromBalance(author, amount).catch(err => {
+        await DatabaseMethods.RemoveFromBalance(author.id, amount).catch(err => {
             console.trace(err)
         })
 
-        await DatabaseMethods.AddToBalance(reciever.user, amount).catch(err => {
+        await DatabaseMethods.AddToBalance(reciever.user.id, amount).catch(err => {
             console.trace(err)
         })
 

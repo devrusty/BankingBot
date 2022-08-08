@@ -6,7 +6,7 @@ import { GetLevelMaxXP } from "../methods/Levels";
 import Config from "../config.json"
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
-    const record = await DatabaseMethods.GetUserRecord(user)
+    const record = await DatabaseMethods.GetUserRecord(user.id)
     if (!record) {
         message.channel.send(`${user.tag} does not have a BankingBot account initialised!`)
         return
@@ -32,13 +32,13 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 }
 
 const CreateAccount = async (message: Message) => {
-    const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author)
+    const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author.id)
     if (recordExists) {
         message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
         return
     }
 
-    const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author)
+    const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author.id)
     if (!newRecord) {
         message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
         return

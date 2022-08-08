@@ -10,7 +10,7 @@ const AddMoney = async (message: Message, args: string[]) => {
 
     if (!mention) {
         const amount = args[2]
-        const recordExists = await DatabaseMethods.UserRecordExists(author)
+        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
         if (!recordExists) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
@@ -21,14 +21,14 @@ const AddMoney = async (message: Message, args: string[]) => {
             return
         }
 
-        await DatabaseMethods.AddToBalance(author, Number(amount)).then(() => {
+        await DatabaseMethods.AddToBalance(author.id, Number(amount)).then(() => {
             message.channel.send(`Gave $${amount} to ${author.tag}`)
         })
         return
     }
 
     const amount = args[3]
-    const recordExists = await DatabaseMethods.UserRecordExists(mention.user)
+    const recordExists = await DatabaseMethods.UserRecordExists(mention.user.id)
     if (!recordExists) {
         message.channel.send("The user that you're trying to give money to does not have a BankingBot account initialised.")
         return
@@ -39,7 +39,7 @@ const AddMoney = async (message: Message, args: string[]) => {
         return
     }
 
-    await DatabaseMethods.AddToBalance(mention.user, Number(amount)).then(() => {
+    await DatabaseMethods.AddToBalance(mention.user.id, Number(amount)).then(() => {
         message.channel.send(`Gave $${amount} to ${mention.user.tag}`)
     })
 }
@@ -49,31 +49,31 @@ const ClearMoney = async (message: Message, args: string[]) => {
     const mention = message.mentions.members?.first()
 
     if (!mention) {
-        const recordExists = await DatabaseMethods.UserRecordExists(author)
+        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
         if (!recordExists) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
-        const record = await DatabaseMethods.GetUserRecord(author)
+        const record = await DatabaseMethods.GetUserRecord(author.id)
         if (!record) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
-        await DatabaseMethods.RemoveFromBalance(author, record.cash).then(() => {
+        await DatabaseMethods.RemoveFromBalance(author.id, record.cash).then(() => {
             message.channel.send(`Cleared ${author.tag}'s cash.`)
         })
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(mention.user)
+    const record = await DatabaseMethods.GetUserRecord(mention.user.id)
     if (!record) {
         message.channel.send("The user that you're trying to clear does not have a BankingBot account initialised.")
         return
     }
 
-    await DatabaseMethods.RemoveFromBalance(mention.user, record.cash).then(() => {
+    await DatabaseMethods.RemoveFromBalance(mention.user.id, record.cash).then(() => {
         message.channel.send(`Cleared ${mention.user.tag}'s cash.`)
     })
 }

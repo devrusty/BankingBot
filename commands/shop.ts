@@ -24,7 +24,7 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
     }
 
     const author = message.author
-    const response = await DatabaseMethods.PurchaseItem(author, item)
+    const response = await DatabaseMethods.PurchaseItem(author.id, item)
 
     if (!response) {
         message.channel.send(`Successfully purchased ${item}`)
