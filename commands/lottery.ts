@@ -5,7 +5,7 @@ import FormatMoney from "../methods/FormatMoney"
 import Config from "../config.json"
 
 let Bot: Client
-let Users = new Array()
+let Users = new Array<User>()
 
 let LotteryDefault = 10000
 let LotteryAmount = LotteryDefault
@@ -44,12 +44,12 @@ const Cmd: Command = {
             SendInfo(message)
             return
         }
-        if (Users.includes(author.id)) {
+        if (Users.includes(author)) {
             message.channel.send(`You're already in the lottery list. Use \`${Config.prefix}lottery info\` to see the lottery info.`)
             return
         }
 
-        Users.push(author.id)
+        Users.push(author)
 
         LotteryAmount *= 2
         LotteryXP = LotteryAmount / 100
@@ -73,12 +73,11 @@ const GetWinner = async () => {
     }
 
     const randomNum = Math.floor(Math.random() * Users.length)
-    const winnerId = Users[randomNum]
-    const winner = Bot.users.cache.get(winnerId)
+    const winner = Users[randomNum]
     //const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
 
     if (!winner) {
-        console.log(`Lottery winner is undefined. : ${Users}`)
+        console.log(`Lottery winner is undefined. : ${winner}  : ${Users}`)
         return
     }
 
