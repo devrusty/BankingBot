@@ -67,13 +67,18 @@ const ResetLottery = () => {
 }
 
 const GetWinner = async () => {
+    if (Users.length === 0) {
+        console.log("There weren't any users in the lottery.")
+        return
+    }
+
     const randomNum = Math.floor(Math.random() * Users.length)
     const winnerId = Users[randomNum]
     const winner = Bot.users.cache.get(winnerId)
     //const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
 
     if (!winner) {
-        console.log("There was an issue while getting the lottery winner!")
+        console.log(`Lottery winner is undefined. : ${Users}`)
         return
     }
 
