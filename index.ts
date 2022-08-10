@@ -1,7 +1,8 @@
-import { Client, Message, ActivityType } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
+import * as DatabaseMethods from "./databaseMethods"
 
 export const Bot: Client = new Client({
     intents: [
@@ -52,7 +53,20 @@ Bot.on("messageCreate", async (message: Message) => {
         return
     }
 
-    await require(commandFilePath).default.Invoke(Bot, message, args)
+    const userRecord = await DatabaseMethods.GetUserRecord(message.author.id)
+    if (!userRecord || !userRecord.banned) {
+        await require(commandFilePath).default.Invoke(Bot, message, args)
+        return
+    }
+
+    const bannedEmbed = new EmbedBuilder()
+    bannedEmbed.setTitle("You're banned from using BankingBot")
+    bannedEmbed.setDescription("You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](https://discord.gg/Za5j3xvAzf).")
+    bannedEmbed.setColor("Red")
+
+    message.channel.send({
+        embeds: [bannedEmbed]
+    })
 })
 
 Bot.on("guildCreate", () => {
