@@ -12,10 +12,6 @@ const Cmd: Command = {
     Usage: `\`${Config.prefix}gamble <amount>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-        if (!await DatabaseMethods.UserRecordExists(message.author.id)) {
-            message.channel.send(`You must have a BankingBot account initialised before you can gamble! Use \`${Config.prefix}account create\`.`)
-            return
-        }
         if (!args[1]) {
             message.channel.send("Please enter an amount.")
             return
@@ -23,7 +19,12 @@ const Cmd: Command = {
 
         const gambleAmount: number = Number(args[1])
         const user: User = message.author
-        const balance: number = await DatabaseMethods.GetUserBalance(user.id)
+        const userRecord = await DatabaseMethods.GetUserRecord(user.id)
+
+        if (!userRecord) {
+            message.channel.send(`You must have a BankingBot account initialised before you can gamble! Use \`${Config.prefix}account create\`.`)
+            return
+        }
 
         if (RecentlyUsed.has(user.id)) {
             message.channel.send("Please wait 30 seconds before gambling again.")
@@ -40,7 +41,7 @@ const Cmd: Command = {
             return
         }
 
-        if (balance < gambleAmount) {
+        if (userRecord.cash < gambleAmount) {
             message.channel.send("You cannot afford to gamble that much money.")
             return
         }
@@ -60,11 +61,13 @@ const Cmd: Command = {
             return
         }
 
-        const earnAmount: number = Math.floor(gambleAmount * 1.25)
-        await DatabaseMethods.AddToBalance(user.id, earnAmount)
+        const amount = Math.floor(gambleAmount * 1.25)
+        const finalAmount: number = userRecord.premium ? amount : Math.floor(amount * 1.50)
+
+        await DatabaseMethods.AddToBalance(user.id, finalAmount)
         await DatabaseMethods.GiveXP(user.id, 10)
 
-        message.channel.send(`You won $${FormatMoney(earnAmount)} and 10 XP!`)
+        message.channel.send(`You won $${FormatMoney(finalAmount)} and 10 XP!`)
     }
 }
 
