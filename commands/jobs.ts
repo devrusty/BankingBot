@@ -117,8 +117,16 @@ const Work = async (message: Message) => {
         return
     }
 
+    const xp = Math.floor(job.income / 50)
+
+    await DatabaseMethods.GiveXP(author.id, xp).catch((err) => {
+        console.log(`There was an issue whilst giving XP to ${author.tag}!`)
+        console.log(err)
+
+        message.channel.send("There was an error whilst giving XP. This issue has been logged.")
+    })
     await DatabaseMethods.AddToBalance(author.id, job.income).then(() => {
-        message.channel.send(`You made $${FormatMoney(job.income)} from working as a ${job.name}.`)
+        message.channel.send(`You made $${FormatMoney(job.income)} and ${xp} XP from working as a ${job.name}.`)
         RecentlyWorked.add(author.id)
     }).catch((err) => {
         console.log(err)
