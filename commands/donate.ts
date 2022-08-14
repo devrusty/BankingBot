@@ -4,6 +4,10 @@ import * as DatabaseMethods from "../databaseMethods"
 import Donation from "../interfaces/donation";
 import Config from "../config.json"
 
+const Cooldown = 300000
+const RecentlyDonated = new Set<string>()
+const RecentlyRecieved = new Set<string>()
+
 const Cmd: Command = {
     Name: "donate",
     Description: "Give money to another member",
@@ -14,13 +18,23 @@ const Cmd: Command = {
         const reciever = message.mentions.members?.first()
         const amount = Number(args[2])
 
-        if (reciever?.id == message.author.id) {
-            message.channel.send("You cannot donate to yourself silly!")
+        if (RecentlyDonated.has(author.id)) {
+            message.channel.send("Please wait 5 minutes before donating again.")
             return
         }
 
         if (!reciever) {
             message.channel.send("Please mention someone to donate to.")
+            return
+        }
+
+        if (RecentlyRecieved.has(reciever.id)) {
+            message.channel.send("The person you're trying to donate to has already recieved money in the past 5 minutes. Please wait before donating to them.")
+            return
+        }
+
+        if (reciever.id == message.author.id) {
+            message.channel.send("You cannot donate to yourself silly!")
             return
         }
 
@@ -68,6 +82,14 @@ const Cmd: Command = {
         })
 
         message.channel.send(`Successfully donated ${amount} to ${reciever.user.tag}!`)
+
+        RecentlyDonated.add(author.id)
+        RecentlyRecieved.add(reciever.id)
+
+        setTimeout(() => {
+            RecentlyDonated.delete(author.id)
+            RecentlyRecieved.delete(reciever.id)
+        }, Cooldown)
     }
 }
 
