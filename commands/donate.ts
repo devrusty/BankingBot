@@ -55,6 +55,11 @@ const Cmd: Command = {
             return
         }
 
+        if (recieverRecord.banned) {
+            message.channel.send("The user that you're donating to is banned from BankingBot.")
+            return
+        }
+
         if (amount <= 0) {
             message.channel.send("Please specify an amount larger than 0.")
             return
