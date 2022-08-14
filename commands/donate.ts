@@ -77,19 +77,20 @@ const Cmd: Command = {
             console.trace(err)
         })
 
-        await DatabaseMethods.AddToBalance(reciever.user.id, amount).catch(err => {
-            console.trace(err)
+        await DatabaseMethods.AddToBalance(reciever.user.id, amount).then(() => {
+            message.channel.send(`Successfully donated ${amount} to ${reciever.user.tag}!`)
+
+            RecentlyDonated.add(author.id)
+            RecentlyRecieved.add(reciever.id)
+
+            setTimeout(() => {
+                RecentlyDonated.delete(author.id)
+                RecentlyRecieved.delete(reciever.id)
+            }, Cooldown)
+        }).catch((err) => {
+            console.log(err)
+            message.channel.send("An error occured while performing that command. This error has been logged and will be looked into.")
         })
-
-        message.channel.send(`Successfully donated ${amount} to ${reciever.user.tag}!`)
-
-        RecentlyDonated.add(author.id)
-        RecentlyRecieved.add(reciever.id)
-
-        setTimeout(() => {
-            RecentlyDonated.delete(author.id)
-            RecentlyRecieved.delete(reciever.id)
-        }, Cooldown)
     }
 }
 
