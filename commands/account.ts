@@ -47,6 +47,23 @@ const CreateAccount = async (message: Message) => {
     message.channel.send(`Account created! Use \`${Config.prefix}account\` to view your balance.`)
 }
 
+const DeleteAccount = async (message: Message) => {
+    const author = message.author
+    const id = author.id
+
+    const recordExists = await DatabaseMethods.UserRecordExists(id)
+    if (!recordExists) {
+        message.channel.send(`You must have a BankingBot account initialised to delete an account! Use \`${Config.prefix}account create\``)
+        return
+    }
+
+    await DatabaseMethods.DeleteUserRecord(id).then(() => {
+        message.channel.send("Your BankingBot account has been successfully deleted.")
+    }).catch((err) => {
+        message.channel.send("An error occured")
+    })
+}
+
 const Cmd: Command = {
     Name: "account",
     Description: "Shows information about your BankingBot account.",
@@ -61,10 +78,15 @@ const Cmd: Command = {
             return
         }
 
-        param = param.toLowerCase()
+        param = param.toLowerCase().replace(/ g/, "")
 
         if (param == "create") {
             await CreateAccount(message)
+            return
+        }
+
+        if (param == "delete") {
+            await DeleteAccount(message)
             return
         }
 
