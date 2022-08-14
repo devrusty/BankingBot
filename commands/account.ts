@@ -19,7 +19,11 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
     embed.setTitle(`${user.tag}`)
     embed.setColor("Red")
     embed.setThumbnail(user.displayAvatarURL())
-    embed.setFields(
+    if (record.banned) embed.addFields(
+        { name: "Banned", value: "This user is banned from BankingBot." }
+    )
+
+    embed.addFields(
         { name: "Balance", value: balanceString },
         { name: "Level", value: `${String(record.level)} (${record.xp}/${GetLevelMaxXP(record.level)})` },
         { name: "Occupation", value: occupation || "Unemployed" },
