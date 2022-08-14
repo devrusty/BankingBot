@@ -3,6 +3,7 @@ import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import Donation from "../interfaces/donation";
 import Config from "../config.json"
+import FormatMoney from "../methods/FormatMoney";
 
 const Cooldown = 300000
 const RecentlyDonated = new Set<string>()
@@ -61,7 +62,13 @@ const Cmd: Command = {
         }
 
         if (amount <= 0) {
-            message.channel.send("Please specify an amount larger than 0.")
+            message.channel.send("Please specify an amount larger than $0.")
+            return
+        }
+
+        const donationLimit = userRecord.premium ? 100000 : 50000
+        if (amount > donationLimit) {
+            message.channel.send(`You cannot donate more than $${FormatMoney(donationLimit)}!`)
             return
         }
 
@@ -77,13 +84,12 @@ const Cmd: Command = {
         }
 
         await DatabaseMethods.CreateDonationRecord(Data)
-
         await DatabaseMethods.RemoveFromBalance(author.id, amount).catch(err => {
             console.trace(err)
         })
 
         await DatabaseMethods.AddToBalance(reciever.user.id, amount).then(() => {
-            message.channel.send(`Successfully donated ${amount} to ${reciever.user.tag}!`)
+            message.channel.send(`Successfully donated $${FormatMoney(amount)} to ${reciever.user.tag}!`)
 
             RecentlyDonated.add(author.id)
             RecentlyRecieved.add(reciever.id)
