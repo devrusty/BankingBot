@@ -39,6 +39,12 @@ const Cmd: Command = {
         Bot = client
 
         const author = message.author
+        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
+        if (!recordExists) {
+            message.channel.send(`You must have a BankingBot account initialised to join the lottery. Use \`${Config.prefix}account create\` to initialise one.`)
+            return
+        }
+
         const action = args[1]
         if (action && action.toLowerCase() == "info") {
             SendInfo(message)
