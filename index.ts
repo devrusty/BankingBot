@@ -1,4 +1,4 @@
-import { Client, Message, ActivityType, EmbedBuilder, UserFlagsBitField, Guild } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder, Permissions } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"

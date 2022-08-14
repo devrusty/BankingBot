@@ -339,3 +339,54 @@ export async function ResignUser(id: string) {
     })
     return true
 }
+
+export async function BanUser(id: string) {
+    const record = await GetUserRecord(id)
+    if (!record) return false
+    if (record.banned) return false
+
+    record.banned = true
+
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: record
+    })
+
+    return true
+}
+
+export async function PardonUser(id: string) {
+    const record = await GetUserRecord(id)
+    if (!record) return false
+    if (!record.banned) return false
+
+    record.banned = false
+
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: record
+    })
+
+    return true
+}
+
+export async function GivePremium(id: string) {
+    const record = await GetUserRecord(id)
+    if (!record) return false
+    if (record.premium) return false
+
+    record.premium = true
+
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: record
+    })
+
+    return true
+}
