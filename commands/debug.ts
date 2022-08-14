@@ -110,6 +110,58 @@ const GetUptime = (message: Message) => {
     message.channel.send(`${time.days}d, ${time.hours}h, ${time.minutes}m, ${time.seconds}s`)
 }
 
+const Ban = async (message: Message) => {
+    const mention = message.mentions.members?.first()
+    if (!mention) {
+        message.channel.send("Please mention a valid member.")
+        return
+    }
+
+    const record = await DatabaseMethods.GetUserRecord(mention.id)
+    if (!record) {
+        message.channel.send("The user you're trying to ban does not have a BankingBot account initialised.")
+        return
+    }
+
+    if (record.banned) {
+        message.channel.send("The user you're trying to ban is already banned!")
+        return
+    }
+
+    await DatabaseMethods.BanUser(mention.id).then(() => {
+        message.channel.send(`<@${mention.id}> has been banned from using BankingBot.`)
+    }).catch((err) => {
+        console.log(err)
+        message.channel.send("There was an error while banning the user.")
+    })
+}
+
+const Pardon = async (message: Message) => {
+    const mention = message.mentions.members?.first()
+    if (!mention) {
+        message.channel.send("Please mention a valid member.")
+        return
+    }
+
+    const record = await DatabaseMethods.GetUserRecord(mention.id)
+    if (!record) {
+        message.channel.send("The user you're trying to pardon does not have a BankingBot account initialised!")
+        return
+    }
+
+    if (!record.banned) {
+        message.channel.send("The user you're trying to pardon is not banned.")
+        return
+    }
+
+    await DatabaseMethods.PardonUser(mention.id).then(() => {
+        message.channel.send(`Successfully pardoned <@${mention.id}>!`)
+    }).catch((err) => {
+        console.log(err)
+        message.channel.send("There was an error while pardoning that user!")
+    })
+}
+
 const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
@@ -156,6 +208,15 @@ const Cmd: Command = {
         }
         if (action == "uptime") {
             GetUptime(message)
+            return
+        }
+        if (action == "ban") {
+            await Ban(message)
+            return
+        }
+
+        if (action == "pardon") {
+            await Pardon(message)
             return
         }
     }
