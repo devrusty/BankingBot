@@ -163,6 +163,11 @@ export async function GetOnsaleItems() {
     return onsaleItems
 }
 
+export async function GetItemById(id: number) {
+    const items = await GetItems()
+    return items.find((item) => item.id == id)
+}
+
 export async function PurchaseItem(id: string, item: string) {
     const recordExists = await UserRecordExists(id)
     if (!recordExists) return "User doesn't exist!"
