@@ -1,25 +1,50 @@
 import Command from "../interfaces/commandInterface"
 import Config from "..//config.json"
-import { Client, Message, User, EmbedBuilder, messageLink } from "discord.js"
+import { Client, Message, User, EmbedBuilder, APIEmbedField } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 
-const GetInventoryItemFields = async (message: Message, user: User) => {
+const GetInventoryItemFields = async (message: Message, user: User, page: number) => {
     const userRecord = await DatabaseMethods.GetUserRecord(user.id)
     if (!userRecord) {
         message.channel.send("You must have a BankingBot account initialised!")
-        return
+        return { name: "Failed", value: "Failed" }
     }
 
-    const fields = userRecord.inventory.map((item) => {
+    const inventory = userRecord.inventory
+    let fields = new Array<APIEmbedField>()
 
-    })
+    for (var id = 0; id < inventory.length; id++) {
+        const itemData = await DatabaseMethods.GetItemById(id)
+        if (!itemData) {
+            fields.push({
+                name: "Unknown",
+                value: `Item of ID ${id} does not exist.`,
+                inline: true
+            })
+            return
+        }
+
+        fields.push({
+            name: itemData.name,
+            value: itemData.description,
+            inline: true
+        })
+    }
+
+    return fields
 }
 
-const DisplayInventoryPage = async (page = 1, user: User) => {
+const DisplayInventoryPage = async (page = 1, user: User, message: Message) => {
     const inventoryEmbed = new EmbedBuilder()
     inventoryEmbed.setTitle(`${user.tag}'s Inventory`)
+    inventoryEmbed.setColor("Red")
 
+    const fields = await GetInventoryItemFields(message, user, page)
+    if (!fields) {
 
+        return
+    }
+    //inventoryEmbed.setFields(fields)
 }
 
 const Cmd: Command = {
@@ -35,7 +60,7 @@ const Cmd: Command = {
             return
         }
 
-        await DisplayInventoryPage(1, author)
+        await DisplayInventoryPage(1, author, message)
     }
 }
 
