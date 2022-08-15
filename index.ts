@@ -1,4 +1,4 @@
-import { Client, Message, ActivityType, EmbedBuilder, Permissions } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder, Guild } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
@@ -69,8 +69,28 @@ Bot.on("messageCreate", async (message: Message) => {
     })
 })
 
-Bot.on("guildCreate", () => {
+Bot.on("guildCreate", (guild: Guild) => {
     SetStatus()
+    const channel = guild.channels.cache.first()
+    if (!channel) return
+    if (!channel.isTextBased()) return
+
+    const beginnerEmbed = new EmbedBuilder()
+    beginnerEmbed.setTitle("BankingBot")
+    beginnerEmbed.setColor("Red")
+    beginnerEmbed.setDescription("Thanks for adding BankingBot! BankingBot is a Discord bot dedicated to economy related commands.")
+    beginnerEmbed.setFields(
+        { name: "Help", value: `\`${Config.prefix}\`help`, inline: true },
+        { name: "Initialise BankingBot Account", value: `\`${Config.prefix}account create\`` },
+        { name: "Support Server", value: "https://discord.gg/Za5j3xvAzf", inline: true }
+    )
+    beginnerEmbed.setFooter({
+        text: "Created by rust#7643"
+    })
+
+    channel.send({
+        embeds: [beginnerEmbed]
+    })
 })
 
 Bot.on("guildDelete", () => {
