@@ -48,7 +48,7 @@ const Embeds = {
         .setDescription("There are many ways to earn money inside of BankingBot. Here's a list of the recommended methods.")
         .setColor("Red")
         .addFields(
-            { name: "Gambling", value: `You're able to gamble using \`${Config.prefix}gamble <amount>\` with a 1/4 chance of winning x1.25 the amount that you gambled.` },
+            { name: "Gambling", value: `You're able to gamble using \`${Config.prefix}gamble <amount>\` with a 1/4 chance of winning x1.25 (x1.50 for premium users) the amount that you gambled.` },
             { name: "Begging", value: `You can use the \`${Config.prefix}beg\` every 2 minutes to get a random amount of money from 1 - 1,000.` },
             { name: "Lottery", value: `You can participate in the lottery using the \`${Config.prefix}lottery\` command. Lottery jackpots can range from 1 - 100,000,000.` },
             { name: "Daily Rewards", value: `You can claim your daily reward every 24 hours using the \`${Config.prefix}daily\` command.` },
