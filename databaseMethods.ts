@@ -168,6 +168,23 @@ export async function GetItemById(id: number) {
     return items.find((item) => item.id == id)
 }
 
+export async function GetUserInventory(id: string) {
+    const record = await GetUserRecord(id)
+    if (!record) return false
+
+    const inventory = record.inventory
+    const items = new Array<Item>()
+
+    inventory.forEach((id) => {
+        const data = GetItemById(id)
+        data.then((item) => {
+            if (item) items.push(item)
+        })
+    })
+
+    return items
+}
+
 export async function PurchaseItem(id: string, item: string) {
     const recordExists = await UserRecordExists(id)
     if (!recordExists) return "User doesn't exist!"
