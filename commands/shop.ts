@@ -48,6 +48,7 @@ const Cmd: Command = {
         const shopEmbed: EmbedBuilder = new EmbedBuilder()
         shopEmbed.setTitle("Item Shop")
         shopEmbed.setColor("Red")
+        shopEmbed.setDescription(`Use \`${Config.prefix}shop purchase <itemName>\` to purchase an item.`)
         shopEmbed.addFields(await GetItemFields())
 
         message.channel.send({
