@@ -173,15 +173,16 @@ export async function GetUserInventory(id: string) {
     if (!record) return false
 
     const inventory = record.inventory
-    const items = new Array<Item>()
-
-    inventory.forEach((id) => {
-        const data = GetItemById(id)
-        data.then((item) => {
-            if (item) items.push(item)
-        })
+    const items = inventory.map(async (id) => {
+        const data = await GetItemById(id)
+        return {
+            name: data?.name || "Unknown",
+            description: data?.description || "Item doesn't exist.",
+            inline: true
+        }
     })
 
+    console.log(items)
     return items
 }
 

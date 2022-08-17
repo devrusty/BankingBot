@@ -21,27 +21,34 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     }
 
     const author = message.author
-    const inventoryItems = await DatabaseMethods.GetUserInventory(author.id)
+    const inventoryItems = DatabaseMethods.GetUserInventory(author.id)
 
     if (!inventoryItems) {
         console.warn(`User ${author.tag}'s inventory is false, whilst existing.`)
         message.channel.send("There was an error while fetching inventory items. This has been logged.")
         return
     }
-    if (inventoryItems.length > 25) inventoryItems.length = 25
 
-    const inventoryEmbed = new EmbedBuilder()
-    inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
-    inventoryEmbed.setColor("Red")
+    console.log("idk")
+    /*
 
-    const fields = GetFields(inventoryItems)
-    inventoryEmbed.setFields(fields)
+            console.log(inventoryItems)
+        if (data.length > 25) data.length = 25
+    
+        const inventoryEmbed = new EmbedBuilder()
+        inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
+        inventoryEmbed.setColor("Red")
+    
+        //const fields = GetFields()
+        //inventoryEmbed.setFields(fields)
+    
+        if (inventoryItems.length == 0) inventoryEmbed.setDescription(`Your inventory is empty! Use \`${Config.prefix}shop\` to view the shop.`)
+    
+        message.channel.send({
+            embeds: [inventoryEmbed]
+        })
 
-    if (inventoryItems.length == 0) inventoryEmbed.setDescription(`Your inventory is empty! Use \`${Config.prefix}shop\` to view the shop.`)
-
-    message.channel.send({
-        embeds: [inventoryEmbed]
-    })
+    */
 }
 
 const Cmd: Command = {
