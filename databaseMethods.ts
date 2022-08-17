@@ -173,16 +173,11 @@ export async function GetUserInventory(id: string) {
     if (!record) return false
 
     const inventory = record.inventory
-    const items = inventory.map(async (id) => {
+    const items = await Promise.all(inventory.map(async (id) => {
         const data = await GetItemById(id)
-        return {
-            name: data?.name || "Unknown",
-            description: data?.description || "Item doesn't exist.",
-            inline: true
-        }
-    })
+        return data
+    }))
 
-    console.log(items)
     return items
 }
 

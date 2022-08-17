@@ -4,8 +4,8 @@ import { Client, EmbedBuilder, Message } from "discord.js"
 import Command from "../interfaces/commandInterface"
 import * as Prisma from "@prisma/client"
 
-const GetFields = (items: Prisma.Item[]) => {
-    return items.map((item, index) => {
+const GetFields = (items: any) => {
+    return (items as Prisma.Item[]).map((item, index) => {
         return {
             name: item.name || "Unknown",
             value: item.description || `There was an issue while getting data for ID ${index}.`,
@@ -21,7 +21,7 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     }
 
     const author = message.author
-    const inventoryItems = DatabaseMethods.GetUserInventory(author.id)
+    const inventoryItems = await DatabaseMethods.GetUserInventory(author.id)
 
     if (!inventoryItems) {
         console.warn(`User ${author.tag}'s inventory is false, whilst existing.`)
@@ -29,26 +29,28 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
         return
     }
 
-    console.log("idk")
-    /*
+    if (!inventoryItems) {
+        console.warn(`User ${author.tag}'s inventory is false, whilst existing.`)
+        message.channel.send("There was an error while fetching inventory items. This has been logged.")
+        return
+    }
 
-            console.log(inventoryItems)
-        if (data.length > 25) data.length = 25
-    
-        const inventoryEmbed = new EmbedBuilder()
-        inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
-        inventoryEmbed.setColor("Red")
-    
-        //const fields = GetFields()
-        //inventoryEmbed.setFields(fields)
-    
-        if (inventoryItems.length == 0) inventoryEmbed.setDescription(`Your inventory is empty! Use \`${Config.prefix}shop\` to view the shop.`)
-    
-        message.channel.send({
-            embeds: [inventoryEmbed]
-        })
+    console.log(inventoryItems)
+    if (inventoryItems.length > 25) inventoryItems.length = 25
 
-    */
+    const inventoryEmbed = new EmbedBuilder()
+    inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
+    inventoryEmbed.setColor("Red")
+
+    const fields = GetFields(inventoryItems)
+    inventoryEmbed.setFields(fields)
+
+    if (inventoryItems.length == 0) inventoryEmbed.setDescription(`Your inventory is empty! Use \`${Config.prefix}shop\` to view the shop.`)
+
+    message.channel.send({
+        embeds: [inventoryEmbed]
+    })
+
 }
 
 const Cmd: Command = {
