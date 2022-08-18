@@ -29,12 +29,6 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
         return
     }
 
-    if (!inventoryItems) {
-        console.warn(`User ${author.tag}'s inventory is false, whilst existing.`)
-        message.channel.send("There was an error while fetching inventory items. This has been logged.")
-        return
-    }
-
     console.log(inventoryItems)
     if (inventoryItems.length > 25) inventoryItems.length = 25
 
