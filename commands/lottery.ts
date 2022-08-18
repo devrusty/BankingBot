@@ -7,7 +7,7 @@ import Config from "../config.json"
 let Bot: Client
 let Users = new Array<User>()
 
-let LotteryDefault = 10000
+let LotteryDefault = 0
 let LotteryAmount = LotteryDefault
 let LotteryXP = LotteryAmount / 100
 
