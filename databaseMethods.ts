@@ -182,9 +182,6 @@ export async function GetUserInventory(id: string) {
 }
 
 export async function PurchaseItem(id: string, item: string) {
-    const recordExists = await UserRecordExists(id)
-    if (!recordExists) return "User doesn't exist!"
-
     const userRecord = await GetUserRecord(id)
     if (!userRecord) return "User doesn't exist!"
 
@@ -212,6 +209,15 @@ export async function PurchaseItem(id: string, item: string) {
     })
 
     await RemoveFromBalance(id, itemData.price)
+}
+
+export async function GetItemIdByName(name: string) {
+    const items = await GetItems()
+    const item = items.find((i) => {
+        return i.name.toLowerCase() == name.toLowerCase()
+    })
+
+    return item?.id
 }
 
 export async function UpdateItemShop(data: Item[]) {

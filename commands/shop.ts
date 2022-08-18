@@ -1,5 +1,5 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, EmbedBuilder, messageLink } from "discord.js"
+import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 import Config from "../config.json"
@@ -34,26 +34,72 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
     message.channel.send(response)
 }
 
+const GetInfo = async (client: Client, message: Message, args: string[]) => {
+    const item = args.slice(2).join(" ")
+    if (!item) {
+        message.channel.send("Please specify an item.")
+        return
+    }
+
+    const itemId = await DatabaseMethods.GetItemIdByName(item)
+    if (!itemId) {
+        message.channel.send(`Item of name "${item}" does not exist.`)
+        return
+    }
+
+    const itemData = await DatabaseMethods.GetItemById(itemId)
+    if (!itemData) {
+        message.channel.send(`Item of name "${item}" does not exist.`)
+        return
+    }
+
+    const infoEmbed = new EmbedBuilder()
+    infoEmbed.setTitle(`Item - ${itemData?.name}`)
+    infoEmbed.setColor("Red")
+    infoEmbed.setFields(
+        { name: "ID", value: String(itemData.id) },
+        { name: "Name", value: itemData.name },
+        { name: "Description", value: itemData.description },
+        { name: "Price", value: `$${itemData.price}` },
+        { name: "Onsale", value: String(itemData.onSale) }
+    )
+
+    message.channel.send({
+        embeds: [infoEmbed]
+    })
+}
+
 const Cmd: Command = {
     Name: "shop",
     Description: "Shop interface",
     Usage: `\`${Config.prefix}shop ?purchase <?item>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-        if (args[1] == "purchase") {
+        let param = args[1]
+        if (!param) {
+            const shopEmbed: EmbedBuilder = new EmbedBuilder()
+            shopEmbed.setTitle("Item Shop")
+            shopEmbed.setColor("Red")
+            shopEmbed.setDescription(`Use \`${Config.prefix}shop purchase <itemName>\` to purchase an item.`)
+            shopEmbed.addFields(await GetItemFields())
+
+            message.channel.send({
+                embeds: [shopEmbed]
+            })
+
+            return
+        }
+
+        param = param.toLowerCase()
+        if (param == "purchase") {
             await Purchase(client, message, args)
             return
         }
 
-        const shopEmbed: EmbedBuilder = new EmbedBuilder()
-        shopEmbed.setTitle("Item Shop")
-        shopEmbed.setColor("Red")
-        shopEmbed.setDescription(`Use \`${Config.prefix}shop purchase <itemName>\` to purchase an item.`)
-        shopEmbed.addFields(await GetItemFields())
-
-        message.channel.send({
-            embeds: [shopEmbed]
-        })
+        if (param == "info") {
+            await GetInfo(client, message, args)
+            return
+        }
     }
 }
 
