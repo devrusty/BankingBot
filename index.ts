@@ -43,6 +43,10 @@ Bot.on("messageCreate", async (message: Message) => {
     if (message.author.bot) return
     if (!message.content.startsWith(Config.prefix)) return
     if (!message.member) return
+    if (!message.guild) return
+    if (!Bot.user) return
+
+
 
     const args = message.content.trim().split(/ +/g)
     const command: string = args[0].slice(Config.prefix.length).toLowerCase()
@@ -66,31 +70,14 @@ Bot.on("messageCreate", async (message: Message) => {
 
     message.channel.send({
         embeds: [bannedEmbed]
+    }).catch((err) => {
+        console.log(err)
+        return
     })
 })
 
 Bot.on("guildCreate", (guild: Guild) => {
     SetStatus()
-    const channel = guild.channels.cache.first()
-    if (!channel) return
-    if (!channel.isTextBased()) return
-
-    const beginnerEmbed = new EmbedBuilder()
-    beginnerEmbed.setTitle("BankingBot")
-    beginnerEmbed.setColor("Red")
-    beginnerEmbed.setDescription("Thanks for adding BankingBot! BankingBot is a Discord bot dedicated to economy related commands.")
-    beginnerEmbed.setFields(
-        { name: "Help", value: `\`${Config.prefix}\`help`, inline: true },
-        { name: "Initialise BankingBot Account", value: `\`${Config.prefix}account create\`` },
-        { name: "Support Server", value: "https://discord.gg/Za5j3xvAzf", inline: true }
-    )
-    beginnerEmbed.setFooter({
-        text: "Created by rust#7643"
-    })
-
-    channel.send({
-        embeds: [beginnerEmbed]
-    })
 })
 
 Bot.on("guildDelete", () => {
