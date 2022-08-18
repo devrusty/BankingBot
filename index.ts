@@ -1,4 +1,4 @@
-import { Client, Message, ActivityType, EmbedBuilder, Guild } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
@@ -12,6 +12,13 @@ export const Bot: Client = new Client({
         "GuildMembers"
     ]
 })
+const PermissionsRequired = [
+    PermissionsBitField.Flags.ReadMessageHistory,
+    PermissionsBitField.Flags.SendMessages,
+    PermissionsBitField.Flags.EmbedLinks,
+    PermissionsBitField.Flags.AttachFiles,
+    PermissionsBitField.Flags.ReadMessageHistory
+]
 
 const InitiateUpdateItemShop = async () => {
     await ItemShopMethods.UpdateItemShop()
@@ -46,7 +53,15 @@ Bot.on("messageCreate", async (message: Message) => {
     if (!message.guild) return
     if (!Bot.user) return
 
-
+    const role = message.guild.roles.cache.find((role) => role.name == "BankingBot")
+    if (!role) {
+        console.log("BankingBot role does not exist.")
+        return
+    }
+    if (!role.permissions.has(PermissionsRequired)) {
+        console.log("BankingBot role does not have desired permissions.")
+        return
+    }
 
     const args = message.content.trim().split(/ +/g)
     const command: string = args[0].slice(Config.prefix.length).toLowerCase()
