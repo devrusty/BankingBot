@@ -175,14 +175,14 @@ const Premium = async (message: Message) => {
         return
     }
 
-    if (record.premium) {
-        message.channel.send("User already has premium.")
-        return
-    }
-
-    record.premium = true
+    record.premium = record.premium ? false : true
     await DatabaseMethods.SetUser(user.id, record).then(() => {
-        message.channel.send(`<@${user.id}> is now premium.`)
+        if (record.premium) {
+            message.channel.send(`<@${user.id}> is now premium.`)
+            return
+        }
+
+        message.channel.send(`<@${user.id}> is no longer premium.`)
     })
 }
 
