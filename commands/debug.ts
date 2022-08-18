@@ -162,6 +162,30 @@ const Pardon = async (message: Message) => {
     })
 }
 
+const Premium = async (message: Message) => {
+    const user = message.mentions.members?.first()
+    if (!user) {
+        message.channel.send("Please mention a user.")
+        return
+    }
+
+    const record = await DatabaseMethods.GetUserRecord(user.id)
+    if (!record) {
+        message.channel.send("User does not have a BankingBot account initialised.")
+        return
+    }
+
+    if (record.premium) {
+        message.channel.send("User already has premium.")
+        return
+    }
+
+    record.premium = true
+    await DatabaseMethods.SetUser(user.id, record).then(() => {
+        message.channel.send(`<@${user.id}> is now premium.`)
+    })
+}
+
 const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
@@ -183,9 +207,11 @@ const Cmd: Command = {
             infoEmbed.setColor("Red")
             infoEmbed.setDescription(`\`${Config.prefix}debug\` is a command that is only avaliable to developers of BankingBot.`)
             infoEmbed.addFields(
-                { name: "Adding Money", value: `\`${Config.prefix}debug add_money @user 100\``, inline: true },
-                { name: "Clearing Money", value: `\`${Config.prefix}debug clear_money @user\``, inline: true },
-                { name: "Crashing", value: `\`${Config.prefix}debug stop\``, inline: true }
+                { name: "Adding Money", value: `\`${Config.prefix}debug add_money\``, inline: true },
+                { name: "Clearing Money", value: `\`${Config.prefix}debug clear_money\``, inline: true },
+                { name: "Crashing", value: `\`${Config.prefix}debug stop\``, inline: true },
+                { name: "Uptime", value: `\`${Config.prefix}debug uptime\``, inline: true },
+                { name: "Ban/Pardon", value: `\`${Config.prefix}debug ban\` \`${Config.prefix}debug pardon\``, inline: true }
             )
 
             message.channel.send({
@@ -217,6 +243,11 @@ const Cmd: Command = {
 
         if (action == "pardon") {
             await Pardon(message)
+            return
+        }
+
+        if (action == "premium") {
+            await Premium(message)
             return
         }
     }

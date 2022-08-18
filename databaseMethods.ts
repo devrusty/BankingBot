@@ -1,5 +1,4 @@
-import { Item, PrismaClient } from "@prisma/client"
-import { User } from "discord.js"
+import { Item, User, PrismaClient } from "@prisma/client"
 import Donation from "./interfaces/donation"
 import { GetLevelMaxXP } from "./methods/Levels"
 
@@ -122,6 +121,19 @@ export async function SetUserLevel(id: string, level: number) {
             xp: 0,
             level: level
         }
+    })
+}
+
+export async function SetUser(id: string, data: User) {
+    await PClient.user.update({
+        where: {
+            id: id
+        },
+        data: data
+    }).then(() => {
+        return true
+    }).catch(() => {
+        return false
     })
 }
 
