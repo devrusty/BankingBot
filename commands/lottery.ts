@@ -21,7 +21,7 @@ const SendInfo = (message: Message) => {
     Embed.setDescription(`Use the command \`${Config.prefix}lottery\` to have a chance of being drawn to win $${FormatMoney(LotteryAmount)} and ${FormatMoney(LotteryXP)} XP`)
     Embed.addFields(
         { name: "Jackpot", value: `$${FormatMoney(LotteryAmount)}`, inline: true },
-        { name: "Users", value: String(Users.length), inline: true }
+        { name: "User(s)", value: String(Users.length), inline: true }
     )
     Embed.setColor("Yellow")
 
