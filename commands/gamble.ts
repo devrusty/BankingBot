@@ -8,7 +8,7 @@ const RecentlyUsed = new Set()
 
 const Cmd: Command = {
     Name: "gamble",
-    Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25",
+    Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25 (x1.50 if premium)",
     Usage: `\`${Config.prefix}gamble <amount>\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
@@ -31,8 +31,8 @@ const Cmd: Command = {
             return
         }
 
-        if (gambleAmount <= 0) {
-            message.channel.send("Please gamble an amount larger than 0.")
+        if (gambleAmount <= 75) {
+            message.channel.send("Please gamble an amount larger than 75.")
             return
         }
 
