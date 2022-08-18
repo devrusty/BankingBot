@@ -211,7 +211,8 @@ const Cmd: Command = {
                 { name: "Clearing Money", value: `\`${Config.prefix}debug clear_money\``, inline: true },
                 { name: "Crashing", value: `\`${Config.prefix}debug stop\``, inline: true },
                 { name: "Uptime", value: `\`${Config.prefix}debug uptime\``, inline: true },
-                { name: "Ban/Pardon", value: `\`${Config.prefix}debug ban\` \`${Config.prefix}debug pardon\``, inline: true }
+                { name: "Ban/Pardon", value: `\`${Config.prefix}debug ban\` \`${Config.prefix}debug pardon\``, inline: true },
+                { name: "Premium", value: `\`${Config.prefix}debug premium\``, inline: true }
             )
 
             message.channel.send({
