@@ -24,8 +24,25 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
     }
 
     const author = message.author
-    const response = await DatabaseMethods.PurchaseItem(author.id, item)
+    const record = await DatabaseMethods.GetUserRecord(author.id)
 
+    if (!record) {
+        message.channel.send(`You do not have a BankingBot account initialised! Use \`${Config.prefix}account create\` to initialise one.`)
+        return
+    }
+
+    const id = await DatabaseMethods.GetItemIdByName(item)
+    if (!id) {
+        message.channel.send("Item doesn't exist.")
+        return
+    }
+
+    if (record.inventory.includes(id)) {
+        message.channel.send(`You already own a ${item}`)
+        return
+    }
+
+    const response = await DatabaseMethods.PurchaseItem(author.id, item)
     if (!response) {
         message.channel.send(`Successfully purchased ${item}`)
         return
