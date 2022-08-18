@@ -54,7 +54,7 @@ const Cmd: Command = {
     Name: "inventory",
     Description: "Displays your inventory.",
     Usage: `\`${Config.prefix}inventory\``,
-    Listed: false,
+    Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
         const record = await DatabaseMethods.GetUserRecord(author.id)
