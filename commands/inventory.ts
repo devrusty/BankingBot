@@ -32,13 +32,13 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     console.log(inventoryItems)
     if (inventoryItems.length > 25) inventoryItems.length = 25
 
-    const capacity = user.premium ? 25 : 100
+    const capacity = user.premium ? 100 : 25
 
     const inventoryEmbed = new EmbedBuilder()
     inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
     inventoryEmbed.setColor("Red")
     inventoryEmbed.setFooter({
-        text: `${inventoryItems.length}/${capacity} - If you'd like your inventory to be larger, learn more with ${Config.prefix}help premium`
+        text: `${inventoryItems.length}/${capacity} - If you'd like a larger inventory, learn more with ${Config.prefix}help premium`
     })
 
     const fields = GetFields(inventoryItems)
