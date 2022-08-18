@@ -1,5 +1,5 @@
 import Command from "../interfaces/commandInterface"
-import { Client, Message, EmbedBuilder, User } from "discord.js"
+import { Client, Message, EmbedBuilder, User, messageLink } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney"
 import Config from "../config.json"
@@ -80,12 +80,27 @@ const GetWinner = async () => {
 
     const randomNum = Math.floor(Math.random() * Users.length)
     const winner = Users[randomNum]
-    //const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
+    const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
+
+    if (!announcementChannel) {
+        console.log("#lottery does not exist.")
+        return
+    }
 
     if (!winner) {
         console.log(`Lottery winner is undefined. : ${winner}  : ${Users}`)
         return
     }
+
+    const annEmbed = new EmbedBuilder()
+    annEmbed.setTitle("Lottery")
+    annEmbed.setDescription(`<@${winner.id}> won the lottery!`)
+    annEmbed.setColor("Yellow")
+
+    if (announcementChannel.isTextBased())
+        announcementChannel.send({
+            embeds: [annEmbed]
+        })
 
     await DatabaseMethods.AddToBalance(winner.id, LotteryAmount)
     await DatabaseMethods.GiveXP(winner.id, LotteryXP)
