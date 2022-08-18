@@ -5,12 +5,12 @@ import FormatMoney from "../methods/FormatMoney";
 import Config from "../config.json"
 
 const Cooldown = 120000
-const MaxAmount = 1000
+const MaxAmount = 250
 
 const RecentlyBegged = new Set<string>()
 const Cmd: Command = {
     Name: "beg",
-    Description: "Gives you a random amount of cash from 1 - 1000. Can only be used once every 2 minutes.",
+    Description: "Gives you a random amount of cash from 1 - 250. Can only be used once every 2 minutes.",
     Usage: `\`${Config.prefix}beg\``,
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
