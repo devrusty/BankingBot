@@ -7,7 +7,7 @@ import Config from "../config.json"
 let Bot: Client
 let Users = new Array<User>()
 
-let LotteryDefault = 0
+let LotteryDefault = 10000
 let LotteryAmount = LotteryDefault
 let LotteryXP = LotteryAmount / 100
 
@@ -58,6 +58,7 @@ const Cmd: Command = {
         Users.push(author)
 
         LotteryAmount *= 2
+        LotteryAmount -= 10000
         LotteryXP = LotteryAmount / 100
 
         message.channel.send("You have been added to the lottery list. You can see who won in the BankingBot support server.")
