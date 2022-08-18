@@ -33,7 +33,7 @@ const SendInfo = (message: Message) => {
 const Cmd: Command = {
     Name: "lottery",
     Description: "Picks a random user from a list of the enrolled users every hour to recieve cash!",
-    Usage: `\`${Config.prefix}lottery ?info\``,
+    Usage: `\`${Config.prefix}lottery\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         Bot = client

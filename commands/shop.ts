@@ -89,7 +89,7 @@ const GetInfo = async (client: Client, message: Message, args: string[]) => {
 const Cmd: Command = {
     Name: "shop",
     Description: "Shop interface",
-    Usage: `\`${Config.prefix}shop ?purchase <?item>\``,
+    Usage: `\`${Config.prefix}shop\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         let param = args[1]

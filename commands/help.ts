@@ -37,7 +37,6 @@ const Embeds = {
         }),
     commands: new EmbedBuilder()
         .setTitle("BankingBot - Commands")
-        .setDescription("`?` = optional parameter")
         .addFields(GetCommandFields())
         .setColor("Red")
         .setFooter({
@@ -81,7 +80,7 @@ const SendDefaultEmbed = (message: Message) => {
 const Cmd: Command = {
     Name: "help",
     Description: "Displays information about the bot.",
-    Usage: `\`${Config.prefix}help <?section>\``,
+    Usage: `\`${Config.prefix}help\``,
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const helpSectioArgument = args[1]

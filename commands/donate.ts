@@ -12,7 +12,7 @@ const RecentlyRecieved = new Set<string>()
 const Cmd: Command = {
     Name: "donate",
     Description: "Give money to another member",
-    Usage: `\`${Config.prefix}donate <user> <amount>\``,
+    Usage: `\`${Config.prefix}donate\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
