@@ -29,7 +29,6 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
         return
     }
 
-    console.log(inventoryItems)
     if (inventoryItems.length > 25) inventoryItems.length = 25
 
     const capacity = user.premium ? 100 : 25
@@ -49,7 +48,6 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     message.channel.send({
         embeds: [inventoryEmbed]
     })
-
 }
 
 const Cmd: Command = {
