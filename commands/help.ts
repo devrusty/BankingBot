@@ -66,6 +66,7 @@ const Embeds = {
             { name: "💎 Premium Role", value: "Gives you a premium role in the BankingBot support role", inline: true },
             { name: "🎲 x1.50 Gambling", value: "Multiplies gambling amount by x1.5", inline: true },
             { name: "🎒 Increased Inventory", value: "Inventory capacity is increased from 25 -> 100", inline: true },
+            { name: "💸 Increased Donation Limit", value: "Donation limit is increased from $50,000 -> $100,000", inline: true },
             { name: "Become a premium member", value: "[Link](https://ko-fi.com/s/d7a61f1814)", inline: false }
         )
 }
