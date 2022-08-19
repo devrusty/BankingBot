@@ -426,3 +426,8 @@ export async function GivePremium(id: string) {
 
     return true
 }
+
+export async function GetUsers() {
+    const users = await PClient.user.findMany()
+    return users
+}
