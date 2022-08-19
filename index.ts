@@ -1,4 +1,4 @@
-import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField, ApplicationCommandOptionWithChoicesAndAutocompleteMixin } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
@@ -54,6 +54,10 @@ Bot.on("messageCreate", async (message: Message) => {
     const role = message.guild.roles.cache.find((role) => role.name == "BankingBot")
     if (!role) {
         console.log("BankingBot role does not exist.")
+        return
+    }
+    if (!role.members.has(Bot.user.id)) {
+        console.log("BankingBot is not added to the BankingBot role.")
         return
     }
     if (!role.permissions.has(PermissionsRequired)) {
