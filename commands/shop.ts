@@ -42,6 +42,12 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
         return
     }
 
+    const capacity = record.premium ? 25 : 100
+    if (record.inventory.length == capacity) {
+        message.channel.send("You've reached the maximum amount of items that you can have in your inventory.")
+        return
+    }
+
     const response = await DatabaseMethods.PurchaseItem(author.id, item)
     if (!response) {
         message.channel.send(`Successfully purchased ${item}`)
