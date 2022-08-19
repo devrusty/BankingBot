@@ -15,9 +15,7 @@ export const Bot: Client = new Client({
 const PermissionsRequired = [
     PermissionsBitField.Flags.ReadMessageHistory,
     PermissionsBitField.Flags.SendMessages,
-    PermissionsBitField.Flags.EmbedLinks,
-    PermissionsBitField.Flags.AttachFiles,
-    PermissionsBitField.Flags.ReadMessageHistory
+    PermissionsBitField.Flags.AttachFiles
 ]
 
 const InitiateUpdateItemShop = async () => {
