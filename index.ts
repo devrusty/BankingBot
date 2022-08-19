@@ -57,6 +57,7 @@ Bot.on("messageCreate", async (message: Message) => {
         return
     }
     if (!role.permissions.has(PermissionsRequired)) {
+        if (role.permissions.has(PermissionsBitField.Flags.SendMessages)) message.channel.send(`I need permissions \`READ_MESSAGE_HISTORY\` and \`ATTACH_FILES\`.`)
         console.log("BankingBot role does not have desired permissions.")
         return
     }
