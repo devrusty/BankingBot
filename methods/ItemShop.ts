@@ -5,7 +5,7 @@ export async function UpdateItemShop() {
     const itemShopItems = await DatabaseMethods.GetItems()
 
     itemShopItems.forEach(item => {
-        return item.onSale = false
+        if (!item.alwaysOnSale) return item.onSale = false
     })
 
     for (let i = 0; i < itemShopItems.length; i++) {
