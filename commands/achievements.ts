@@ -35,7 +35,6 @@ const SendAchievementsEmbed = async (message: Message) => {
             const achievementData = await DatabaseMethods.GetAchievementByName(achievement.name)
             if (achievementData && record.achievements.includes(achievementData.id)) {
                 achievement.name = `✅ ${achievementData.name}`
-                console.log(achievement.name)
             }
 
             return achievement
