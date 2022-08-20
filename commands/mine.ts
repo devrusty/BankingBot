@@ -35,7 +35,7 @@ const Cmd: Command = {
         const author = message.author
         const record = await DatabaseMethods.GetUserRecord(author.id)
         if (RecentlyUsed.has(author.id)) {
-            message.channel.send("You must wait 20 minutes before mining again.")
+            message.channel.send("You must wait an hour before mining again.")
             return
         }
 
