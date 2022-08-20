@@ -10,7 +10,7 @@ const Minerals = {
     Iron: 250,
 
 }
-const Cooldown = 1200000
+const Cooldown = 3600000
 
 const Mine = () => {
     let mined = new Array()
