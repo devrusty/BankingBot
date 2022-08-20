@@ -48,6 +48,11 @@ const Cmd: Command = {
             return
         }
 
+        if (!authorRecord.inventory.includes(15)) {
+            message.channel.send(`You must own a pistol to mug someone. Use \`${Config.prefix}shop purchase Pistol\` to buy one for $5,000.`)
+            return
+        }
+
         const amount = Math.floor(Math.random() * MaxAmount)
         if (victimRecord.cash < amount) {
             const index = Math.floor(Math.random() * Fines.length)
