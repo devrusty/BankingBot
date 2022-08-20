@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id         String  @unique
-  cash       Int     @default(100)
-  inventory  Int[]
-  premium    Boolean @default(false)
-  level      Int     @default(1)
-  xp         Int     @default(0)
-  occupation Int     @default(0)
-  banned     Boolean @default(false)
+  id           String  @unique
+  cash         Int     @default(100)
+  inventory    Int[]
+  premium      Boolean @default(false)
+  level        Int     @default(1)
+  xp           Int     @default(0)
+  occupation   Int     @default(0)
+  banned       Boolean @default(false)
+  achievements Int[]
 }
 
 model Item {
@@ -57,4 +58,11 @@ model Bug {
   author  String
   content String
   date    DateTime @default(now())
+}
+
+model Achievement {
+  id          Int    @id @unique @default(autoincrement())
+  name        String
+  description String
+  icon        String
 }
