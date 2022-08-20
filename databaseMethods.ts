@@ -149,8 +149,11 @@ export async function GiveXP(id: string, xp: number) {
     const maxXp = GetLevelMaxXP(userRecord.level)
 
     if (userRecord.xp >= maxXp) {
+        const remainingXp = userRecord.xp - maxXp
+
         userRecord.level += 1
         await SetUserLevel(id, userRecord.level)
+        await GiveXP(id, remainingXp)
         return
     }
 
