@@ -2,6 +2,13 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as fs from "fs"
 import Config from "../config.json"
+import { Bot } from "../index";
+import FormatMoney from "../methods/FormatMoney";
+
+let userCount = 0
+let guilds = Bot.guilds.cache
+
+guilds.forEach((guild) => userCount += guild.memberCount)
 
 const GetCommandFields = () => {
     const commands = fs.readdirSync("./commands/").filter(command => command !== "help.ts")
@@ -29,6 +36,8 @@ const Embeds = {
             { name: "💻 Commands", value: `\`${Config.prefix}help commands\``, inline: true },
             { name: "💵 Earning", value: `\`${Config.prefix}help earning\``, inline: true },
             { name: "💎 Premium", value: `\`${Config.prefix}!help premium\``, inline: true },
+            { name: "__Users__", value: `${FormatMoney(userCount)}`, inline: true },
+            { name: "__Servers__", value: `${FormatMoney(guilds.size)}`, inline: true },
             { name: "🌐 Nexus", value: "[Invite BankingBot](https://discord.com/api/oauth2/authorize?client_id=1002698891537424384&permissions=68608&scope=bot) • [Support Server](https://discord.gg/2VB4nqZbQk) • [Website](https://www.google.com)" }
         )
         .setImage("attachment://HelpEmbedImage.png")
