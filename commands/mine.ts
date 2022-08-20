@@ -58,7 +58,7 @@ const Cmd: Command = {
             value += price
         })
 
-        const xp = Math.floor(value / 10)
+        const xp = Math.floor(value / 15)
 
         await DatabaseMethods.AddToBalance(author.id, value).then(async () => {
             await DatabaseMethods.GiveXP(author.id, xp).then(() => {
