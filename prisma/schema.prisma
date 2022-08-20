@@ -22,11 +22,12 @@ model User {
 }
 
 model Item {
-  id          Int     @id @unique @default(autoincrement())
-  name        String
-  description String
-  price       Int
-  onSale      Boolean @default(false)
+  id           Int     @id @unique @default(autoincrement())
+  name         String
+  description  String
+  price        Int
+  onSale       Boolean @default(false)
+  alwaysOnSale Boolean @default(false)
 }
 
 model PersonalShop {
