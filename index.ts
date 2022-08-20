@@ -77,7 +77,12 @@ Bot.on("messageCreate", async (message: Message) => {
 
     const userRecord = await DatabaseMethods.GetUserRecord(message.author.id)
     if (!userRecord || !userRecord.banned) {
-        await require(commandFilePath).default.Invoke(Bot, message, args)
+        const invokeMethod = await require(commandFilePath).default.Invoke
+        if (!invokeMethod) {
+            message.channel.send("Invalid command.")
+            return
+        }
+        await invokeMethod(Bot, message, args)
         return
     }
 
