@@ -51,7 +51,7 @@ Bot.on("messageCreate", async (message: Message) => {
     if (!message.guild) return
     if (!Bot.user) return
 
-    const role = message.guild.roles.cache.find((role) => role.name == Config.role)
+    const role = message.guild.roles.cache.find((role) => role.name == Config.testRole)
     if (!role) {
         console.log("BankingBot role does not exist.")
         return
@@ -107,4 +107,4 @@ Bot.on("guildDelete", () => {
     SetStatus()
 })
 
-Bot.login(Config.token)
+Bot.login(Config.testToken)
