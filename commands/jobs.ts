@@ -21,6 +21,7 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
         }
     })
 
+    if (fields.length > 25) fields.length = 25
     jobsEmbed.addFields(fields)
 
     message.channel.send({
