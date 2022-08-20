@@ -5,6 +5,7 @@ import FormatMoney from "../methods/FormatMoney";
 import Config from "../config.json"
 
 const RecentlyWorked = new Set()
+const cooldown = 1800000
 
 const DisplayJobsForLevel = async (message: Message, level: number) => {
     const jobs = await DatabaseMethods.GetJobsForLevel(level)
@@ -116,10 +117,9 @@ const Work = async (message: Message) => {
         message.channel.send("Invalid job.")
         return
     }
-    const cooldown = 7200000
 
     if (RecentlyWorked.has(author.id)) {
-        message.channel.send(`Please wait 2 hours before working again.`)
+        message.channel.send(`Please wait 30 minutes before working again.`)
         return
     }
 
