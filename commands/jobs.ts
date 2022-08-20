@@ -50,9 +50,14 @@ const GetJob = async (message: Message, args: string[]) => {
     }
 
     const jobs = await DatabaseMethods.GetJobs()
-
-    if (!jobs.find(job => job.name.toLowerCase() == jobName.toLowerCase())) {
+    const job = jobs.find(job => job.name.toLowerCase() == jobName.toLowerCase())
+    if (!job) {
         message.channel.send(`Invalid job. Please use \`${Config.prefix}jobs\` to see a list of avaliable jobs for your level.`)
+        return
+    }
+
+    if (job.requiredLevel > record.level) {
+        message.channel.send(`${job.name} requires level ${job.requiredLevel}.`)
         return
     }
 
@@ -63,7 +68,7 @@ const GetJob = async (message: Message, args: string[]) => {
     }
 
     await DatabaseMethods.GiveJob(author.id, jobId).then(() => {
-        message.channel.send(`You have become a ${jobName}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 2 hours.`)
+        message.channel.send(`You have became a ${job.name}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 2 hours.`)
     })
 }
 
