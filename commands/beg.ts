@@ -4,8 +4,8 @@ import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 import Config from "../config.json"
 
-const Cooldown = 120000
-const MaxAmount = 250
+const Cooldown = 20000
+const MaxAmount = 500
 
 const RecentlyBegged = new Set<string>()
 const Cmd: Command = {
@@ -22,7 +22,7 @@ const Cmd: Command = {
         }
 
         if (RecentlyBegged.has(author.id)) {
-            message.channel.send("Please wait 2 minutes before begging again.")
+            message.channel.send("Please wait 20 second before begging again.")
             return
         }
 
