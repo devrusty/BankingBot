@@ -6,9 +6,12 @@ import FormatMoney from "../methods/FormatMoney";
 
 const RecentlyUsed = new Set()
 const Minerals = {
-    Coal: 100,
-    Iron: 250,
-
+    Coal: 1500,
+    Iron: 4000,
+    Steel: 6000,
+    Diamond: 10000,
+    Ruby: 15000,
+    Gold: 20000
 }
 const Cooldown = 3600000
 
