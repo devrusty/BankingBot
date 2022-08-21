@@ -17,7 +17,7 @@ const Cooldown = 3600000
 
 const Mine = () => {
     let mined = new Array()
-    let minedCount = Math.floor(Math.random() * 15)
+    let minedCount = Math.floor(Math.random() * 5)
     for (var i = 0; i < minedCount; i++) {
         const keys = Object.keys(Minerals)
         const index = Math.floor(Math.random() * keys.length)
@@ -61,7 +61,7 @@ const Cmd: Command = {
             value += price
         })
 
-        const xp = Math.floor(value / 20)
+        const xp = Math.floor(value / 50)
 
         await DatabaseMethods.AddToBalance(author.id, value).then(async () => {
             await DatabaseMethods.GiveXP(author.id, xp).then(() => {
