@@ -7,5 +7,6 @@
     "embedColor": "ColorResolvable.Red",
     "developers": [
         "472530726613549066"
-    ]
+    ],
+    "production": false
 }

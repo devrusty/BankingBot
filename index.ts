@@ -1,4 +1,4 @@
-import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField, ApplicationCommandOptionWithChoicesAndAutocompleteMixin } from "discord.js"
+import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
@@ -12,6 +12,7 @@ export const Bot: Client = new Client({
         "GuildMembers"
     ]
 })
+const token = Config.production ? Config.token : Config.testToken
 const PermissionsRequired = [
     PermissionsBitField.Flags.ReadMessageHistory,
     PermissionsBitField.Flags.SendMessages,
@@ -51,7 +52,8 @@ Bot.on("messageCreate", async (message: Message) => {
     if (!message.guild) return
     if (!Bot.user) return
 
-    const role = message.guild.roles.cache.find((role) => role.name == Config.role)
+    const roleName = Config.production ? Config.role : Config.testRole
+    const role = message.guild.roles.cache.find((role) => role.name == roleName)
     if (!role) {
         console.log("BankingBot role does not exist.")
         return
@@ -107,4 +109,4 @@ Bot.on("guildDelete", () => {
     SetStatus()
 })
 
-Bot.login(Config.token)
+Bot.login(token)
