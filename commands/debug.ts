@@ -176,9 +176,10 @@ const Premium = async (message: Message) => {
     }
 
     record.premium = record.premium ? false : true
-    await DatabaseMethods.SetUser(user.id, record).then(() => {
+    await DatabaseMethods.SetUser(user.id, record).then(async () => {
         if (record.premium) {
             message.channel.send(`<@${user.id}> is now premium.`)
+            await DatabaseMethods.AwardAchievement(user.id, "Premium")
             return
         }
 
