@@ -9,9 +9,9 @@ const Minerals = {
     Coal: 1500,
     Iron: 4000,
     Steel: 6000,
-    Diamond: 10000,
-    Ruby: 15000,
-    Gold: 20000
+    Diamond: 7000,
+    Ruby: 7500,
+    Gold: 10000
 }
 const Cooldown = 3600000
 
@@ -61,7 +61,7 @@ const Cmd: Command = {
             value += price
         })
 
-        const xp = Math.floor(value / 15)
+        const xp = Math.floor(value / 20)
 
         await DatabaseMethods.AddToBalance(author.id, value).then(async () => {
             await DatabaseMethods.GiveXP(author.id, xp).then(() => {
