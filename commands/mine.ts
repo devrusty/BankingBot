@@ -17,7 +17,7 @@ const Cooldown = 3600000
 
 const Mine = () => {
     let mined = new Array()
-    let minedCount = Math.floor(Math.random() * 5)
+    let minedCount = Math.floor(Math.random() * 5) + 1
     for (var i = 0; i < minedCount; i++) {
         const keys = Object.keys(Minerals)
         const index = Math.floor(Math.random() * keys.length)
