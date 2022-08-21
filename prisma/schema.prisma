@@ -66,3 +66,20 @@ model Achievement {
   description String
   icon        String
 }
+
+enum PropertyType {
+  House
+  Apartment
+  Mansion
+  Hillside
+  Commercial
+}
+
+model Property {
+  id          Int          @id @unique @default(autoincrement())
+  name        String
+  description String
+  value       Int
+  owner       String
+  type        PropertyType
+}
