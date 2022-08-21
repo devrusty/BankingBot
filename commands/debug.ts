@@ -187,6 +187,32 @@ const Premium = async (message: Message) => {
     })
 }
 
+const Award = async (message: Message, args: string[]) => {
+    const mention = message.mentions.members?.first()
+    if (!mention) {
+        message.channel.send("Please mention a valid user.")
+        return
+    }
+
+    const record = await DatabaseMethods.GetUserRecord(mention.user.id)
+    if (!record) {
+        message.channel.send("User does not have a BankingBot account initialised.")
+        return
+    }
+
+    const achievementName = args.slice(3).join(" ").toLowerCase()
+    const achievement = await DatabaseMethods.GetAchievementByName(achievementName)
+    if (!achievement) {
+        console.log(achievementName)
+        message.channel.send("Invalid achievement.")
+        return
+    }
+
+    await DatabaseMethods.AwardAchievement(mention.user.id, achievement.name).then(() => {
+        message.channel.send(`Awarded <@${mention.user.id}> ${achievement.name}!`)
+    })
+}
+
 const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
@@ -250,6 +276,11 @@ const Cmd: Command = {
 
         if (action == "premium") {
             await Premium(message)
+            return
+        }
+
+        if (action == "award") {
+            await Award(message, args)
             return
         }
     }
