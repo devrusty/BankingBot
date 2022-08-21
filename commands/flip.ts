@@ -4,10 +4,10 @@ import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
 
 const RecentlyUsed = new Set()
-const Cooldown = 300000
+const Cooldown = 10000
 const Results = ["Heads", "Tails"]
 const Chance = Results.length
-const Reward = 500
+const Reward = 1000
 
 const Cmd: Command = {
     Name: "flip",
@@ -23,7 +23,7 @@ const Cmd: Command = {
         }
 
         if (RecentlyUsed.has(author.id)) {
-            message.channel.send("You must wait 5 minutes before flipping again.")
+            message.channel.send("You must wait 10 seconds before flipping again.")
             return
         }
 
