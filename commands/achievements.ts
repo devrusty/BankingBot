@@ -1,8 +1,7 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, EmbedBuilder } from "discord.js"
+import { Client, Message, EmbedBuilder, User } from "discord.js"
 import Config from "../config.json"
 import * as DatabaseMethods from "../databaseMethods"
-import { User } from "@prisma/client"
 
 const GetAchievementsFields = async () => {
     const achievements = await DatabaseMethods.GetAchievements()
@@ -17,15 +16,19 @@ const GetAchievementsFields = async () => {
     return fields
 }
 
-const SendAchievementsEmbed = async (message: Message) => {
-    const author = message.author
+const SendAchievementsEmbed = async (message: Message, user: User) => {
     const embed = new EmbedBuilder()
     embed.setTitle("Achievements")
     embed.setColor("Red")
     embed.setDescription("List of all BankingBot achievements.\n✅ = Owned achievement.")
 
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.GetUserRecord(user.id)
     const fields = await GetAchievementsFields()
+
+    if (!record) {
+        message.channel.send("User does not have a BankingBot account initialised!")
+        return
+    }
 
     embed.setFields(fields)
 
@@ -55,7 +58,15 @@ const Cmd: Command = {
     Usage: `\`${Config.prefix}achievements\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-        await SendAchievementsEmbed(message)
+        const mention = message.mentions.members?.first()
+        const author = message.author
+
+        if (!mention) {
+            await SendAchievementsEmbed(message, author)
+            return
+        }
+
+        await SendAchievementsEmbed(message, mention.user)
     }
 }
 
