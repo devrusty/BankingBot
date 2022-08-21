@@ -55,7 +55,7 @@ Bot.on("messageCreate", async (message: Message) => {
     const roleName = Config.production ? Config.role : Config.testRole
     const role = message.guild.roles.cache.find((role) => role.name == roleName)
     if (!role) {
-        console.log("BankingBot role does not exist.")
+        console.log(`${roleName} role does not exist.`)
         return
     }
     if (!role.members.has(Bot.user.id)) {
