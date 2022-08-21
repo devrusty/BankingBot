@@ -70,7 +70,7 @@ const GetJob = async (message: Message, args: string[]) => {
     }
 
     await DatabaseMethods.GiveJob(author.id, jobId).then(() => {
-        message.channel.send(`You have became a ${job.name}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 2 hours.`)
+        message.channel.send(`You have became a ${job.name}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 30 minutes.`)
     })
 }
 
