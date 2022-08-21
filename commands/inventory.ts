@@ -5,7 +5,9 @@ import Command from "../interfaces/commandInterface"
 import * as Prisma from "@prisma/client"
 
 const GetFields = (items: any) => {
-    return (items as Prisma.Item[]).map((item, index) => {
+    const itemArray = (items as Prisma.Item[])
+    if (itemArray.length > 25) itemArray.length = 25
+    return itemArray.map((item, index) => {
         return {
             name: item.name || "Unknown",
             value: item.description || `There was an issue while getting data for ID ${index}.`,
