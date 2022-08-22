@@ -52,8 +52,8 @@ const Cmd: Command = {
             RecentlyUsed.delete(user.id)
         }, 30000)
 
-        const chanceGoal: number = Math.floor(Math.random() * 4)
-        const chanceResult: number = Math.floor(Math.random() * 4)
+        const chanceGoal: number = Math.floor(Math.random() * 3) + 1
+        const chanceResult: number = Math.floor(Math.random() * 3) + 1
 
         if (chanceResult !== chanceGoal) {
             await DatabaseMethods.RemoveFromBalance(user.id, gambleAmount)
