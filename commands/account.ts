@@ -32,6 +32,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 
     if (record.verified) embed.data.title = `${embed.data.title} ✅`
     if (record.premium) embed.data.title = `${embed.data.title} 💎`
+    if (record.achievements.includes(2)) embed.data.title = `${embed.data.title} 🛠️`
 
     message.channel.send({
         embeds: [embed]
