@@ -14,16 +14,24 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
     jobsEmbed.setTitle("Jobs")
     jobsEmbed.setColor("Red")
 
-    const fields = jobs.map(job => {
-        return {
-            name: job.name,
-            value: `Description: ${job.description}\nIncome: $${FormatMoney(job.income)}\nLevel: ${job.requiredLevel}`,
-            inline: true
-        }
-    })
+    let fields = new Array()
 
-    if (fields.length > 25) fields.length = 25
+    for (var i = 0; i < 9; i++) {
+        const index = Math.floor(Math.random() * jobs.length)
+        const job = jobs[index]
+
+        fields.push({
+            name: job.name,
+            value: `Income: $${FormatMoney(job.income)}\nLevel: ${job.requiredLevel}`,
+            inline: true
+        })
+    }
+
+    //if (fields.length > 25) fields.length = 25
     jobsEmbed.addFields(fields)
+    jobsEmbed.setFooter({
+        text: `Want to see more jobs? Run ${Config.prefix}jobs again.`
+    })
 
     message.channel.send({
         embeds: [jobsEmbed]
