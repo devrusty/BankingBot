@@ -1,5 +1,5 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, User, EmbedBuilder } from "discord.js";
+import { Client, Message, User, EmbedBuilder, Embed } from "discord.js";
 import * as DatabaseMethods from "../databaseMethods"
 import FormatMoney from "../methods/FormatMoney";
 import { GetLevelMaxXP } from "../methods/Levels";
@@ -29,6 +29,9 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
         { name: "Occupation", value: occupation || "Unemployed" },
         { name: "Premium", value: String(record.premium) }
     )
+
+    if (record.verified) embed.data.title = `${embed.data.title} ✅`
+    if (record.premium) embed.data.title = `${embed.data.title} 💎`
 
     message.channel.send({
         embeds: [embed]
