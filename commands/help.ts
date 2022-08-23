@@ -35,7 +35,7 @@ const Embeds = {
         .addFields(
             { name: "💻 Commands", value: `\`${Config.prefix}help commands\``, inline: true },
             { name: "💵 Earning", value: `\`${Config.prefix}help earning\``, inline: true },
-            { name: "💎 Premium", value: `\`${Config.prefix}!help premium\``, inline: true },
+            { name: "💎 Premium", value: `\`${Config.prefix}help premium\``, inline: true },
             { name: "__Users__", value: `${FormatMoney(userCount)}`, inline: true },
             { name: "__Servers__", value: `${FormatMoney(guilds.size)}`, inline: true },
             { name: "🌐 Nexus", value: "[Invite BankingBot](https://discord.com/api/oauth2/authorize?client_id=1002698891537424384&permissions=101376&scope=bot) • [Discord Server](https://discord.gg/2VB4nqZbQk) • [Upvote](https://discordbotlist.com/bots/bankingbot/upvote)" }
