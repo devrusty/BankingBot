@@ -104,6 +104,18 @@ export async function AddToBalance(id: string, amount: number) {
             cash: Math.floor(userRecord.cash + amount)
         }
     })
+
+    if (userRecord.cash < 1000000) return
+    if (userRecord.achievements.includes(1)) return
+
+    await AwardAchievement(id, "Millionaire")
+    console.log(`Awarded Millionaire achievement to ${id}.`)
+
+    if (userRecord.cash < 1000000000) return
+    if (userRecord.achievements.includes(4)) return
+
+    await AwardAchievement(id, "Billionaire")
+    console.log(`Awarded Billionaire achievement to ${id}.`)
 }
 
 export async function SetUserLevel(id: string, level: number) {
