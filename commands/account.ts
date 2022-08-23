@@ -30,6 +30,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
         { name: "Premium", value: String(record.premium) }
     )
 
+    if (record.achievements.includes(9)) embed.data.title = `${embed.data.title} BB`
     if (record.verified) embed.data.title = `${embed.data.title} ✅`
     if (record.premium) embed.data.title = `${embed.data.title} 💎`
     if (record.achievements.includes(2)) embed.data.title = `${embed.data.title} 🛠️`
