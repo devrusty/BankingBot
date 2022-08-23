@@ -89,19 +89,18 @@ export async function RemoveFromBalance(id: string, amount: number) {
 }
 
 export async function AddToBalance(id: string, amount: number) {
-    const userExists: boolean = await UserRecordExists(id)
-    if (!userExists) return false
-
     const userRecord = await GetUserRecord(id)
-
     if (!userRecord) return console.log("User doesn't exist.")
+
+    const cash = Math.floor(userRecord.cash + amount)
+    if (cash == NaN) return
 
     await PClient.user.update({
         where: {
             id: id
         },
         data: {
-            cash: Math.floor(userRecord.cash + amount)
+            cash: cash
         }
     })
 

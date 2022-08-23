@@ -31,6 +31,11 @@ const Cmd: Command = {
             return
         }
 
+        if (!gambleAmount) {
+            message.channel.send("Please gamble a valid amount.")
+            return
+        }
+
         if (gambleAmount < 75) {
             message.channel.send("Please gamble an amount larger than 75.")
             return
