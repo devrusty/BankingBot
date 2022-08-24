@@ -41,9 +41,6 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     const inventoryEmbed = new EmbedBuilder()
     inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
     inventoryEmbed.setColor("Red")
-    inventoryEmbed.setFooter({
-        text: `${inventoryItems.length}/${capacity} - If you'd like a larger inventory, learn more with ${Config.prefix}help premium`
-    })
 
     const fields = await GetFields(inventoryItems)
     const resolved = await Promise.all(fields)
@@ -64,7 +61,7 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     }
 
     inventoryEmbed.setFooter({
-        text: `Net worth: $${FormatMoney(netWorth)} • Balance: $${FormatMoney(record.cash)} • Total: $${FormatMoney(netWorth + record.cash)}`
+        text: `Net worth: $${FormatMoney(netWorth)} • Balance: $${FormatMoney(record.cash)} • Total: $${FormatMoney(netWorth + record.cash)}\n${inventoryItems.length}/${capacity} - Want a larger inventory? Learn more with ${Config.prefix}help premium.`
     })
 
     message.channel.send({
