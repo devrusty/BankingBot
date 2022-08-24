@@ -24,12 +24,19 @@ model User {
 }
 
 model Item {
-  id           Int     @id @unique @default(autoincrement())
+  id           Int        @id @unique @default(autoincrement())
   name         String
   description  String
   price        Int
-  onSale       Boolean @default(false)
-  alwaysOnSale Boolean @default(false)
+  onSale       Boolean    @default(false)
+  alwaysOnSale Boolean    @default(false)
+  type         ItemType[]
+}
+
+enum ItemType {
+  Casual
+  Mask
+  Weapon
 }
 
 model PersonalShop {
