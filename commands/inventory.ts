@@ -5,13 +5,15 @@ import Command from "../interfaces/commandInterface"
 import * as Prisma from "@prisma/client"
 import FormatMoney from "../methods/FormatMoney"
 
-const GetFields = (items: any) => {
-    const itemArray = (items as Prisma.Item[])
+const GetFields = async (items: any) => {
+    const itemArray = (items as number[])
     if (itemArray.length > 25) itemArray.length = 25
-    return itemArray.map((item, index) => {
+
+    return itemArray.map(async (id) => {
+        const item = await DatabaseMethods.GetItemById(id)
         return {
-            name: item.name || "Unknown",
-            value: item.description || `There was an issue while getting data for ID ${index}.`,
+            name: item?.name || "Unknown",
+            value: item?.description || `There was an issue while getting data for ID ${id}.`,
             inline: true
         }
     })
@@ -36,7 +38,6 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     if (inventoryItems.length > 25) inventoryItems.length = 25
 
     const capacity = user.premium ? 100 : 25
-
     const inventoryEmbed = new EmbedBuilder()
     inventoryEmbed.setTitle(`${author.tag}'s Inventory`)
     inventoryEmbed.setColor("Red")
@@ -44,8 +45,15 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
         text: `${inventoryItems.length}/${capacity} - If you'd like a larger inventory, learn more with ${Config.prefix}help premium`
     })
 
-    const fields = GetFields(inventoryItems)
-    inventoryEmbed.setFields(fields)
+    const fields = await GetFields(inventoryItems)
+    const resolved = await Promise.all(fields)
+    if (!resolved) {
+        console.log(resolved)
+        message.channel.send("There was an issue while fetching inventory. If you need any assistance, please join the official Discord. https://discord.gg/jqD8Udk58E")
+        return
+    }
+
+    inventoryEmbed.setFields(resolved)
 
     if (inventoryItems.length == 0) inventoryEmbed.setDescription(`Your inventory is empty! Use \`${Config.prefix}shop\` to view the shop.`)
 
