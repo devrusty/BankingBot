@@ -2,6 +2,7 @@ import Command from "../interfaces/commandInterface";
 import Config from "../config.json"
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../databaseMethods"
+import * as MessageTemplates from "../methods/MessageTemplates"
 
 const Cmd: Command = {
     Name: "heist",
@@ -18,7 +19,7 @@ const Cmd: Command = {
 
         const record = await DatabaseMethods.GetUserRecord(author.id)
         if (!record) {
-            message.channel.send(`You must have a BankingBot account initialised to use that command. Use \`${Config.prefix} to create one.\``)
+            MessageTemplates.AssertAccountRequired(message)
             return
         }
     }
