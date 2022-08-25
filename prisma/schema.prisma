@@ -91,3 +91,22 @@ model Property {
   owner       String
   type        PropertyType
 }
+
+enum HeistDifficulty {
+  Cakewalk
+  Easy
+  Medium
+  Hard
+  Extreme
+  Nightmare
+}
+
+model Heist {
+  id            Int             @id @unique @default(autoincrement())
+  name          String
+  description   String
+  minPayout     Int
+  requiredLevel Int
+  avaliable     Boolean         @default(false)
+  difficulty    HeistDifficulty
+}
