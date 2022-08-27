@@ -9,7 +9,8 @@ const config = {
         "472530726613549066"
     ],
     release: "v1.0",
-    production: true
+    production: true,
+    permInvite: "https://discord.gg/jqD8Udk58E"
 }
 
 export default config
