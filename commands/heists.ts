@@ -70,7 +70,7 @@ const Cmd: Command = {
         const cmd = SubCommands.find((command) => command.name == subCmd.toLowerCase())
 
         if (!cmd) {
-            message.channel.send("Invalid subcommand.")
+            message.channel.send(`Invalid subcommand \`${Config.prefix}heists ${subCmd}\``)
             return
         }
 
