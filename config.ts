@@ -9,7 +9,7 @@ const config = {
         "472530726613549066"
     ],
     release: "v1.0",
-    production: false
+    production: true
 }
 
 export default config
