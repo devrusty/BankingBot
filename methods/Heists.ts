@@ -3,6 +3,8 @@ import * as DatabaseMethods from "../databaseMethods"
 import HeistMeta from "../interfaces/HeistMeta"
 
 export async function UpdateHeists() {
+    console.log("Updating heists...")
+
     const heists = await DatabaseMethods.GetHeists()
     const updatedHeists = Array<Heist>()
 
@@ -16,5 +18,6 @@ export async function UpdateHeists() {
         updatedHeists.push(heist)
     }
 
+    console.log("Updated heists!")
     return updatedHeists
 }
