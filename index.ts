@@ -71,7 +71,7 @@ Bot.on("messageCreate", async (message: Message) => {
 
     const commandFilePath: string = `./commands/${command}.ts`
     if (!fs.existsSync(commandFilePath)) {
-        message.channel.send(`Invalid command \`${command}\`. Please use \`b!help commands\` to view a list of commands.`)
+        message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
         return
     }
 
