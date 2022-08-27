@@ -1,4 +1,4 @@
-import { Item, User, PrismaClient } from "@prisma/client"
+import { Item, User, PrismaClient, Heist } from "@prisma/client"
 import Donation from "./interfaces/donation"
 import { GetLevelMaxXP } from "./methods/Levels"
 
@@ -478,4 +478,15 @@ export async function GetAvaliableHeists() {
     const heists = await GetHeists()
     const avaliableHeists = heists.filter((heist) => heist.avaliable)
     return avaliableHeists
+}
+
+export async function UpdateHeists(heists: Heist[]) {
+    heists.forEach(async (heist: Heist) => {
+        PClient.heist.update({
+            where: {
+                id: heist.id
+            },
+            data: heist
+        })
+    })
 }
