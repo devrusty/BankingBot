@@ -3,6 +3,7 @@ import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
 import * as DatabaseMethods from "./Database"
+import * as HeistMethods from "./methods/Heists"
 
 export const Bot: Client = new Client({
     intents: [
@@ -36,6 +37,7 @@ Bot.on("ready", async () => {
     SetStatus()
 
     await ItemShopMethods.InitializeUpdate()
+    await HeistMethods.InitializeUpdate()
 })
 
 Bot.on("messageCreate", async (message: Message) => {
