@@ -19,11 +19,6 @@ const PermissionsRequired = [
     PermissionsBitField.Flags.AttachFiles
 ]
 
-const InitiateUpdateItemShop = async () => {
-    await ItemShopMethods.UpdateItemShop()
-    setTimeout(InitiateUpdateItemShop, 86400000)
-}
-
 const SetStatus = () => {
     Bot.user?.setPresence({
         status: "online",
@@ -40,7 +35,7 @@ Bot.on("ready", async () => {
     console.log(`${Bot.user?.tag} is now online.`)
     SetStatus()
 
-    await InitiateUpdateItemShop()
+    await ItemShopMethods.InitializeUpdate()
 })
 
 Bot.on("messageCreate", async (message: Message) => {

@@ -18,3 +18,8 @@ export async function UpdateItemShop() {
         console.log("Updated item shop!")
     })
 }
+
+export async function InitializeUpdate() {
+    await UpdateItemShop()
+    setTimeout(InitializeUpdate, 86400000)
+}
