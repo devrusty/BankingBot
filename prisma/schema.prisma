@@ -21,6 +21,7 @@ model User {
   banned       Boolean @default(false)
   achievements Int[]
   verified     Boolean @default(false)
+  mask         Int?
 }
 
 model Item {
