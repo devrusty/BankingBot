@@ -1,6 +1,5 @@
 import { Heist } from "@prisma/client"
 import * as DatabaseMethods from "../Database"
-import HeistMeta from "../interfaces/HeistMeta"
 
 export async function UpdateHeists() {
     console.log("Updating heists...")
@@ -18,6 +17,9 @@ export async function UpdateHeists() {
         updatedHeists.push(heist)
     }
 
-    console.log("Updated heists!")
+    await DatabaseMethods.UpdateHeists(updatedHeists).then(() => {
+        console.log("Updated heists!")
+    })
+
     return updatedHeists
 }
