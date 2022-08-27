@@ -58,7 +58,7 @@ const Cmd: Command = {
         Users.push(author)
 
         LotteryAmount *= 2
-        LotteryAmount -= 10000
+        //LotteryAmount -= 10000
         LotteryXP = LotteryAmount / 100
 
         message.channel.send("You have been added to the lottery list. You can see who won in the BankingBot support server.")
