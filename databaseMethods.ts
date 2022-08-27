@@ -468,3 +468,14 @@ export async function AwardAchievement(id: string, achievement: string) {
     record.achievements.push(achievementData.id)
     await SetUser(id, record)
 }
+
+export async function GetHeists() {
+    const heists = await PClient.heist.findMany()
+    return heists
+}
+
+export async function GetAvaliableHeists() {
+    const heists = await GetHeists()
+    const avaliableHeists = heists.filter((heist) => heist.avaliable)
+    return avaliableHeists
+}
