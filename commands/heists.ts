@@ -7,24 +7,33 @@ import * as MessageTemplates from "../methods/MessageTemplates"
 const SubCommands = {
     index: async (client: Client, message: Message, args: string[]) => {
         const embed = new EmbedBuilder()
-        embed.setTitle("Heists")
+        embed.setTitle("Heists - Info")
         embed.setFields(
             { name: "List Heists", value: `\`${Config.prefix}heist list\``, inline: true },
             { name: `Joining a heist`, value: `\`${Config.prefix}heist join <heist>\``, inline: true }
         )
-        embed.setColor("Red")
+        embed.setColor(Config.embedColor)
 
         message.channel.send({
             embeds: [embed]
         })
     },
     list: async (client: Client, message: Message, args: string[]) => {
+        const heists = await DatabaseMethods.GetAvaliableHeists()
+        const embed = new EmbedBuilder()
 
+        embed.setTitle("Heists")
+        embed.setDescription("Current avaliable heists.")
+        embed.setColor(Config.embedColor)
+
+        message.channel.send({
+            embeds: [embed]
+        })
     }
 }
 
 const Cmd: Command = {
-    Name: "heist",
+    Name: "heists",
     Description: "Heist and heist profile management.",
     Usage: `\`${Config.prefix}heist\``,
     Listed: false,
@@ -41,16 +50,15 @@ const Cmd: Command = {
             return
         }
 
-        const subCmd = args[2]
+        let subCmd = args[2]
         if (!subCmd) {
             await SubCommands.index(client, message, args)
             return
         }
-
+        subCmd = subCmd.toLowerCase()
+        console.log(subCmd)
         const command = (SubCommands as any)[subCmd]
-        await command().catch(() => {
-            message.channel.send("Invalid subcommand.")
-        })
+        await command()
     }
 }
 
