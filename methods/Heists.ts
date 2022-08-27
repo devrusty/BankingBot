@@ -26,5 +26,5 @@ export async function UpdateHeists() {
 
 export async function InitializeUpdate() {
     await UpdateHeists()
-    setTimeout(InitializeUpdate, 360000)
+    setTimeout(InitializeUpdate, 21600000)
 }
