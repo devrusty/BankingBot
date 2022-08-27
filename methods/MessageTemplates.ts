@@ -1,4 +1,4 @@
-import Config from "../config.json"
+import Config from "../config"
 import { Message } from "discord.js"
 
 export function AssertAccountRequired(message: Message) {
