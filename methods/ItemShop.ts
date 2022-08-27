@@ -1,4 +1,4 @@
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 
 export async function UpdateItemShop() {
     console.log("Updating item shop..")

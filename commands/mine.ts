@@ -1,7 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import Config from "../config.json"
 import { Client, Message } from "discord.js"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";
 
 const RecentlyUsed = new Set()

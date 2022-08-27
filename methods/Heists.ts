@@ -1,5 +1,5 @@
 import { Heist } from "@prisma/client"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import HeistMeta from "../interfaces/HeistMeta"
 
 export async function UpdateHeists() {

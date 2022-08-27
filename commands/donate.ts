@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import Donation from "../interfaces/donation";
 import Config from "../config.json"
 import FormatMoney from "../methods/FormatMoney";

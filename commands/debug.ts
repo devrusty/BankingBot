@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import Config from "../config.json"
 import { Bot } from "../index"
 

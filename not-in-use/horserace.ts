@@ -1,7 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import Config from "../config.json"
 import { Client, Message, EmbedBuilder } from "discord.js"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import HorseRacingEmbed from "../classes/horseracing/HorseRacingEmbed";
 import HorseColour from "../classes/horseracing/HorseColour";
 

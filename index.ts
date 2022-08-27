@@ -2,7 +2,7 @@ import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
 import * as Config from "./config.json"
-import * as DatabaseMethods from "./databaseMethods"
+import * as DatabaseMethods from "./Database"
 
 export const Bot: Client = new Client({
     intents: [

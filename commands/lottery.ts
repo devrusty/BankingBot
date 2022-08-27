@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface"
 import { Client, Message, EmbedBuilder, User, messageLink } from "discord.js"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney"
 import Config from "../config.json"
 

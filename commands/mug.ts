@@ -1,7 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, ReactionUserManager } from "discord.js"
 import Config from "../config.json"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 
 const RecentlyUsed = new Set()
 const MaxAmount = 5000

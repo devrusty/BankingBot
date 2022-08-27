@@ -1,5 +1,5 @@
 import Config from "../config.json"
-import * as DatabaseMethods from "../databaseMethods"
+import * as DatabaseMethods from "../Database"
 import { Client, EmbedBuilder, Message } from "discord.js"
 import Command from "../interfaces/commandInterface"
 import * as Prisma from "@prisma/client"
