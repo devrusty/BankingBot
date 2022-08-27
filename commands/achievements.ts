@@ -35,10 +35,7 @@ const SendAchievementsEmbed = async (message: Message, user: User) => {
     if (!embed.data.fields) return
     const ownedAchievements = embed.data.fields.map(async (achievement) => {
         const achievementData = await DatabaseMethods.GetAchievementByName(achievement.name)
-        if (achievementData && record.achievements.includes(achievementData.id)) {
-            achievement.name = `✅ ${achievementData.name}`
-        }
-
+        if (achievementData && record.achievements.includes(achievementData.id)) achievement.name = `✅ ${achievementData.name}`
         return achievement
     })
 
