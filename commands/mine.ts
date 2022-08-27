@@ -1,5 +1,5 @@
 import Command from "../interfaces/commandInterface";
-import Config from "../config.json"
+import Config from "../config"
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";

@@ -2,7 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import Donation from "../interfaces/donation";
-import Config from "../config.json"
+import Config from "../config"
 import FormatMoney from "../methods/FormatMoney";
 
 const Cooldown = 300000

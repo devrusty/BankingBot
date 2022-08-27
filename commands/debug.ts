@@ -1,7 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../Database"
-import Config from "../config.json"
+import Config from "../config"
 import { Bot } from "../index"
 
 const AddMoney = async (message: Message, args: string[]) => {

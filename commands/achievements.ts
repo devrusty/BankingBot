@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, User } from "discord.js"
-import Config from "../config.json"
+import Config from "../config"
 import * as DatabaseMethods from "../Database"
 
 const GetAchievementsFields = async () => {

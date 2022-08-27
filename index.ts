@@ -1,9 +1,9 @@
 import { Client, Message, ActivityType, EmbedBuilder, Guild, PermissionsBitField } from "discord.js"
 import * as fs from "fs"
 import * as ItemShopMethods from "./methods/ItemShop"
-import * as Config from "./config.json"
 import * as DatabaseMethods from "./Database"
 import * as HeistMethods from "./methods/Heists"
+import Config from "./config"
 
 export const Bot: Client = new Client({
     intents: [

@@ -3,7 +3,7 @@ import { Client, Message, User, EmbedBuilder, Embed } from "discord.js";
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";
 import { GetLevelMaxXP } from "../methods/Levels";
-import Config from "../config.json"
+import Config from "../config"
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
     const record = await DatabaseMethods.GetUserRecord(user.id)

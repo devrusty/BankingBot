@@ -1,7 +1,7 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as fs from "fs"
-import Config from "../config.json"
+import Config from "../config"
 import { Bot } from "../index";
 import FormatMoney from "../methods/FormatMoney";
 

@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface";
 import { Client, Message } from "discord.js"
-import Config from "../config.json"
+import Config from "../config"
 
 const GIFs = [
     "https://tenor.com/view/beaver-canada-canada-beaver-beaver-canada-canadian-beaver-gif-22083226",

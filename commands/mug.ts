@@ -1,6 +1,6 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message, ReactionUserManager } from "discord.js"
-import Config from "../config.json"
+import { Client, Message } from "discord.js"
+import Config from "../config"
 import * as DatabaseMethods from "../Database"
 
 const RecentlyUsed = new Set()

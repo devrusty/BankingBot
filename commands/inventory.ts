@@ -1,4 +1,4 @@
-import Config from "../config.json"
+import Config from "../config"
 import * as DatabaseMethods from "../Database"
 import { Client, EmbedBuilder, Message } from "discord.js"
 import Command from "../interfaces/commandInterface"
