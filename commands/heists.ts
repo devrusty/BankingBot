@@ -4,6 +4,7 @@ import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney"
+import * as HeistMethods from "../methods/Heists"
 
 interface SubCommandData {
     name: string
@@ -17,8 +18,8 @@ const SubCommands: SubCommandData[] = [
             const embed = new EmbedBuilder()
             embed.setTitle("Heists - Info")
             embed.setFields(
-                { name: "List Heists", value: `\`${Config.prefix}heist list\``, inline: true },
-                { name: `Joining a heist`, value: `\`${Config.prefix}heist join <heist>\``, inline: true }
+                { name: "List Heists", value: `\`${Config.prefix}heists list\``, inline: true },
+                { name: `Joining a heist`, value: `\`${Config.prefix}heists join <heist>\``, inline: true }
             )
             embed.setColor(Config.embedColor)
 
@@ -33,12 +34,14 @@ const SubCommands: SubCommandData[] = [
             const heists = await DatabaseMethods.GetAvaliableHeists()
             const fields = heists.map((heist) => {
                 const formatted = FormatMoney(heist.minPayout)
-                return { name: heist.name, value: `Min-payout: $${formatted}`, inline: true }
+                const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heist.difficulty)
+                return { name: heist.name, value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${heist.users.length}/${maxUsers}`, inline: true }
             })
+
             const embed = new EmbedBuilder()
 
             embed.setTitle("Heists")
-            embed.setDescription(`Current avaliable heists.`)
+            embed.setDescription(`Currently avaliable heists.`)
             embed.setColor(Config.embedColor)
             embed.setFields(fields)
 
@@ -50,7 +53,15 @@ const SubCommands: SubCommandData[] = [
     {
         name: "join",
         invoke: async (client: Client, message: Message, args: string[]) => {
-            const heistName = args.slice(3).join(" ")
+            const author = message.author
+            const record = await DatabaseMethods.GetUserRecord(author.id)
+            if (!record) {
+                MessageTemplates.AssertAccountRequired(message)
+                return
+            }
+
+            const heistName = args.slice(2).join(" ")
+            console.log(heistName)
             const heistData = await DatabaseMethods.GetHeistByName(heistName)
 
             if (!heistData) {
@@ -63,7 +74,20 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
+            if (heistData.users.includes(author.id)) {
+                message.channel.send(`You're already apart of the ${heistData.name} heist!`)
+                return
+            }
 
+            const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heistData.difficulty)
+            if (heistData.users.length == maxUsers) {
+                message.channel.send("The heist you're trying to join has reached the maximum amount of users.")
+                return
+            }
+
+            await DatabaseMethods.AddUserToHeist(heistData.id, author.id).then(() => {
+                message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
+            })
         }
     }
 ]

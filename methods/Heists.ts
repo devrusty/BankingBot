@@ -29,8 +29,8 @@ export async function InitializeUpdate() {
     setTimeout(InitializeUpdate, 21600000)
 }
 
-export async function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
-    let returnVal
+export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
+    let returnVal = 0
 
     switch (difficulty) {
         case HeistDifficulty.Cakewalk: returnVal = 10
