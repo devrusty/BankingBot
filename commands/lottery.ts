@@ -11,7 +11,7 @@ let LotteryDefault = 10000
 let LotteryAmount = LotteryDefault
 let LotteryXP = LotteryAmount / 100
 
-const Time = 3600000
+const Time = 10000//3600000
 const LotteryAnnouncementChannel = "1003737671908204644"
 
 const SendInfo = (message: Message) => {
@@ -74,19 +74,9 @@ const ResetLottery = () => {
 }
 
 const GetWinner = async () => {
-    if (Users.length === 0) {
-        console.log("There weren't any users in the lottery.")
-        return
-    }
-
+    if (Users.length == 0) return
     const randomNum = Math.floor(Math.random() * Users.length)
     const winner = Users[randomNum]
-    const announcementChannel = Bot.channels.cache.get(LotteryAnnouncementChannel)
-
-    if (!announcementChannel) {
-        console.log("#lottery does not exist.")
-        return
-    }
 
     if (!winner) {
         console.log(`Lottery winner is undefined. : ${winner}  : ${Users}`)
@@ -97,11 +87,6 @@ const GetWinner = async () => {
     annEmbed.setTitle("Lottery")
     annEmbed.setDescription(`<@${winner.id}> won the lottery!`)
     annEmbed.setColor("Yellow")
-
-    if (announcementChannel.isTextBased())
-        announcementChannel.send({
-            embeds: [annEmbed]
-        })
 
     await DatabaseMethods.AddToBalance(winner.id, LotteryAmount)
     await DatabaseMethods.GiveXP(winner.id, LotteryXP)
