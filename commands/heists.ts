@@ -61,7 +61,6 @@ const SubCommands: SubCommandData[] = [
             }
 
             const heistName = args.slice(2).join(" ")
-            console.log(heistName)
             const heistData = await DatabaseMethods.GetHeistByName(heistName)
 
             if (!heistData) {
@@ -76,6 +75,12 @@ const SubCommands: SubCommandData[] = [
 
             if (heistData.users.includes(author.id)) {
                 message.channel.send(`You're already apart of the ${heistData.name} heist!`)
+                return
+            }
+
+            const userInHeist = await DatabaseMethods.UserInHeist(author.id)
+            if (userInHeist) {
+                message.channel.send(`You're already participating in a heist. Use \`${Config.prefix}heists leave\` to leave the heist you're participating in.`)
                 return
             }
 
