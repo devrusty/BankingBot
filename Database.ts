@@ -490,3 +490,9 @@ export async function UpdateHeists(heists: Heist[]) {
         })
     })
 }
+
+export async function GetHeistByName(name: string) {
+    const heists = await GetHeists()
+    const heist = heists.find((h) => h.name.toLowerCase() == name.toLowerCase())
+    return heist
+}
