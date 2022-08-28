@@ -3,6 +3,7 @@ import Config from "../config"
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
+import FormatMoney from "../methods/FormatMoney"
 
 interface SubCommandData {
     name: string
@@ -30,11 +31,16 @@ const SubCommands: SubCommandData[] = [
         name: "list",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const heists = await DatabaseMethods.GetAvaliableHeists()
+            const fields = heists.map((heist) => {
+                const formatted = FormatMoney(heist.minPayout)
+                return { name: heist.name, value: `Min-payout: $${formatted}`, inline: true }
+            })
             const embed = new EmbedBuilder()
 
             embed.setTitle("Heists")
-            embed.setDescription("Current avaliable heists.")
+            embed.setDescription(`Current avaliable heists.`)
             embed.setColor(Config.embedColor)
+            embed.setFields(fields)
 
             message.channel.send({
                 embeds: [embed]
