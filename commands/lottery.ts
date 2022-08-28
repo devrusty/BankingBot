@@ -11,7 +11,7 @@ let LotteryDefault = 10000
 let LotteryAmount = LotteryDefault
 let LotteryXP = LotteryAmount / 100
 
-const Time = 10000//3600000
+const Time = 3600000
 const LotteryAnnouncementChannel = "1003737671908204644"
 
 const SendInfo = (message: Message) => {
