@@ -51,6 +51,19 @@ const SubCommands: SubCommandData[] = [
         name: "join",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const heistName = args.slice(3).join(" ")
+            const heistData = await DatabaseMethods.GetHeistByName(heistName)
+
+            if (!heistData) {
+                message.channel.send("Invalid heist.")
+                return
+            }
+
+            if (!heistData.avaliable) {
+                message.channel.send(`Please choose a heist that is avaliable. (see \`${Config.prefix}heists list\`)`)
+                return
+            }
+
+
         }
     }
 ]
