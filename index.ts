@@ -41,62 +41,66 @@ Bot.on("ready", async () => {
 })
 
 Bot.on("messageCreate", async (message: Message) => {
-    message.content = message.content.toLowerCase()
+    try {
+        message.content = message.content.toLowerCase()
 
-    if (message.author.bot) return
-    if (!message.content.startsWith(Config.prefix)) return
-    if (!message.member) return
-    if (!message.guild) return
-    if (!Bot.user) return
+        if (message.author.bot) return
+        if (!message.content.startsWith(Config.prefix)) return
+        if (!message.member) return
+        if (!message.guild) return
+        if (!Bot.user) return
 
-    const roleName = Config.production ? Config.role : Config.testRole
-    const role = message.guild.roles.cache.find((role) => role.name == roleName)
-    if (!role) {
-        console.log(`${roleName} role does not exist.`)
-        return
-    }
-    if (!role.members.has(Bot.user.id)) {
-        console.log("BankingBot is not added to the BankingBot role.")
-        return
-    }
-    if (!role.permissions.has(PermissionsRequired)) {
-        if (role.permissions.has(PermissionsBitField.Flags.SendMessages))
-            message.channel.send(`Please check that the role <@&${role.id}> has the permissions \`SEND_MESSAGES\` \`READ_MESSAGE_HISTORY\` and \`ATTACH_FILES\`.`)
-        console.log("BankingBot role does not have desired permissions.")
-        return
-    }
-
-    const args = message.content.trim().split(/ +/g)
-    const command: string = args[0].slice(Config.prefix.length).toLowerCase()
-
-    const commandFilePath: string = `./commands/${command}.ts`
-    if (!fs.existsSync(commandFilePath)) {
-        message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
-        return
-    }
-
-    const userRecord = await DatabaseMethods.GetUserRecord(message.author.id)
-    if (!userRecord || !userRecord.banned) {
-        const invokeMethod = await require(commandFilePath).default.Invoke
-        if (!invokeMethod) {
-            message.channel.send("Invalid command.")
+        const roleName = Config.production ? Config.role : Config.testRole
+        const role = message.guild.roles.cache.find((role) => role.name == roleName)
+        if (!role) {
+            console.log(`${roleName} role does not exist.`)
             return
         }
-        await invokeMethod(Bot, message, args)
-        return
+        if (!role.members.has(Bot.user.id)) {
+            console.log("BankingBot is not added to the BankingBot role.")
+            return
+        }
+        if (!role.permissions.has(PermissionsRequired)) {
+            if (role.permissions.has(PermissionsBitField.Flags.SendMessages))
+                message.channel.send(`Please check that the role <@&${role.id}> has the permissions \`SEND_MESSAGES\` \`READ_MESSAGE_HISTORY\` and \`ATTACH_FILES\`.`)
+            console.log("BankingBot role does not have desired permissions.")
+            return
+        }
+
+        const args = message.content.trim().split(/ +/g)
+        const command: string = args[0].slice(Config.prefix.length).toLowerCase()
+
+        const commandFilePath: string = `./commands/${command}.ts`
+        if (!fs.existsSync(commandFilePath)) {
+            message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
+            return
+        }
+
+        const userRecord = await DatabaseMethods.GetUserRecord(message.author.id)
+        if (!userRecord || !userRecord.banned) {
+            const invokeMethod = await require(commandFilePath).default.Invoke
+            if (!invokeMethod) {
+                message.channel.send("Invalid command.")
+                return
+            }
+            await invokeMethod(Bot, message, args)
+            return
+        }
+
+        const bannedEmbed = new EmbedBuilder()
+        bannedEmbed.setTitle("You're banned from using BankingBot")
+        bannedEmbed.setDescription("You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](https://discord.gg/Za5j3xvAzf).")
+        bannedEmbed.setColor("Red")
+
+        message.channel.send({
+            embeds: [bannedEmbed]
+        }).catch((err) => {
+            console.log(err)
+            return
+        })
+    } catch (e) {
+        console.log(e)
     }
-
-    const bannedEmbed = new EmbedBuilder()
-    bannedEmbed.setTitle("You're banned from using BankingBot")
-    bannedEmbed.setDescription("You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](https://discord.gg/Za5j3xvAzf).")
-    bannedEmbed.setColor("Red")
-
-    message.channel.send({
-        embeds: [bannedEmbed]
-    }).catch((err) => {
-        console.log(err)
-        return
-    })
 })
 
 Bot.on("guildCreate", (guild: Guild) => {
