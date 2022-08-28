@@ -1,4 +1,4 @@
-import { Heist } from "@prisma/client"
+import { Heist, HeistDifficulty } from "@prisma/client"
 import * as DatabaseMethods from "../Database"
 
 export async function UpdateHeists() {
@@ -27,4 +27,19 @@ export async function UpdateHeists() {
 export async function InitializeUpdate() {
     await UpdateHeists()
     setTimeout(InitializeUpdate, 21600000)
+}
+
+export async function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
+    let returnVal
+
+    switch (difficulty) {
+        case HeistDifficulty.Cakewalk: returnVal = 10
+        case HeistDifficulty.Easy: returnVal = 8
+        case HeistDifficulty.Medium: returnVal = 6
+        case HeistDifficulty.Hard: returnVal = 5
+        case HeistDifficulty.Extreme: returnVal = 4
+        case HeistDifficulty.Nightmare: returnVal = 3
+    }
+
+    return returnVal
 }
