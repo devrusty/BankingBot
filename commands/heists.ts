@@ -46,6 +46,12 @@ const SubCommands: SubCommandData[] = [
                 embeds: [embed]
             })
         }
+    },
+    {
+        name: "join",
+        invoke: async (client: Client, message: Message, args: string[]) => {
+            const heistName = args.slice(3).join(" ")
+        }
     }
 ]
 
