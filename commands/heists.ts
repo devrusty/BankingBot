@@ -94,6 +94,25 @@ const SubCommands: SubCommandData[] = [
                 message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
             })
         }
+    },
+    {
+        name: "leave",
+        invoke: async (client: Client, message: Message, args: string[]) => {
+            const author = message.author
+            const record = await DatabaseMethods.GetUserRecord(author.id)
+            if (!record) {
+                MessageTemplates.AssertAccountRequired(message)
+                return
+            }
+
+            const userInHeist = await DatabaseMethods.UserInHeist(author.id)
+            if (!userInHeist) {
+                message.channel.send("You currently are not participating in a heist.")
+                return
+            }
+
+
+        }
     }
 ]
 

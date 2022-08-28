@@ -521,6 +521,17 @@ export async function AddUserToHeist(heistId: number, userId: string) {
     })
 }
 
+export async function RemoveFromHeist(id: string) {
+    const recordExists = await UserRecordExists(id)
+    if (!recordExists) return
+
+    const userInHeist = await UserInHeist(id)
+    if (!userInHeist) return
+
+    //const heist = await GetUserHeist(id)
+
+}
+
 export async function UserInHeist(id: string) {
     const heists = await GetHeists()
     let count = 0
