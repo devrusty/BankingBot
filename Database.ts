@@ -520,3 +520,14 @@ export async function AddUserToHeist(heistId: number, userId: string) {
         data: heist
     })
 }
+
+export async function UserInHeist(id: string) {
+    const heists = await GetHeists()
+    let count = 0
+
+    heists.forEach((heist) => {
+        if (heist.users.includes(id)) count++
+    })
+
+    return count == 0
+}
