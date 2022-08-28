@@ -496,3 +496,27 @@ export async function GetHeistByName(name: string) {
     const heist = heists.find((h) => h.name.toLowerCase() == name.toLowerCase())
     return heist
 }
+
+export async function GetHeistById(id: number) {
+    const heists = await GetHeists()
+    const heist = heists.find((h) => h.id == id)
+    return heist
+}
+
+export async function AddUserToHeist(heistId: number, userId: string) {
+    const recordExists = await UserRecordExists(userId)
+    if (!recordExists) return
+
+    const heist = await GetHeistById(heistId)
+    if (!heist) return
+    if (!heist.avaliable) return
+    if (heist.users.includes(userId)) return
+
+    heist.users.push(userId)
+    await PClient.heist.update({
+        where: {
+            id: heistId
+        },
+        data: heist
+    })
+}
