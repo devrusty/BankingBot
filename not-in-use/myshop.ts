@@ -2,7 +2,7 @@ import Command from "../interfaces/commandInterface";
 import { Client, Message, EmbedBuilder, User } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import { PersonalShop } from "@prisma/client";
-import Config from "../config.json"
+import Config from "../config"
 
 const RenderPersonalShopEmbed = async (user: User, shop: PersonalShop) => {
     const embed = new EmbedBuilder()

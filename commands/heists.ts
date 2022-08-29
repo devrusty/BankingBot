@@ -35,7 +35,7 @@ const SubCommands: SubCommandData[] = [
             const fields = heists.map((heist) => {
                 const formatted = FormatMoney(heist.minPayout)
                 const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heist.difficulty)
-                return { name: heist.name, value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${heist.users.length}/${maxUsers}`, inline: true }
+                return { name: heist.name, value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${maxUsers}`, inline: true }
             })
 
             const embed = new EmbedBuilder()
@@ -72,11 +72,12 @@ const SubCommands: SubCommandData[] = [
                 message.channel.send(`Please choose a heist that is avaliable. (see \`${Config.prefix}heists list\`)`)
                 return
             }
-
+            /*
             if (heistData.users.includes(author.id)) {
                 message.channel.send(`You're already apart of the ${heistData.name} heist!`)
                 return
             }
+
 
             const userInHeist = await DatabaseMethods.UserInHeist(author.id)
             if (userInHeist) {
@@ -89,10 +90,11 @@ const SubCommands: SubCommandData[] = [
                 message.channel.send("The heist you're trying to join has reached the maximum amount of users.")
                 return
             }
-
+            
             await DatabaseMethods.AddUserToHeist(heistData.id, author.id).then(() => {
                 message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
             })
+            */
         }
     },
     {
@@ -105,12 +107,13 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
+            /*
             const userInHeist = await DatabaseMethods.UserInHeist(author.id)
             if (!userInHeist) {
                 message.channel.send("You currently are not participating in a heist.")
                 return
             }
-
+            */
 
         }
     }
