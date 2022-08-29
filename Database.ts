@@ -528,8 +528,21 @@ export async function RemoveFromHeist(id: string) {
     const userInHeist = await UserInHeist(id)
     if (!userInHeist) return
 
-    //const heist = await GetUserHeist(id)
+    const heist = await GetUserHeist(id)
+    if (!heist) return
+    if (!heist.users.includes(id)) return
 
+    const index = heist.users.indexOf(id)
+    if (!index) return
+
+    heist.users[index] = ""
+
+    await PClient.heist.update({
+        where: {
+            id: heist.id
+        },
+        data: heist
+    })
 }
 
 export async function UserInHeist(id: string) {
@@ -541,4 +554,10 @@ export async function UserInHeist(id: string) {
     })
 
     return count == 0
+}
+
+export async function GetUserHeist(id: string) {
+    const heists = await GetHeists()
+    const heist = heists.find((h) => h.users.includes(id))
+    return heist
 }
