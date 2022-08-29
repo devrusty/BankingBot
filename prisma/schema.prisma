@@ -110,5 +110,4 @@ model Heist {
   requiredLevel Int
   avaliable     Boolean         @default(false)
   difficulty    HeistDifficulty
-  users         String[]
 }
