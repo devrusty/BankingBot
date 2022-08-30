@@ -54,3 +54,10 @@ export function GetHeist(name: string) {
     const heist = GlobalHeistData.find((h) => h.Heist.name.toLowerCase() == name.toLowerCase())
     return heist
 }
+
+export function JoinHeist(user: User, heistName: string) {
+    const heist = GetHeist(heistName)
+    if (!heist) return
+
+    heist.Users.push(user)
+}

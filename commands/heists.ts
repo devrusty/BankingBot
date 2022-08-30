@@ -77,7 +77,7 @@ const SubCommands: SubCommandData[] = [
 
             const heist = HeistMethods.GetHeist(heistData.name)
             const userInHeist = HeistMethods.UserInHeist(author)
-            if (!userInHeist) {
+            if (userInHeist) {
                 message.channel.send(`You're already participating in a heist!`)
                 return
             }
@@ -97,11 +97,9 @@ const SubCommands: SubCommandData[] = [
                 message.channel.send(`The heist you're trying to join has reached the maximum amount of users. (${heist.Users.length}/${maxUsers})`)
                 return
             }
-            /*
-            await DatabaseMethods.AddUserToHeist(heistData.id, author.id).then(() => {
-                message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
-            })
-            */
+
+            HeistMethods.JoinHeist(author, heistData.name)
+            message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
         }
     },
     {
