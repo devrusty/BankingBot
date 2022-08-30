@@ -2,6 +2,7 @@ import { Heist, HeistDifficulty } from "@prisma/client"
 import * as DatabaseMethods from "../Database"
 import { User } from "discord.js"
 import GlobalHeistData from "../cache/GlobalHeistData"
+import { reset } from "../cache/GlobalHeistData"
 
 export async function UpdateHeists() {
     console.log("Updating heists...")
@@ -68,4 +69,8 @@ export function JoinHeist(user: User, heistName: string) {
     if (!heist) return
 
     heist.Users.push(user)
+}
+
+export function ClearHeists() {
+    reset()
 }
