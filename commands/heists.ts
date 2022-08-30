@@ -75,26 +75,29 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
+            const heist = HeistMethods.GetHeist(heistData.name)
             const userInHeist = HeistMethods.UserInHeist(author)
-            /*
-            if (heistData.users.includes(author.id)) {
+            if (!userInHeist) {
+                message.channel.send(`You're already participating in a heist!`)
+                return
+            }
+
+            if (!heist) {
+                message.channel.send("Invalid heist.")
+                return
+            }
+
+            if (heist.Users.includes(author)) {
                 message.channel.send(`You're already apart of the ${heistData.name} heist!`)
                 return
             }
 
-
-            const userInHeist = await DatabaseMethods.UserInHeist(author.id)
-            if (userInHeist) {
-                message.channel.send(`You're already participating in a heist. Use \`${Config.prefix}heists leave\` to leave the heist you're participating in.`)
-                return
-            }
-
             const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heistData.difficulty)
-            if (heistData.users.length == maxUsers) {
-                message.channel.send("The heist you're trying to join has reached the maximum amount of users.")
+            if (heist.Users.length == maxUsers) {
+                message.channel.send(`The heist you're trying to join has reached the maximum amount of users. (${heist.Users.length}/${maxUsers})`)
                 return
             }
-            
+            /*
             await DatabaseMethods.AddUserToHeist(heistData.id, author.id).then(() => {
                 message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
             })

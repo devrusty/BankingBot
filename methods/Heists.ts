@@ -49,3 +49,8 @@ export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
 export function UserInHeist(user: User) {
     return GlobalHeistData.filter((heist) => heist.Users.includes(user)).length > 0
 }
+
+export function GetHeist(name: string) {
+    const heist = GlobalHeistData.find((h) => h.Heist.name.toLowerCase() == name.toLowerCase())
+    return heist
+}
