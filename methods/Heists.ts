@@ -23,6 +23,14 @@ export async function UpdateHeists() {
         console.log("Updated heists!")
     })
 
+    const avaliableHeists = await DatabaseMethods.GetAvaliableHeists()
+    avaliableHeists.forEach((heist) => {
+        GlobalHeistData.push({
+            Heist: heist,
+            Users: new Array<User>()
+        })
+    })
+
     return updatedHeists
 }
 
