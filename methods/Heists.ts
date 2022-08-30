@@ -1,5 +1,7 @@
 import { Heist, HeistDifficulty } from "@prisma/client"
 import * as DatabaseMethods from "../Database"
+import { User } from "discord.js"
+import GlobalHeistData from "../cache/GlobalHeistData"
 
 export async function UpdateHeists() {
     console.log("Updating heists...")
@@ -42,4 +44,8 @@ export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
     }
 
     return returnVal
+}
+
+export function UserInHeist(user: User) {
+    return GlobalHeistData.filter((heist) => heist.Users.includes(user)).length > 0
 }

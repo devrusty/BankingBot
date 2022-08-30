@@ -5,6 +5,8 @@ import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney"
 import * as HeistMethods from "../methods/Heists"
+import GlobalHeistData from "../cache/GlobalHeistData"
+import HeistMeta from "../interfaces/HeistMeta"
 
 interface SubCommandData {
     name: string
@@ -72,6 +74,8 @@ const SubCommands: SubCommandData[] = [
                 message.channel.send(`Please choose a heist that is avaliable. (see \`${Config.prefix}heists list\`)`)
                 return
             }
+
+            const userInHeist = HeistMethods.UserInHeist(author)
             /*
             if (heistData.users.includes(author.id)) {
                 message.channel.send(`You're already apart of the ${heistData.name} heist!`)
