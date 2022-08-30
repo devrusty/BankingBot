@@ -83,7 +83,7 @@ const SubCommands: SubCommandData[] = [
             }
 
             if (!heist) {
-                message.channel.send("Invalid heist.")
+                message.channel.send("The heist you're trying to join is not currently avaliable.")
                 return
             }
 
