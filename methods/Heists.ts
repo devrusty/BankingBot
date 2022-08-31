@@ -44,12 +44,12 @@ export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
     let returnVal = 0
 
     switch (difficulty) {
-        case HeistDifficulty.Cakewalk: returnVal = 10
-        case HeistDifficulty.Easy: returnVal = 8
-        case HeistDifficulty.Medium: returnVal = 6
-        case HeistDifficulty.Hard: returnVal = 5
-        case HeistDifficulty.Extreme: returnVal = 4
-        case HeistDifficulty.Nightmare: returnVal = 3
+        case HeistDifficulty.Cakewalk: returnVal = 20
+        case HeistDifficulty.Easy: returnVal = 15
+        case HeistDifficulty.Medium: returnVal = 12
+        case HeistDifficulty.Hard: returnVal = 10
+        case HeistDifficulty.Extreme: returnVal = 8
+        case HeistDifficulty.Nightmare: returnVal = 6
     }
 
     return returnVal
