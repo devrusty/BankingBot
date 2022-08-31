@@ -37,7 +37,8 @@ const SubCommands: SubCommandData[] = [
             const fields = heists.map((heist) => {
                 const formatted = FormatMoney(heist.minPayout)
                 const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heist.difficulty)
-                return { name: heist.name, value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${maxUsers}`, inline: true }
+                const heistData = HeistMethods.GetHeist(heist.name)
+                return { name: heist.name, value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${maxUsers}\n${heistData?.Users.length}/${maxUsers}`, inline: true }
             })
 
             const embed = new EmbedBuilder()
