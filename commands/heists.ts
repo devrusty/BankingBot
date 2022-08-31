@@ -101,8 +101,9 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
-            HeistMethods.JoinHeist(author, heistData.name)
-            message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
+            await HeistMethods.JoinHeist(author, heistData.name).then(() => {
+                message.channel.send(`You have successfully joined the ${heistData.name} heist!`)
+            })
         }
     },
     {

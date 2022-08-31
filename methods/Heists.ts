@@ -64,9 +64,13 @@ export function GetHeist(name: string) {
     return heist
 }
 
-export function JoinHeist(user: User, heistName: string) {
+export async function JoinHeist(user: User, heistName: string) {
     const heist = GetHeist(heistName)
     if (!heist) return
+
+    const record = await DatabaseMethods.GetUserRecord(user.id)
+    if (!record) return
+    if (record.level < heist.Heist.requiredLevel) return
 
     heist.Users.add(user)
 }
