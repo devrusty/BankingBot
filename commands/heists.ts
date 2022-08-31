@@ -48,7 +48,7 @@ const SubCommands: SubCommandData[] = [
             const embed = new EmbedBuilder()
 
             embed.setTitle("Heists")
-            embed.setDescription(`Currently avaliable heists.`)
+            embed.setDescription(`Current avaliable heists.`)
             embed.setColor(Config.embedColor)
             embed.setFields(fields)
 
