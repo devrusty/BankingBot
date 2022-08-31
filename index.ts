@@ -50,20 +50,15 @@ Bot.on("messageCreate", async (message: Message) => {
         if (!message.guild) return
         if (!Bot.user) return
 
-        const roleName = Config.production ? Config.role : Config.testRole
-        const role = message.guild.roles.cache.find((role) => role.name == roleName)
-        if (!role) {
-            console.log(`${roleName} role does not exist.`)
+        const guild = message.guild
+        const me = guild.members.me
+
+        if (!me) {
+            console.log("BankingBot does not exist.")
             return
         }
-        if (!role.members.has(Bot.user.id)) {
-            console.log("BankingBot is not added to the BankingBot role.")
-            return
-        }
-        if (!role.permissions.has(PermissionsRequired)) {
-            if (role.permissions.has(PermissionsBitField.Flags.SendMessages))
-                message.channel.send(`Please check that the role <@&${role.id}> has the permissions \`SEND_MESSAGES\` \`READ_MESSAGE_HISTORY\` and \`ATTACH_FILES\`.`)
-            console.log("BankingBot role does not have desired permissions.")
+        if (!me.permissions.has(PermissionsRequired)) {
+            console.log("BankingBot does not have permissions.")
             return
         }
 
