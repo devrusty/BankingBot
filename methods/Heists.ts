@@ -28,7 +28,7 @@ export async function UpdateHeists() {
     avaliableHeists.forEach((heist) => {
         GlobalHeistData.push({
             Heist: heist,
-            Users: new Array<User>()
+            Users: new Set<User>()
         })
     })
 
@@ -56,7 +56,7 @@ export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
 }
 
 export function UserInHeist(user: User) {
-    return GlobalHeistData.filter((heist) => heist.Users.includes(user)).length > 0
+    return GlobalHeistData.filter((heist) => heist.Users.has(user)).length > 0
 }
 
 export function GetHeist(name: string) {
@@ -68,7 +68,7 @@ export function JoinHeist(user: User, heistName: string) {
     const heist = GetHeist(heistName)
     if (!heist) return
 
-    heist.Users.push(user)
+    heist.Users.add(user)
 }
 
 export function LeaveHeist(user: User) {
@@ -80,7 +80,7 @@ export function LeaveHeist(user: User) {
 }
 
 export function GetUserHeist(user: User) {
-    const heist = GlobalHeistData.find((h) => h.Users.includes(user))
+    const heist = GlobalHeistData.find((h) => h.Users.has(user))
     return heist
 }
 

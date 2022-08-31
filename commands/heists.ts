@@ -5,8 +5,6 @@ import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney"
 import * as HeistMethods from "../methods/Heists"
-import GlobalHeistData from "../cache/GlobalHeistData"
-import HeistMeta from "../interfaces/HeistMeta"
 
 interface SubCommandData {
     name: string
@@ -40,7 +38,7 @@ const SubCommands: SubCommandData[] = [
                 const heistData = HeistMethods.GetHeist(heist.name)
                 return {
                     name: heist.name,
-                    value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${maxUsers}\n${heistData?.Users.length}/${maxUsers}`,
+                    value: `Min-payout: $${formatted}\nLevel: ${heist.requiredLevel}\nDifficulty: ${heist.difficulty}\n${maxUsers}\n${heistData?.Users.size}/${maxUsers}`,
                     inline: true
                 }
             })
@@ -92,14 +90,14 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
-            if (heist.Users.includes(author)) {
+            if (heist.Users.has(author)) {
                 message.channel.send(`You're already apart of the ${heistData.name} heist!`)
                 return
             }
 
             const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heistData.difficulty)
-            if (heist.Users.length == maxUsers) {
-                message.channel.send(`The heist you're trying to join has reached the maximum amount of users. (${heist.Users.length}/${maxUsers})`)
+            if (heist.Users.size == maxUsers) {
+                message.channel.send(`The heist you're trying to join has reached the maximum amount of users. (${heist.Users.size}/${maxUsers})`)
                 return
             }
 
