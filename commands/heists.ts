@@ -125,14 +125,6 @@ const SubCommands: SubCommandData[] = [
 
             HeistMethods.LeaveHeist(author)
             message.channel.send(`Successfully left heist ${heist.Heist.name}.`)
-            /*
-            const userInHeist = await DatabaseMethods.UserInHeist(author.id)
-            if (!userInHeist) {
-                message.channel.send("You currently are not participating in a heist.")
-                return
-            }
-            */
-
         }
     }
 ]
