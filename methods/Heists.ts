@@ -71,6 +71,19 @@ export function JoinHeist(user: User, heistName: string) {
     heist.Users.push(user)
 }
 
+export function LeaveHeist(user: User) {
+    const heist = GetUserHeist(user)
+    if (!heist) return
+
+    const index = GlobalHeistData.indexOf(heist)
+    GlobalHeistData.splice(index, 1)
+}
+
+export function GetUserHeist(user: User) {
+    const heist = GlobalHeistData.find((h) => h.Users.includes(user))
+    return heist
+}
+
 export function ClearHeists() {
     reset()
 }
