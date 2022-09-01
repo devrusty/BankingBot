@@ -5,7 +5,7 @@ import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney"
 import * as HeistMethods from "../methods/Heists"
-import { Item } from "@prisma/client";
+import { ItemType } from "@prisma/client";
 
 interface SubCommandData {
     name: string
@@ -34,7 +34,7 @@ const SubCommands: SubCommandData[] = [
             embed.setColor(Config.embedColor)
 
             if (mask) embed.setDescription(`Mask: ${mask.name}`)
-            else embed.setDescription(`You do not have a mask equipped! Use \`${Config.prefix}heists mask set <maskName>\` to equip one.`)
+            else embed.setDescription(`You do not have a mask equipped! Use \`${Config.prefix}heists setmask <maskName>\` to equip one.`)
 
             message.channel.send({
                 embeds: [embed]
@@ -137,6 +137,39 @@ const SubCommands: SubCommandData[] = [
 
             HeistMethods.LeaveHeist(author)
             message.channel.send(`Successfully left heist ${heist.Heist.name}.`)
+        }
+    },
+    {
+        name: "setmask",
+        invoke: async (client: Client, message: Message, args: string[]) => {
+            const author = message.author
+            const record = await DatabaseMethods.GetUserRecord(author.id)
+            if (!record) {
+                MessageTemplates.AssertAccountRequired(message)
+                return
+            }
+
+            const mask = args.slice(2).join(" ")
+            if (!mask) {
+                message.channel.send("Please specify a mask to equip.")
+                return
+            }
+
+            const id = await DatabaseMethods.GetItemIdByName(mask.toLowerCase())
+            const item = await DatabaseMethods.GetItemById(id || 0)
+            if (!item) {
+                message.channel.send("Invalid item.")
+                return
+            }
+
+            if (!item.type.includes(ItemType.Mask)) {
+                message.channel.send("That item is not a mask.")
+                return
+            }
+
+            await DatabaseMethods.SetMask(author.id, item.id).then(() => {
+                message.channel.send(`Successfully equipped mask ${item.name}!`)
+            })
         }
     }
 ]

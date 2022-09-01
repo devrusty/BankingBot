@@ -37,6 +37,12 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
         return
     }
 
+    const itemData = await DatabaseMethods.GetItemById(id)
+    if (!itemData) {
+        message.channel.send("Item doesn't exist.")
+        return
+    }
+
     if (record.inventory.includes(id)) {
         message.channel.send(`You already own a ${item}`)
         return
@@ -50,7 +56,7 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
 
     const response = await DatabaseMethods.PurchaseItem(author.id, item)
     if (!response) {
-        message.channel.send(`Successfully purchased ${item}`)
+        message.channel.send(`Successfully purchased ${itemData.name}`)
         return
     }
 
