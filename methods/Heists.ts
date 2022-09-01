@@ -55,6 +55,21 @@ export function GetHeistMaxUsersByDifficulty(difficulty: HeistDifficulty) {
     return returnVal
 }
 
+export function GetHeistDurationByDifficulty(difficulty: HeistDifficulty) {
+    let returnVal = 0
+
+    switch (difficulty) {
+        case HeistDifficulty.Cakewalk: returnVal = 1800000
+        case HeistDifficulty.Easy: returnVal = 3600000
+        case HeistDifficulty.Medium: returnVal = 7200000
+        case HeistDifficulty.Hard: returnVal = 10800000
+        case HeistDifficulty.Extreme: returnVal = 21600000
+        case HeistDifficulty.Nightmare: returnVal = 32400000
+    }
+
+    return returnVal
+}
+
 export function UserInHeist(user: User) {
     return GlobalHeistData.filter((heist) => heist.Users.has(user)).length > 0
 }
