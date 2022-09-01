@@ -5,6 +5,7 @@ import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney"
 import * as HeistMethods from "../methods/Heists"
+import { Item } from "@prisma/client";
 
 interface SubCommandData {
     name: string
@@ -15,6 +16,15 @@ const SubCommands: SubCommandData[] = [
     {
         name: "index",
         invoke: async (client: Client, message: Message, args: string[]) => {
+            const author = message.author
+            const record = await DatabaseMethods.GetUserRecord(author.id)
+            if (!record) {
+                MessageTemplates.AssertAccountRequired(message)
+                return
+            }
+
+            let mask = await DatabaseMethods.GetItemById(record.mask || 0)
+
             const embed = new EmbedBuilder()
             embed.setTitle("Heists - Info")
             embed.setFields(
@@ -22,6 +32,9 @@ const SubCommands: SubCommandData[] = [
                 { name: `Joining a heist`, value: `\`${Config.prefix}heists join <heist>\``, inline: true }
             )
             embed.setColor(Config.embedColor)
+
+            if (mask) embed.setDescription(`Mask: ${mask.name}`)
+            else embed.setDescription(`You do not have a mask equipped! Use \`${Config.prefix}heists mask set <maskName>\` to equip one.`)
 
             message.channel.send({
                 embeds: [embed]
