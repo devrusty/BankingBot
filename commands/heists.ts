@@ -167,6 +167,11 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
+            if (!record.inventory.includes(item.id)) {
+                message.channel.send("You do not own that item.")
+                return
+            }
+
             await DatabaseMethods.SetMask(author.id, item.id).then(() => {
                 message.channel.send(`Successfully equipped mask ${item.name}!`)
             })
