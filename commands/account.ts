@@ -4,11 +4,12 @@ import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";
 import { GetLevelMaxXP } from "../methods/Levels";
 import Config from "../config"
+import * as MessageTemplates from "../methods/MessageTemplates"
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
     const record = await DatabaseMethods.GetUserRecord(user.id)
     if (!record) {
-        message.channel.send(`${user.tag} does not have a BankingBot account initialised!`)
+        message.channel.send(`<@${user.id}> does not have a BankingBot account initialised!`)
         return
     }
 
@@ -43,17 +44,13 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 const CreateAccount = async (message: Message) => {
     const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author.id)
     if (recordExists) {
-        message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
+        message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your profile.`)
         return
     }
 
-    const newRecord: boolean = await DatabaseMethods.CreateUserRecord(message.author.id)
-    if (!newRecord) {
-        message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your balance.`)
-        return
-    }
-
-    message.channel.send(`Account created! Use \`${Config.prefix}account\` to view your balance.`)
+    await DatabaseMethods.CreateUserRecord(message.author.id).then(() => {
+        message.channel.send(`Account created! Use \`${Config.prefix}account\` to view your profile.`)
+    })
 }
 
 const DeleteAccount = async (message: Message) => {
@@ -62,7 +59,7 @@ const DeleteAccount = async (message: Message) => {
 
     const recordExists = await DatabaseMethods.UserRecordExists(id)
     if (!recordExists) {
-        message.channel.send(`You must have a BankingBot account initialised to delete an account! Use \`${Config.prefix}account create\``)
+        MessageTemplates.AssertAccountRequired(message)
         return
     }
 
