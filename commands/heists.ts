@@ -29,7 +29,8 @@ const SubCommands: SubCommandData[] = [
             embed.setTitle("Heists - Info")
             embed.setFields(
                 { name: "List Heists", value: `\`${Config.prefix}heists list\``, inline: true },
-                { name: `Joining a heist`, value: `\`${Config.prefix}heists join <heist>\``, inline: true }
+                { name: "Joining a heist", value: `\`${Config.prefix}heists join <heist>\``, inline: true },
+                { name: "Equipping a mask", value: `\`${Config.prefix}heists setmask <maskName>\``, inline: true }
             )
             embed.setColor(Config.embedColor)
 
