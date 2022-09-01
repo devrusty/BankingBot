@@ -1,4 +1,4 @@
-import { Item, User, PrismaClient, Heist } from "@prisma/client"
+import { Item, User, PrismaClient, Heist, ItemType } from "@prisma/client"
 import Donation from "./interfaces/donation"
 import { GetLevelMaxXP } from "./methods/Levels"
 
@@ -501,4 +501,17 @@ export async function GetHeistById(id: number) {
     const heists = await GetHeists()
     const heist = heists.find((h) => h.id == id)
     return heist
+}
+
+export async function SetMask(userId: string, itemId: number) {
+    const user = await GetUserRecord(userId)
+    if (!user) return
+
+    const item = await GetItemById(itemId)
+    if (!item) return
+    if (!item.type.includes(ItemType.Mask)) return
+    if (!user.inventory.includes(item.id)) return
+
+    user.mask = item.id
+    await SetUser(userId, user)
 }
