@@ -107,7 +107,7 @@ const OpenLootbox = async (client: Client, message: Message, args: string[]) => 
         case "Item":
             const item = (reward.value as Item)
             if (!item) {
-                message.channel.send("Item doesn't exist.")
+                message.channel.send("The item that you won does not exist. You weren't charged.")
                 return
             }
 
