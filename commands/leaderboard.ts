@@ -7,9 +7,9 @@ import FormatMoney from "../methods/FormatMoney";
 const GetLeaderboard = async (message: Message) => {
     const records = await DatabaseMethods.GetUserCashLeaderboard()
     const members = message.guild?.members.cache
-    const fields = records.map((record) => {
+    const fields = records.map((record, index) => {
         const user = members?.find((u) => u.id == record.id)
-        return { name: `${user?.user.tag || "Unknown"}`, value: `$${FormatMoney(record.cash)}` }
+        return { name: `#${index + 1} ${user?.user.tag || "Unknown"}`, value: `$${FormatMoney(record.cash)}` }
     })
 
     return fields
