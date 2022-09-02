@@ -40,17 +40,17 @@ const GetLootboxItem = async (lootboxPrice: number) => {
     const rewardType = RewardTypes[Math.floor(Math.random() * RewardTypes.length)]
     const items = await DatabaseMethods.GetItems()
     const rangedItems = items.filter((item) => {
-        item.price <= Math.floor(lootboxPrice / 2.5) && item.price > Math.floor(item.price / 100)
+        return item.price <= Math.floor(lootboxPrice / 2.5) && item.price > Math.floor(item.price / 100)
     })
 
     let reward: RewardData = { type: rewardType, value: 0 }
     console.log(rewardType)
     switch (rewardType) {
         case "Cash":
-            reward.value = Math.floor(Math.random() * lootboxPrice) + 1000
+            reward.value = Math.floor(Math.random() * lootboxPrice) + Math.floor(Math.random() * lootboxPrice / 5)
             break
         case "XP":
-            reward.value = Math.floor(Math.random() * lootboxPrice / 100) + 10
+            reward.value = Math.floor(Math.random() * lootboxPrice / 100) + Math.floor(Math.random() * lootboxPrice / 10)
             break
         case "Item":
             reward.value = rangedItems[Math.floor(Math.random() * rangedItems.length)]
