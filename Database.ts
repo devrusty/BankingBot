@@ -515,3 +515,14 @@ export async function SetMask(userId: string, itemId: number) {
     user.mask = item.id
     await SetUser(userId, user)
 }
+
+export async function GetUserCashLeaderboard() {
+    const aggregations = await PClient.user.findMany({
+        take: 10,
+        orderBy: {
+            cash: "desc"
+        }
+    })
+
+    return aggregations
+}
