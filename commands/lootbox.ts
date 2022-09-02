@@ -44,7 +44,6 @@ const GetLootboxItem = async (lootboxPrice: number) => {
     })
 
     let reward: RewardData = { type: rewardType, value: 0 }
-    console.log(rewardType)
     switch (rewardType) {
         case "Cash":
             reward.value = Math.floor(Math.random() * lootboxPrice) + Math.floor(Math.random() * lootboxPrice / 5)
