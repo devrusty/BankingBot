@@ -46,10 +46,10 @@ const GetLootboxItem = async (lootboxPrice: number) => {
     let reward: RewardData = { type: rewardType, value: 0 }
     switch (rewardType) {
         case "Cash":
-            reward.value = Math.floor(Math.random() * lootboxPrice) + Math.floor(Math.random() * lootboxPrice / 5)
+            reward.value = Math.floor(Math.random() * lootboxPrice) + Math.floor(Math.random() * (lootboxPrice * 1.5))
             break
         case "XP":
-            reward.value = Math.floor(Math.random() * lootboxPrice / 100) + Math.floor(Math.random() * lootboxPrice / 10)
+            reward.value = Math.floor(Math.random() * lootboxPrice / 100) + Math.floor(Math.random() * lootboxPrice / 7.5)
             break
         case "Item":
             reward.value = rangedItems[Math.floor(Math.random() * rangedItems.length)]
