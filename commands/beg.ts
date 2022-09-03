@@ -3,6 +3,7 @@ import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";
 import Config from "../config"
+import * as MessageTemplates from "../methods/MessageTemplates"
 
 const Cooldown = 20000
 const MaxAmount = 500
@@ -17,7 +18,7 @@ const Cmd: Command = {
         const author = message.author
         const userRecordExists = await DatabaseMethods.UserRecordExists(author.id)
         if (!userRecordExists) {
-            message.channel.send(`You must have a BankingBot account initialised to use \`${Config.prefix}beg\`. Please use \`${Config.prefix}create\``)
+            MessageTemplates.AssertAccountRequired(message)
             return
         }
 
