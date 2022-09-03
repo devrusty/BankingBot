@@ -1,0 +1,2 @@
+nodemon index.ts
+pause
