@@ -3,6 +3,7 @@ import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney"
 import Config from "../config"
+import * as JobMethods from "../methods/Jobs"
 
 let RecentlyClaimed = new Set()
 
@@ -41,7 +42,7 @@ const Cmd: Command = {
             job = await DatabaseMethods.GetJobById(userRecord.occupation)
 
         if (userRecord.premium) amount = PremiumDailyReward
-        if (job) amount += job.income * 12
+        if (job) amount += Math.floor(JobMethods.GetJobIncome(job) * 6)
 
         RecentlyClaimed.add(author.id)
 
