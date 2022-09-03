@@ -1,12 +1,14 @@
 import Command from "../interfaces/commandInterface";
-import { Client, Message } from "discord.js"
+import { Client, Message, EmbedBuilder, Embed } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";
 import Config from "../config"
 import * as MessageTemplates from "../methods/MessageTemplates"
 
 const Cooldown = 20000
-const MaxAmount = 500
+const MaxAmount = 2000
+
+const GenerousPeople = ["Joe", "Kanye West", "rust#7643", "BankingBot", "Steve", "John", "Jacob", "Kevyn"]
 
 const RecentlyBegged = new Set<string>()
 const Cmd: Command = {
@@ -29,9 +31,18 @@ const Cmd: Command = {
 
         const randomAmount = Math.floor(Math.random() * MaxAmount)
         DatabaseMethods.AddToBalance(author.id, randomAmount).then(() => {
-            message.channel.send(`You got $${FormatMoney(randomAmount)} from begging.`)
-            RecentlyBegged.add(author.id)
+            const embed = new EmbedBuilder()
+            embed.setTitle("Begging")
+            embed.setColor(Config.embedColor)
 
+            const generousPerson = GenerousPeople[Math.floor(Math.random() * GenerousPeople.length)]
+            embed.setDescription(`**${generousPerson}** gave you $${FormatMoney(randomAmount)}.`)
+
+            message.channel.send({
+                embeds: [embed]
+            })
+
+            RecentlyBegged.add(author.id)
             setTimeout(() => {
                 RecentlyBegged.delete(author.id)
             }, Cooldown)
