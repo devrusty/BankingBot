@@ -61,7 +61,7 @@ const Embeds = {
             { name: "Begging", value: `You can use the \`${Config.prefix}beg\` every 2 minutes to get a random amount of money from 1 - 1,000.` },
             { name: "Lottery", value: `You can participate in the lottery using the \`${Config.prefix}lottery\` command. Lottery jackpots can range from 1 - 100,000,000.` },
             { name: "Daily Rewards", value: `You can claim your daily reward every 24 hours using the \`${Config.prefix}daily\` command.` },
-            { name: "Jobs", value: `You can get a job by using \`${Config.prefix}jobs get <jobName>\`, and \`${Config.prefix}work\` every 2 hours.` }
+            { name: "Jobs", value: `You can get a job by using \`${Config.prefix}jobs get <jobName>\`, and \`${Config.prefix}jobs work\` every 2 hours.` }
         )
         .setFooter({
             text: "Created with Typescript, Prisma, PostgreSQL, and love by rust#7643"
