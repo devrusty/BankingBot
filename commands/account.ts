@@ -5,6 +5,7 @@ import FormatMoney from "../methods/FormatMoney";
 import { GetLevelMaxXP } from "../methods/Levels";
 import Config from "../config"
 import * as MessageTemplates from "../methods/MessageTemplates"
+import GetBooleanEmoji from "../methods/GetBooleanEmoji";
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
     const record = await DatabaseMethods.GetUserRecord(user.id)
@@ -28,7 +29,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
         { name: "Balance", value: balanceString },
         { name: "Level", value: `${String(record.level)} (${record.xp}/${GetLevelMaxXP(record.level)})` },
         { name: "Occupation", value: occupation || "Unemployed" },
-        { name: "Premium", value: String(record.premium) }
+        { name: "Premium", value: GetBooleanEmoji(record.premium) }
     )
 
     if (record.achievements.includes(9)) embed.data.title = `${embed.data.title} BB`
