@@ -58,7 +58,7 @@ const Cashout = async (client: Client, message: Message, args: string[]) => {
     const seconds = (miliseconds / 1000)
     let amount = Math.floor(seconds * Rate)
 
-    if (amount == Capacity) amount = Capacity
+    if (amount > Capacity) amount = Capacity
 
     await DatabaseMethods.AddToBalance(author.id, amount).then(() => {
         message.channel.send(`Successfully claimed $${FormatMoney(amount)} from your vault.`)
