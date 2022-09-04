@@ -25,9 +25,12 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
         { name: "Banned", value: "This user is banned from BankingBot." }
     )
 
+    const xp = FormatMoney(record.xp)
+    const maxRp = FormatMoney(GetLevelMaxXP(record.level))
+
     embed.addFields(
         { name: "Balance", value: balanceString },
-        { name: "Level", value: `${String(record.level)} (${record.xp}/${GetLevelMaxXP(record.level)})` },
+        { name: "Level", value: `${String(record.level)} (${xp}/${maxRp})` },
         { name: "Occupation", value: occupation || "Unemployed" },
         { name: "Premium", value: GetBooleanEmoji(record.premium) }
     )
