@@ -7,6 +7,9 @@ import { Item, User } from "@prisma/client";
 import FormatMoney from "../methods/FormatMoney";
 import Lootbox from "../interfaces/Lootbox";
 
+const RecentlyUsed = new Set()
+const Cooldown = 60000
+
 const Lootboxes: Lootbox[] = [
     { name: "Common", emoji: "", price: 5000 },
     { name: "Uncommon", emoji: "", price: 10000 },
@@ -130,6 +133,11 @@ const OpenLootbox = async (client: Client, message: Message, args: string[]) => 
             embeds: [embed]
         })
     })
+
+    RecentlyUsed.add(author)
+    setTimeout(() => {
+        RecentlyUsed.delete(author)
+    }, Cooldown);
 }
 
 const DisplayLootboxes = (message: Message) => {
@@ -153,6 +161,12 @@ const Cmd: Command = {
     Usage: `\`${Config.prefix}lootbox\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
+        const author = message.author
+        if (RecentlyUsed.has(author)) {
+            MessageTemplates.AssertCooldown(message, 1, "Minute")
+            return
+        }
+
         let arg = args[1]
         if (!arg) {
             DisplayLootboxes(message)
