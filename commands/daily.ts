@@ -41,8 +41,8 @@ const Cmd: Command = {
         if (userRecord.occupation !== 0)
             job = await DatabaseMethods.GetJobById(userRecord.occupation)
 
-        if (userRecord.premium) amount = PremiumDailyReward
         if (job) amount += Math.floor(JobMethods.GetJobIncome(job) * 6)
+        if (userRecord.premium) amount *= 2
 
         RecentlyClaimed.add(author.id)
 
