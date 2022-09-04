@@ -65,6 +65,11 @@ const GetLootboxItem = async (lootboxPrice: number) => {
 const OpenLootbox = async (client: Client, message: Message, args: string[]) => {
     const author = message.author
     const record = await DatabaseMethods.GetUserRecord(author.id)
+    if (RecentlyUsed.has(author)) {
+        MessageTemplates.AssertCooldown(message, 1, "Minute")
+        return
+    }
+
     if (!record) {
         MessageTemplates.AssertAccountRequired(message)
         return
@@ -161,12 +166,6 @@ const Cmd: Command = {
     Usage: `\`${Config.prefix}lootbox\``,
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
-        const author = message.author
-        if (RecentlyUsed.has(author)) {
-            MessageTemplates.AssertCooldown(message, 1, "Minute")
-            return
-        }
-
         let arg = args[1]
         if (!arg) {
             DisplayLootboxes(message)
