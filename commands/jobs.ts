@@ -20,10 +20,11 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
     for (var i = 0; i < 9; i++) {
         const index = Math.floor(Math.random() * jobs.length)
         const job = jobs[index]
+        const income = JobMethods.GetJobIncome(job)
 
         fields.push({
             name: job.name,
-            value: `Income: $${FormatMoney(job.income)}\nLevel: ${job.requiredLevel}`,
+            value: `Income: $${FormatMoney(income)}\nLevel: ${job.requiredLevel}`,
             inline: true
         })
     }
