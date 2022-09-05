@@ -10,7 +10,7 @@ const config = {
     developers: [
         "472530726613549066"
     ],
-    release: "v1.0",
+    release: "v1.1",
     production: true,
     permInvite: "https://discord.gg/jqD8Udk58E"
 }
