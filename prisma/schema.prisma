@@ -11,17 +11,19 @@ datasource db {
 }
 
 model User {
-  id           String  @unique
-  cash         Int     @default(100)
-  inventory    Int[]
-  premium      Boolean @default(false)
-  level        Int     @default(1)
-  xp           Int     @default(0)
-  occupation   Int     @default(0)
-  banned       Boolean @default(false)
-  achievements Int[]
-  verified     Boolean @default(false)
-  mask         Int?
+  id              String  @unique
+  cash            Int     @default(2500)
+  inventory       Int[]
+  premium         Boolean @default(false)
+  level           Int     @default(1)
+  xp              Int     @default(0)
+  occupation      Int     @default(0)
+  banned          Boolean @default(false)
+  achievements    Int[]
+  verified        Boolean @default(false)
+  mask            Int?
+  quests          Int[]
+  completedQuests Int[]
 }
 
 model Item {
@@ -58,15 +60,7 @@ model Job {
   id            Int    @id @unique @default(autoincrement())
   name          String
   description   String
-  income        Int
   requiredLevel Int
-}
-
-model Bug {
-  id      Int      @id @unique @default(autoincrement())
-  author  String
-  content String
-  date    DateTime @default(now())
 }
 
 model Achievement {
@@ -110,4 +104,25 @@ model Heist {
   requiredLevel Int
   avaliable     Boolean         @default(false)
   difficulty    HeistDifficulty
+}
+
+enum QuestGoal {
+  Cash
+  Level
+  Item
+}
+
+enum QuestReward {
+  Cash
+  XP
+  Item
+}
+
+model Quest {
+  id            Int         @id @unique @default(autoincrement())
+  name          String
+  goal          QuestGoal
+  requiredLevel Int
+  reward        QuestReward
+  active        Boolean     @default(false)
 }
