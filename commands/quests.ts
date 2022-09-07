@@ -13,7 +13,7 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
     if (quests.length == 0) embed.setDescription("You do not have any active quests at the moment.")
     embed.setColor(Config.embedColor)
 
-    const fields = quests.map(async (id) => {
+    const activeQuestFields = quests.map(async (id) => {
         const quest = await DatabaseMethods.GetQuestById(id)
         if (!quest) return { name: "Unknown Quest", value: "There was an issue while fetching this quest's data.", inline: true }
 
@@ -36,8 +36,17 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
         return { name: quest.name, value: `Reward: $${reward}`, inline: true }
     })
 
-    const resolved = await Promise.all(fields)
-    embed.setFields(resolved)
+    const awaitingQuestFields = record.awaitingQuests.map(async (id) => {
+        const quest = await DatabaseMethods.GetQuestById(id)
+        if (quest) return { name: `✅ ${quest.name}`, value: `This quest has been completed. Use \`${Config.prefix}quests claim\` to claim the reward.` }
+        return { name: "Unknown", value: `There was an issue while fetching the data for quest ID ${id}. Please report this to the developers.`, inline: true }
+    })
+
+    const resolvedActive = await Promise.all(activeQuestFields)
+    const resolvedAwaiting = await Promise.all(awaitingQuestFields)
+
+    embed.addFields(resolvedAwaiting)
+    embed.addFields(resolvedActive)
 
     message.channel.send({
         embeds: [embed]
