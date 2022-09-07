@@ -23,6 +23,7 @@ model User {
   verified        Boolean @default(false)
   mask            Int?
   quests          Int[]
+  awaitingQuests  Int[]
   completedQuests Int[]
 }
 
