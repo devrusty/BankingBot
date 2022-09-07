@@ -121,8 +121,10 @@ enum QuestReward {
 model Quest {
   id            Int         @id @unique @default(autoincrement())
   name          String
-  goal          QuestGoal
+  goalType      QuestGoal
+  goal          Int
   requiredLevel Int
-  reward        QuestReward
+  rewardType    QuestReward
+  reward        Int
   active        Boolean     @default(false)
 }
