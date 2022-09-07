@@ -526,3 +526,14 @@ export async function GetUserCashLeaderboard() {
 
     return aggregations
 }
+
+export async function GetQuests() {
+    const quests = await PClient.quest.findMany()
+    return quests
+}
+
+export async function GetQuestById(id: number) {
+    const quests = await GetQuests()
+    const quest = quests.find((q) => q.id == id)
+    return quest
+}
