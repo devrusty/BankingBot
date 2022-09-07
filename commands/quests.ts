@@ -6,6 +6,8 @@ import * as MesasgeTemplates from "../methods/MessageTemplates"
 import { User } from "@prisma/client";
 import FormatMoney from "../methods/FormatMoney";
 
+const Compensation = 25000
+
 const DisplayUserQuestx = async (record: User, message: Message) => {
     const quests = record.quests
     const embed = new EmbedBuilder()
@@ -53,6 +55,51 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
     })
 }
 
+const ClaimQuestReward = async (record: User, message: Message) => {
+    const author = message.author
+    const awaitingQuests = record.awaitingQuests
+    if (awaitingQuests.length == 0) {
+        message.channel.send("You do not have any awaiting quests.")
+        return
+    }
+
+    const id = awaitingQuests[0]
+    const quest = await DatabaseMethods.GetQuestById(id)
+    if (!quest) {
+        message.channel.send(`There was an error while fetching quest data for ID ${id}. Please report this to the developers.`)
+        return
+    }
+
+    const rewardType = quest.rewardType
+    const reward = quest.reward
+
+    await DatabaseMethods.RemoveAwaitingQuest(author.id, quest.id)
+    switch (rewardType) {
+        case "Cash":
+            await DatabaseMethods.AddToBalance(author.id, reward).then(() => {
+                message.channel.send(`Successfully collected reward of $${FormatMoney(reward)} for completing ${quest.name}!`)
+            })
+            break
+        case "Item":
+            const itemData = await DatabaseMethods.GetItemById(reward)
+            if (!itemData) {
+                await DatabaseMethods.AddToBalance(author.id, Compensation).then(() => {
+                    message.channel.send(`The item reward does not exist. You have been compensated with $${FormatMoney(Compensation)} instead.`)
+                })
+                return
+            }
+
+            record.inventory.push(reward)
+            await DatabaseMethods.SetUser(author.id, record)
+            break
+        case "XP":
+            await DatabaseMethods.GiveXP(author.id, reward).then(() => {
+                message.channel.send(`Successfully collected reward of ${FormatMoney(reward)} XP for completing ${quest.name}! `)
+            })
+            break
+    }
+}
+
 const Cmd: Command = {
     Name: "quests",
     Description: "Shows all of your active quests.",
@@ -66,7 +113,17 @@ const Cmd: Command = {
             return
         }
 
-        DisplayUserQuestx(record, message)
+        let param = args[1]
+        if (!param) {
+            DisplayUserQuestx(record, message)
+            return
+        }
+
+        param = param.toLowerCase()
+        if (param == "claim") {
+            await ClaimQuestReward(record, message)
+            return
+        }
     }
 }
 
