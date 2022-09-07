@@ -19,7 +19,7 @@ const Cmd: Command = {
 
         const gambleAmount: number = Number(args[1])
         const user: User = message.author
-        const userRecord = await DatabaseMethods.GetUserRecord(user.id)
+        const userRecord = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
 
         if (!userRecord) {
             message.channel.send(`You must have a BankingBot account initialised before you can gamble! Use \`${Config.prefix}account create\`.`)
@@ -61,7 +61,7 @@ const Cmd: Command = {
         const chanceResult: number = Math.floor(Math.random() * 3)
 
         if (chanceResult !== chanceGoal) {
-            await DatabaseMethods.RemoveFromBalance(user.id, gambleAmount)
+            await DatabaseMethods.UserMethods.RemoveFromBalance(user.id, gambleAmount)
             message.channel.send(`You lost $${FormatMoney(gambleAmount)}!`)
             return
         }
@@ -70,8 +70,8 @@ const Cmd: Command = {
         const xpAmount = Math.floor(amount / 100)
         const finalAmount: number = userRecord.premium ? amount : Math.floor(amount * 1.50)
 
-        await DatabaseMethods.AddToBalance(user.id, finalAmount)
-        await DatabaseMethods.GiveXP(user.id, xpAmount)
+        await DatabaseMethods.UserMethods.AddToBalance(user.id, finalAmount)
+        await DatabaseMethods.UserMethods.GiveXP(user.id, xpAmount)
 
         message.channel.send(`You won $${FormatMoney(finalAmount)} and ${xpAmount} XP!`)
     }

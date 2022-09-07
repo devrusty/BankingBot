@@ -39,7 +39,7 @@ const Cmd: Command = {
         Bot = client
 
         const author = message.author
-        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
+        const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(author.id)
         if (!recordExists) {
             message.channel.send(`You must have a BankingBot account initialised to join the lottery. Use \`${Config.prefix}account create\` to initialise one.`)
             return
@@ -88,8 +88,8 @@ const GetWinner = async () => {
     annEmbed.setDescription(`<@${winner.id}> won the lottery!`)
     annEmbed.setColor("Yellow")
 
-    await DatabaseMethods.AddToBalance(winner.id, LotteryAmount)
-    await DatabaseMethods.GiveXP(winner.id, LotteryXP)
+    await DatabaseMethods.UserMethods.AddToBalance(winner.id, LotteryAmount)
+    await DatabaseMethods.UserMethods.GiveXP(winner.id, LotteryXP)
 
     ResetLottery()
 }

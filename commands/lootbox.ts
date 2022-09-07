@@ -41,7 +41,7 @@ const GetLootboxFields = () => {
 
 const GetLootboxItem = async (lootboxPrice: number) => {
     const rewardType = RewardTypes[Math.floor(Math.random() * RewardTypes.length)]
-    const items = await DatabaseMethods.GetItems()
+    const items = await DatabaseMethods.ItemMethods.GetItems()
     const rangedItems = items.filter((item) => {
         return item.price <= Math.floor(lootboxPrice / 2.5) && item.price > Math.floor(item.price / 100)
     })
@@ -64,7 +64,7 @@ const GetLootboxItem = async (lootboxPrice: number) => {
 
 const OpenLootbox = async (client: Client, message: Message, args: string[]) => {
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
     if (RecentlyUsed.has(author)) {
         MessageTemplates.AssertCooldown(message, 1, "Minute")
         return
@@ -101,13 +101,13 @@ const OpenLootbox = async (client: Client, message: Message, args: string[]) => 
     switch (reward.type) {
         case "Cash":
             const cash = (reward.value as number)
-            await DatabaseMethods.AddToBalance(author.id, cash).then(() => {
+            await DatabaseMethods.UserMethods.AddToBalance(author.id, cash).then(() => {
                 embed.setFields({ name: "Reward", value: `$${FormatMoney(cash)}` })
             })
             break
         case "XP":
             const xp = (reward.value as number)
-            await DatabaseMethods.GiveXP(author.id, xp).then(() => {
+            await DatabaseMethods.UserMethods.GiveXP(author.id, xp).then(() => {
                 embed.setFields({ name: "Reward", value: `${FormatMoney(xp)} XP` })
             })
             break
@@ -120,20 +120,20 @@ const OpenLootbox = async (client: Client, message: Message, args: string[]) => 
 
             if (record.inventory.includes(item.id)) {
                 const value = Math.floor(item.price / 2)
-                await DatabaseMethods.AddToBalance(author.id, value).then(() => {
+                await DatabaseMethods.UserMethods.AddToBalance(author.id, value).then(() => {
                     message.channel.send(`You already have a ${item.name}, but you were rewarded $${FormatMoney(value)}`)
                 })
                 return
             }
 
             record.inventory.push(item.id)
-            await DatabaseMethods.SetUser(author.id, record).then(() => {
+            await DatabaseMethods.UserMethods.SetUser(author.id, record).then(() => {
                 embed.setFields({ name: "Reward", value: `${item.name} ($${FormatMoney(item.price)})` })
             })
             break
     }
 
-    await DatabaseMethods.RemoveFromBalance(author.id, lootbox.price).then(() => {
+    await DatabaseMethods.UserMethods.RemoveFromBalance(author.id, lootbox.price).then(() => {
         message.channel.send({
             embeds: [embed]
         })

@@ -5,7 +5,7 @@ import Config from "../config"
 import FormatMoney from "../methods/FormatMoney";
 
 const GetLeaderboard = async (message: Message) => {
-    const records = await DatabaseMethods.GetUserCashLeaderboard()
+    const records = await DatabaseMethods.UserMethods.GetUserCashLeaderboard()
     const members = message.guild?.members.cache
     const fields = records.map((record, index) => {
         const user = members?.find((u) => u.id == record.id)

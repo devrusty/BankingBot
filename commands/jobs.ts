@@ -9,7 +9,7 @@ const RecentlyWorked = new Set()
 const cooldown = 1800000
 
 const DisplayJobsForLevel = async (message: Message, level: number) => {
-    const jobs = await DatabaseMethods.GetJobsForLevel(level)
+    const jobs = await DatabaseMethods.JobMethods.GetJobsForLevel(level)
     const jobsEmbed = new EmbedBuilder()
     jobsEmbed.setDescription(`Use \`${Config.prefix}jobs get <jobName>\` to get a job.`)
     jobsEmbed.setTitle("Jobs")
@@ -42,14 +42,14 @@ const DisplayJobsForLevel = async (message: Message, level: number) => {
 
 const GetJob = async (message: Message, args: string[]) => {
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
 
     if (!record) {
         message.channel.send(`You do not have a BankingBot account initialised! Use \`${Config.prefix}account create\` to create one.`)
         return
     }
 
-    const currentOccupation = await DatabaseMethods.GetJobById(record.occupation)
+    const currentOccupation = await DatabaseMethods.JobMethods.GetJobById(record.occupation)
     if (currentOccupation) {
         message.channel.send(`You currently have a job! Please use \`${Config.prefix}jobs resign\` to quit your job before changing it.`)
         return
@@ -61,7 +61,7 @@ const GetJob = async (message: Message, args: string[]) => {
         return
     }
 
-    const jobs = await DatabaseMethods.GetJobs()
+    const jobs = await DatabaseMethods.JobMethods.GetJobs()
     const job = jobs.find(job => job.name.toLowerCase() == jobName.toLowerCase())
     if (!job) {
         message.channel.send(`Invalid job. Please use \`${Config.prefix}jobs\` to see a list of avaliable jobs for your level.`)
@@ -73,20 +73,20 @@ const GetJob = async (message: Message, args: string[]) => {
         return
     }
 
-    const jobId = await DatabaseMethods.GetJobIdByName(jobName)
+    const jobId = await DatabaseMethods.JobMethods.GetJobIdByName(jobName)
     if (!jobId) {
         message.channel.send(`Invalid job. Please use \`${Config.prefix}jobs\` to see a list of avaliable jobs for your level.`)
         return
     }
 
-    await DatabaseMethods.GiveJob(author.id, jobId).then(() => {
+    await DatabaseMethods.UserMethods.GiveJob(author.id, jobId).then(() => {
         message.channel.send(`You have became a ${job.name}! Your income will be apart of your daily reward. You can also use \`${Config.prefix}jobs work\` every 30 minutes.`)
     })
 }
 
 const Resign = async (message: Message) => {
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
     if (!record) {
         message.channel.send("You must have a BankingBot account initialised to use that command!")
         return
@@ -97,16 +97,16 @@ const Resign = async (message: Message) => {
         return
     }
 
-    const jobName = await DatabaseMethods.GetJobNameById(record.occupation)
+    const jobName = await DatabaseMethods.JobMethods.GetJobNameById(record.occupation)
 
-    await DatabaseMethods.ResignUser(author.id).then(() => {
+    await DatabaseMethods.UserMethods.ResignUser(author.id).then(() => {
         message.channel.send(`You've resigned from your position as a ${jobName}.`)
     })
 }
 
 const Work = async (message: Message) => {
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
     if (!record) {
         message.channel.send(`You must have a BankingBot account initialised to use that command! \`${Config.prefix}account create\``)
         return
@@ -116,13 +116,13 @@ const Work = async (message: Message) => {
         return
     }
 
-    const jobName = await DatabaseMethods.GetJobNameById(record.occupation)
+    const jobName = await DatabaseMethods.JobMethods.GetJobNameById(record.occupation)
     if (!jobName) {
         message.channel.send("Invalid job.")
         return
     }
 
-    const job = await DatabaseMethods.GetJobByName(jobName)
+    const job = await DatabaseMethods.JobMethods.GetJobByName(jobName)
     if (!job) {
         message.channel.send("Invalid job.")
         return
@@ -136,13 +136,13 @@ const Work = async (message: Message) => {
     const income = JobMethods.GetJobIncome(job)
     const xp = Math.floor(income / 300)
 
-    await DatabaseMethods.GiveXP(author.id, xp).catch((err) => {
+    await DatabaseMethods.UserMethods.GiveXP(author.id, xp).catch((err) => {
         console.log(`There was an issue whilst giving XP to ${author.tag}!`)
         console.log(err)
 
         message.channel.send("There was an error whilst giving XP. This issue has been logged.")
     })
-    await DatabaseMethods.AddToBalance(author.id, income).then(() => {
+    await DatabaseMethods.UserMethods.AddToBalance(author.id, income).then(() => {
         message.channel.send(`You made $${FormatMoney(income)} and ${xp} XP from working as a ${job.name}.`)
         RecentlyWorked.add(author.id)
     }).catch((err) => {
@@ -164,7 +164,7 @@ const Cmd: Command = {
         const author = message.author
         let action = args[1]
 
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             message.channel.send(`You must have a BankingBot account initialised before you can view the jobs. Use \`${Config.prefix}account create\`.`)
             return

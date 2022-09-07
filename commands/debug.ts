@@ -10,7 +10,7 @@ const AddMoney = async (message: Message, args: string[]) => {
 
     if (!mention) {
         const amount = args[2]
-        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
+        const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(author.id)
         if (!recordExists) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
@@ -21,14 +21,14 @@ const AddMoney = async (message: Message, args: string[]) => {
             return
         }
 
-        await DatabaseMethods.AddToBalance(author.id, Number(amount)).then(() => {
+        await DatabaseMethods.UserMethods.AddToBalance(author.id, Number(amount)).then(() => {
             message.channel.send(`Gave $${amount} to ${author.tag}`)
         })
         return
     }
 
     const amount = args[3]
-    const recordExists = await DatabaseMethods.UserRecordExists(mention.user.id)
+    const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(mention.user.id)
     if (!recordExists) {
         message.channel.send("The user that you're trying to give money to does not have a BankingBot account initialised.")
         return
@@ -39,7 +39,7 @@ const AddMoney = async (message: Message, args: string[]) => {
         return
     }
 
-    await DatabaseMethods.AddToBalance(mention.user.id, Number(amount)).then(() => {
+    await DatabaseMethods.UserMethods.AddToBalance(mention.user.id, Number(amount)).then(() => {
         message.channel.send(`Gave $${amount} to ${mention.user.tag}`)
     })
 }
@@ -49,31 +49,31 @@ const ClearMoney = async (message: Message, args: string[]) => {
     const mention = message.mentions.members?.first()
 
     if (!mention) {
-        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
+        const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(author.id)
         if (!recordExists) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             message.channel.send(`Please use \`${Config.prefix}account create\`.`)
             return
         }
 
-        await DatabaseMethods.RemoveFromBalance(author.id, record.cash).then(() => {
+        await DatabaseMethods.UserMethods.RemoveFromBalance(author.id, record.cash).then(() => {
             message.channel.send(`Cleared ${author.tag}'s cash.`)
         })
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(mention.user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(mention.user.id)
     if (!record) {
         message.channel.send("The user that you're trying to clear does not have a BankingBot account initialised.")
         return
     }
 
-    await DatabaseMethods.RemoveFromBalance(mention.user.id, record.cash).then(() => {
+    await DatabaseMethods.UserMethods.RemoveFromBalance(mention.user.id, record.cash).then(() => {
         message.channel.send(`Cleared ${mention.user.tag}'s cash.`)
     })
 }
@@ -117,7 +117,7 @@ const Ban = async (message: Message) => {
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(mention.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(mention.id)
     if (!record) {
         message.channel.send("The user you're trying to ban does not have a BankingBot account initialised.")
         return
@@ -128,7 +128,7 @@ const Ban = async (message: Message) => {
         return
     }
 
-    await DatabaseMethods.BanUser(mention.id).then(() => {
+    await DatabaseMethods.UserMethods.BanUser(mention.id).then(() => {
         message.channel.send(`<@${mention.id}> has been banned from using BankingBot.`)
     }).catch((err) => {
         console.log(err)
@@ -143,7 +143,7 @@ const Pardon = async (message: Message) => {
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(mention.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(mention.id)
     if (!record) {
         message.channel.send("The user you're trying to pardon does not have a BankingBot account initialised!")
         return
@@ -154,7 +154,7 @@ const Pardon = async (message: Message) => {
         return
     }
 
-    await DatabaseMethods.PardonUser(mention.id).then(() => {
+    await DatabaseMethods.UserMethods.PardonUser(mention.id).then(() => {
         message.channel.send(`Successfully pardoned <@${mention.id}>!`)
     }).catch((err) => {
         console.log(err)
@@ -169,17 +169,17 @@ const Premium = async (message: Message) => {
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
     if (!record) {
         message.channel.send("User does not have a BankingBot account initialised.")
         return
     }
 
     record.premium = record.premium ? false : true
-    await DatabaseMethods.SetUser(user.id, record).then(async () => {
+    await DatabaseMethods.UserMethods.SetUser(user.id, record).then(async () => {
         if (record.premium) {
             message.channel.send(`<@${user.id}> is now premium.`)
-            await DatabaseMethods.AwardAchievement(user.id, "Premium")
+            await DatabaseMethods.AchievementMethods.AwardAchievement(user.id, "Premium")
             return
         }
 
@@ -194,21 +194,21 @@ const Award = async (message: Message, args: string[]) => {
         return
     }
 
-    const record = await DatabaseMethods.GetUserRecord(mention.user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(mention.user.id)
     if (!record) {
         message.channel.send("User does not have a BankingBot account initialised.")
         return
     }
 
     const achievementName = args.slice(3).join(" ").toLowerCase()
-    const achievement = await DatabaseMethods.GetAchievementByName(achievementName)
+    const achievement = await DatabaseMethods.AchievementMethods.GetAchievementByName(achievementName)
     if (!achievement) {
         console.log(achievementName)
         message.channel.send("Invalid achievement.")
         return
     }
 
-    await DatabaseMethods.AwardAchievement(mention.user.id, achievement.name).then(() => {
+    await DatabaseMethods.AchievementMethods.AwardAchievement(mention.user.id, achievement.name).then(() => {
         message.channel.send(`Awarded <@${mention.user.id}> ${achievement.name}!`)
     })
 }

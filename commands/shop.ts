@@ -5,7 +5,7 @@ import FormatMoney from "../methods/FormatMoney";
 import Config from "../config"
 
 const GetItemFields = async () => {
-    const items = await DatabaseMethods.GetOnsaleItems()
+    const items = await DatabaseMethods.ItemMethods.GetOnsaleItems()
 
     return items.map(item => {
         return {
@@ -24,20 +24,20 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
     }
 
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
 
     if (!record) {
         message.channel.send(`You do not have a BankingBot account initialised! Use \`${Config.prefix}account create\` to initialise one.`)
         return
     }
 
-    const id = await DatabaseMethods.GetItemIdByName(item)
+    const id = await DatabaseMethods.ItemMethods.GetItemIdByName(item)
     if (!id) {
         message.channel.send("Item doesn't exist.")
         return
     }
 
-    const itemData = await DatabaseMethods.GetItemById(id)
+    const itemData = await DatabaseMethods.ItemMethods.GetItemById(id)
     if (!itemData) {
         message.channel.send("Item doesn't exist.")
         return
@@ -54,7 +54,7 @@ const Purchase = async (client: Client, message: Message, args: string[]) => {
         return
     }
 
-    const response = await DatabaseMethods.PurchaseItem(author.id, item)
+    const response = await DatabaseMethods.ItemMethods.PurchaseItem(author.id, item)
     if (!response) {
         message.channel.send(`Successfully purchased ${itemData.name}`)
         return
@@ -70,13 +70,13 @@ const GetInfo = async (client: Client, message: Message, args: string[]) => {
         return
     }
 
-    const itemId = await DatabaseMethods.GetItemIdByName(item)
+    const itemId = await DatabaseMethods.ItemMethods.GetItemIdByName(item)
     if (!itemId) {
         message.channel.send(`Item of name "${item}" does not exist.`)
         return
     }
 
-    const itemData = await DatabaseMethods.GetItemById(itemId)
+    const itemData = await DatabaseMethods.ItemMethods.GetItemById(itemId)
     if (!itemData) {
         message.channel.send(`Item of name "${item}" does not exist.`)
         return

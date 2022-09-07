@@ -17,13 +17,13 @@ const SubCommands: SubCommandData[] = [
         name: "index",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const author = message.author
-            const record = await DatabaseMethods.GetUserRecord(author.id)
+            const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
             if (!record) {
                 MessageTemplates.AssertAccountRequired(message)
                 return
             }
 
-            let mask = await DatabaseMethods.GetItemById(record.mask || 0)
+            let mask = await DatabaseMethods.ItemMethods.GetItemById(record.mask || 0)
 
             const embed = new EmbedBuilder()
             embed.setTitle("Heists - Info")
@@ -45,7 +45,7 @@ const SubCommands: SubCommandData[] = [
     {
         name: "list",
         invoke: async (client: Client, message: Message, args: string[]) => {
-            const heists = await DatabaseMethods.GetAvaliableHeists()
+            const heists = await DatabaseMethods.HeistMethods.GetAvaliableHeists()
             const fields = heists.map((heist) => {
                 const formatted = FormatMoney(heist.minPayout)
                 const maxUsers = HeistMethods.GetHeistMaxUsersByDifficulty(heist.difficulty)
@@ -73,14 +73,14 @@ const SubCommands: SubCommandData[] = [
         name: "join",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const author = message.author
-            const record = await DatabaseMethods.GetUserRecord(author.id)
+            const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
             if (!record) {
                 MessageTemplates.AssertAccountRequired(message)
                 return
             }
 
             const heistName = args.slice(2).join(" ")
-            const heistData = await DatabaseMethods.GetHeistByName(heistName)
+            const heistData = await DatabaseMethods.HeistMethods.GetHeistByName(heistName)
 
             if (!heistData) {
                 message.channel.send("Invalid heist.")
@@ -124,7 +124,7 @@ const SubCommands: SubCommandData[] = [
         name: "leave",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const author = message.author
-            const record = await DatabaseMethods.GetUserRecord(author.id)
+            const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
             if (!record) {
                 MessageTemplates.AssertAccountRequired(message)
                 return
@@ -144,7 +144,7 @@ const SubCommands: SubCommandData[] = [
         name: "setmask",
         invoke: async (client: Client, message: Message, args: string[]) => {
             const author = message.author
-            const record = await DatabaseMethods.GetUserRecord(author.id)
+            const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
             if (!record) {
                 MessageTemplates.AssertAccountRequired(message)
                 return
@@ -156,8 +156,8 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
-            const id = await DatabaseMethods.GetItemIdByName(mask.toLowerCase())
-            const item = await DatabaseMethods.GetItemById(id || 0)
+            const id = await DatabaseMethods.ItemMethods.GetItemIdByName(mask.toLowerCase())
+            const item = await DatabaseMethods.ItemMethods.GetItemById(id || 0)
             if (!item) {
                 message.channel.send("Invalid item.")
                 return
@@ -173,7 +173,7 @@ const SubCommands: SubCommandData[] = [
                 return
             }
 
-            await DatabaseMethods.SetMask(author.id, item.id).then(() => {
+            await DatabaseMethods.UserMethods.SetMask(author.id, item.id).then(() => {
                 message.channel.send(`Successfully equipped mask ${item.name}!`)
             })
         }
@@ -192,7 +192,7 @@ const Cmd: Command = {
             return
         }
 
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             MessageTemplates.AssertAccountRequired(message)
             return

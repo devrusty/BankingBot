@@ -7,7 +7,7 @@ import { reset } from "../cache/GlobalHeistData"
 export async function UpdateHeists() {
     console.log("Updating heists...")
 
-    const heists = await DatabaseMethods.GetHeists()
+    const heists = await DatabaseMethods.HeistMethods.GetHeists()
     const updatedHeists = Array<Heist>()
 
     heists.forEach((heist) => {
@@ -20,11 +20,11 @@ export async function UpdateHeists() {
         updatedHeists.push(heist)
     }
 
-    await DatabaseMethods.UpdateHeists(updatedHeists).then(() => {
+    await DatabaseMethods.HeistMethods.UpdateHeists(updatedHeists).then(() => {
         console.log("Updated heists!")
     })
 
-    const avaliableHeists = await DatabaseMethods.GetAvaliableHeists()
+    const avaliableHeists = await DatabaseMethods.HeistMethods.GetAvaliableHeists()
     avaliableHeists.forEach((heist) => {
         GlobalHeistData.push({
             Heist: heist,
@@ -83,7 +83,7 @@ export async function JoinHeist(user: User, heistName: string) {
     const heist = GetHeist(heistName)
     if (!heist) return
 
-    const record = await DatabaseMethods.GetUserRecord(user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
     if (!record) return
     if (record.level < heist.Heist.requiredLevel) return
 

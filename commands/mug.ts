@@ -26,13 +26,13 @@ const Cmd: Command = {
             return
         }
 
-        const authorRecord = await DatabaseMethods.GetUserRecord(author.id)
+        const authorRecord = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!authorRecord) {
             message.channel.send(`You must have a BankingBot account initialised. Use \`${Config.prefix}account create\` to create one.`)
             return
         }
 
-        const victimRecord = await DatabaseMethods.GetUserRecord(user.id)
+        const victimRecord = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
         if (!victimRecord) {
             message.channel.send("The person you're trying to mug does not have a BankingBot account initialised.")
             return
@@ -57,16 +57,16 @@ const Cmd: Command = {
         if (victimRecord.cash < amount) {
             const index = Math.floor(Math.random() * Fines.length)
             const fine = Fines[index]
-            await DatabaseMethods.RemoveFromBalance(author.id, fine).then(() => {
+            await DatabaseMethods.UserMethods.RemoveFromBalance(author.id, fine).then(() => {
                 message.channel.send(`You failed to mug <@${user.id}> and you were caught! You were fined $${fine}.`)
             })
             return
         }
 
-        await DatabaseMethods.RemoveFromBalance(user.id, amount).then(async () => {
+        await DatabaseMethods.UserMethods.RemoveFromBalance(user.id, amount).then(async () => {
             const xp = Math.floor(amount / 100)
-            await DatabaseMethods.GiveXP(author.id, Math.floor(xp))
-            await DatabaseMethods.AddToBalance(author.id, amount).then(() => {
+            await DatabaseMethods.UserMethods.GiveXP(author.id, Math.floor(xp))
+            await DatabaseMethods.UserMethods.AddToBalance(author.id, amount).then(() => {
                 message.channel.send(`You successfully mugged <@${user.id}> for $${amount} and ${xp} XP!`)
                 RecentlyUsed.add(author.id)
 

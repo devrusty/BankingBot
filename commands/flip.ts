@@ -16,7 +16,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
         const author = message.author
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             message.channel.send(`You must have a BankingBot account initialised to use that command. Use \`${Config.prefix}account create\` to create one.`)
             return
@@ -48,7 +48,7 @@ const Cmd: Command = {
 
         if (result == "Tails") return
 
-        await DatabaseMethods.AddToBalance(author.id, Reward)
+        await DatabaseMethods.UserMethods.AddToBalance(author.id, Reward)
     }
 }
 

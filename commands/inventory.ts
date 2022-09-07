@@ -10,7 +10,7 @@ const GetFields = async (items: any) => {
     if (itemArray.length > 25) itemArray.length = 25
 
     return itemArray.map(async (id) => {
-        const item = await DatabaseMethods.GetItemById(id)
+        const item = await DatabaseMethods.ItemMethods.GetItemById(id)
         return {
             name: item?.name || "Unknown",
             value: item?.description || `There was an issue while getting data for ID ${id}.`,
@@ -26,7 +26,7 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
     }
 
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
 
     if (!record) {
         message.channel.send(`You must have a BankingBot account initialised to use that command! Use \`${Config.prefix}account create\` to initialise one.`)
@@ -56,7 +56,7 @@ const DisplayInventoryEmbed = async (user: Prisma.User, message: Message) => {
 
     let netWorth = 0
     for (const id of inventoryItems) {
-        const item = await DatabaseMethods.GetItemById(id)
+        const item = await DatabaseMethods.ItemMethods.GetItemById(id)
         if (item) netWorth += item.price
     }
 
@@ -76,7 +76,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             message.channel.send(`You must have a BankingBot account initialised to use that command! Use \`${Config.prefix}account create\``)
             return

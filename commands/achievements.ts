@@ -4,7 +4,7 @@ import Config from "../config"
 import * as DatabaseMethods from "../Database"
 
 const GetAchievementsFields = async () => {
-    const achievements = await DatabaseMethods.GetAchievements()
+    const achievements = await DatabaseMethods.AchievementMethods.GetAchievements()
     const fields = achievements.map((achievement) => {
         return {
             name: achievement.name,
@@ -22,7 +22,7 @@ const SendAchievementsEmbed = async (message: Message, user: User) => {
     embed.setColor("Red")
     embed.setDescription("List of all BankingBot achievements.\n✅ = Owned achievement.")
 
-    const record = await DatabaseMethods.GetUserRecord(user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
     const fields = await GetAchievementsFields()
 
     if (!record) {
@@ -34,7 +34,7 @@ const SendAchievementsEmbed = async (message: Message, user: User) => {
 
     if (!embed.data.fields) return
     const ownedAchievements = embed.data.fields.map(async (achievement) => {
-        const achievementData = await DatabaseMethods.GetAchievementByName(achievement.name)
+        const achievementData = await DatabaseMethods.AchievementMethods.GetAchievementByName(achievement.name)
         if (achievementData && record.achievements.includes(achievementData.id)) achievement.name = `✅ ${achievementData.name}`
         return achievement
     })

@@ -2,7 +2,7 @@ import * as DatabaseMethods from "../Database"
 
 export async function UpdateItemShop() {
     console.log("Updating item shop..")
-    const itemShopItems = await DatabaseMethods.GetItems()
+    const itemShopItems = await DatabaseMethods.ItemMethods.GetItems()
 
     itemShopItems.forEach(item => {
         if (!item.alwaysOnSale) return item.onSale = false
@@ -14,7 +14,7 @@ export async function UpdateItemShop() {
         item.onSale = true
     }
 
-    await DatabaseMethods.UpdateItemShop(itemShopItems).then(() => {
+    await DatabaseMethods.ItemMethods.UpdateItemShop(itemShopItems).then(() => {
         console.log("Updated item shop!")
     })
 }

@@ -16,7 +16,7 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
     embed.setColor(Config.embedColor)
 
     const activeQuestFields = quests.map(async (id) => {
-        const quest = await DatabaseMethods.GetQuestById(id)
+        const quest = await DatabaseMethods.QuestMethods.GetQuestById(id)
         if (!quest) return { name: "Unknown Quest", value: "There was an issue while fetching this quest's data.", inline: true }
 
         const questRewardType = quest.rewardType
@@ -30,7 +30,7 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
                 reward = `${FormatMoney(quest.reward)} XP`
                 break
             case "Item":
-                const item = await DatabaseMethods.GetItemById(quest.reward)
+                const item = await DatabaseMethods.ItemMethods.GetItemById(quest.reward)
                 if (item) reward = item.name
                 break
         }
@@ -39,7 +39,7 @@ const DisplayUserQuestx = async (record: User, message: Message) => {
     })
 
     const awaitingQuestFields = record.awaitingQuests.map(async (id) => {
-        const quest = await DatabaseMethods.GetQuestById(id)
+        const quest = await DatabaseMethods.QuestMethods.GetQuestById(id)
         if (quest) return { name: `✅ ${quest.name}`, value: `This quest has been completed. Use \`${Config.prefix}quests claim\` to claim the reward.` }
         return { name: "Unknown", value: `There was an issue while fetching the data for quest ID ${id}. Please report this to the developers.`, inline: true }
     })
@@ -64,7 +64,7 @@ const ClaimQuestReward = async (record: User, message: Message) => {
     }
 
     const id = awaitingQuests[0]
-    const quest = await DatabaseMethods.GetQuestById(id)
+    const quest = await DatabaseMethods.QuestMethods.GetQuestById(id)
     if (!quest) {
         message.channel.send(`There was an error while fetching quest data for ID ${id}. Please report this to the developers.`)
         return
@@ -73,27 +73,27 @@ const ClaimQuestReward = async (record: User, message: Message) => {
     const rewardType = quest.rewardType
     const reward = quest.reward
 
-    await DatabaseMethods.RemoveAwaitingQuest(author.id, quest.id)
+    await DatabaseMethods.QuestMethods.RemoveAwaitingQuest(author.id, quest.id)
     switch (rewardType) {
         case "Cash":
-            await DatabaseMethods.AddToBalance(author.id, reward).then(() => {
+            await DatabaseMethods.UserMethods.AddToBalance(author.id, reward).then(() => {
                 message.channel.send(`Successfully collected reward of $${FormatMoney(reward)} for completing ${quest.name}!`)
             })
             break
         case "Item":
-            const itemData = await DatabaseMethods.GetItemById(reward)
+            const itemData = await DatabaseMethods.ItemMethods.GetItemById(reward)
             if (!itemData) {
-                await DatabaseMethods.AddToBalance(author.id, Compensation).then(() => {
+                await DatabaseMethods.UserMethods.AddToBalance(author.id, Compensation).then(() => {
                     message.channel.send(`The item reward does not exist. You have been compensated with $${FormatMoney(Compensation)} instead.`)
                 })
                 return
             }
 
             record.inventory.push(reward)
-            await DatabaseMethods.SetUser(author.id, record)
+            await DatabaseMethods.UserMethods.SetUser(author.id, record)
             break
         case "XP":
-            await DatabaseMethods.GiveXP(author.id, reward).then(() => {
+            await DatabaseMethods.UserMethods.GiveXP(author.id, reward).then(() => {
                 message.channel.send(`Successfully collected reward of ${FormatMoney(reward)} XP for completing ${quest.name}! `)
             })
             break
@@ -107,7 +107,7 @@ const Cmd: Command = {
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!record) {
             MesasgeTemplates.AssertAccountRequired(message)
             return

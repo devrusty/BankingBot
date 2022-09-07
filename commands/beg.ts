@@ -18,7 +18,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
         const author = message.author
-        const userRecordExists = await DatabaseMethods.UserRecordExists(author.id)
+        const userRecordExists = await DatabaseMethods.UserMethods.UserRecordExists(author.id)
         if (!userRecordExists) {
             MessageTemplates.AssertAccountRequired(message)
             return
@@ -30,7 +30,7 @@ const Cmd: Command = {
         }
 
         const randomAmount = Math.floor(Math.random() * MaxAmount)
-        DatabaseMethods.AddToBalance(author.id, randomAmount).then(() => {
+        DatabaseMethods.UserMethods.AddToBalance(author.id, randomAmount).then(() => {
             const embed = new EmbedBuilder()
             embed.setTitle("Begging")
             embed.setColor(Config.embedColor)

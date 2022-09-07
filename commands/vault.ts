@@ -42,7 +42,7 @@ const SendCurrentVault = (message: Message, user: User) => {
 
 const Cashout = async (client: Client, message: Message, args: string[]) => {
     const author = message.author
-    const record = await DatabaseMethods.GetUserRecord(author.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
     if (!record) {
         MessageTemplates.AssertAccountRequired(message)
         return
@@ -60,7 +60,7 @@ const Cashout = async (client: Client, message: Message, args: string[]) => {
 
     if (amount > Capacity) amount = Capacity
 
-    await DatabaseMethods.AddToBalance(author.id, amount).then(() => {
+    await DatabaseMethods.UserMethods.AddToBalance(author.id, amount).then(() => {
         message.channel.send(`Successfully claimed $${FormatMoney(amount)} from your vault.`)
         Time.set(author.id, Date.now())
     })
@@ -73,7 +73,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         let param = args[1]
 
         if (!param) {

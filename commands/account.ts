@@ -8,7 +8,7 @@ import * as MessageTemplates from "../methods/MessageTemplates"
 import GetBooleanEmoji from "../methods/GetBooleanEmoji";
 
 const DisplayAccountEmbed = async (message: Message, user: User) => {
-    const record = await DatabaseMethods.GetUserRecord(user.id)
+    const record = await DatabaseMethods.UserMethods.GetUserRecord(user.id)
     if (!record) {
         message.channel.send(`<@${user.id}> does not have a BankingBot account initialised!`)
         return
@@ -16,7 +16,7 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 
     const embed: EmbedBuilder = new EmbedBuilder()
     const balanceString = `$${FormatMoney(record?.cash)}`
-    const occupation = await DatabaseMethods.GetJobNameById(record.occupation)
+    const occupation = await DatabaseMethods.JobMethods.GetJobNameById(record.occupation)
 
     embed.setTitle(`${user.tag}`)
     embed.setColor("Red")
@@ -46,13 +46,13 @@ const DisplayAccountEmbed = async (message: Message, user: User) => {
 }
 
 const CreateAccount = async (message: Message) => {
-    const recordExists: boolean = await DatabaseMethods.UserRecordExists(message.author.id)
+    const recordExists: boolean = await DatabaseMethods.UserMethods.UserRecordExists(message.author.id)
     if (recordExists) {
         message.channel.send(`You already have a BankingBot account. Use \`${Config.prefix}account\` to view your profile.`)
         return
     }
 
-    await DatabaseMethods.CreateUserRecord(message.author.id).then(() => {
+    await DatabaseMethods.UserMethods.CreateUserRecord(message.author.id).then(() => {
         message.channel.send(`Account created! Use \`${Config.prefix}account\` to view your profile.`)
     })
 }
@@ -61,13 +61,13 @@ const DeleteAccount = async (message: Message) => {
     const author = message.author
     const id = author.id
 
-    const recordExists = await DatabaseMethods.UserRecordExists(id)
+    const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(id)
     if (!recordExists) {
         MessageTemplates.AssertAccountRequired(message)
         return
     }
 
-    await DatabaseMethods.DeleteUserRecord(id).then(() => {
+    await DatabaseMethods.UserMethods.DeleteUserRecord(id).then(() => {
         message.channel.send("Your BankingBot account has been successfully deleted.")
     }).catch((err) => {
         message.channel.send("An error occured")

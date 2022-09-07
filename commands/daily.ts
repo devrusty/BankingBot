@@ -17,7 +17,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author
-        const recordExists = await DatabaseMethods.UserRecordExists(author.id)
+        const recordExists = await DatabaseMethods.UserMethods.UserRecordExists(author.id)
 
         if (!recordExists) {
             message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
@@ -29,7 +29,7 @@ const Cmd: Command = {
             return
         }
 
-        const userRecord = await DatabaseMethods.GetUserRecord(author.id)
+        const userRecord = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (!userRecord) {
             message.channel.send(`You must initialise a BankingBot account before you can claim a daily reward. Use \`${Config.prefix}account create\``)
             return
@@ -39,14 +39,14 @@ const Cmd: Command = {
         let job
 
         if (userRecord.occupation !== 0)
-            job = await DatabaseMethods.GetJobById(userRecord.occupation)
+            job = await DatabaseMethods.JobMethods.GetJobById(userRecord.occupation)
 
         if (job) amount += Math.floor(JobMethods.GetJobIncome(job) * 6)
         if (userRecord.premium) amount *= 2
 
         RecentlyClaimed.add(author.id)
 
-        await DatabaseMethods.AddToBalance(author.id, amount).then(() => {
+        await DatabaseMethods.UserMethods.AddToBalance(author.id, amount).then(() => {
             setTimeout(() => {
                 RecentlyClaimed.delete(author.id)
             }, 86400000)

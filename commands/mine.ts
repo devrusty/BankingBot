@@ -36,7 +36,7 @@ const Cmd: Command = {
     Listed: true,
     Invoke: async (client: Client, message: Message) => {
         const author = message.author
-        const record = await DatabaseMethods.GetUserRecord(author.id)
+        const record = await DatabaseMethods.UserMethods.GetUserRecord(author.id)
         if (RecentlyUsed.has(author.id)) {
             message.channel.send("You must wait an hour before mining again.")
             return
@@ -63,8 +63,8 @@ const Cmd: Command = {
 
         const xp = Math.floor(value / 50)
 
-        await DatabaseMethods.AddToBalance(author.id, value).then(async () => {
-            await DatabaseMethods.GiveXP(author.id, xp).then(() => {
+        await DatabaseMethods.UserMethods.AddToBalance(author.id, value).then(async () => {
+            await DatabaseMethods.UserMethods.GiveXP(author.id, xp).then(() => {
                 message.channel.send(`You went mining and earned $${FormatMoney(value)} and ${xp} XP!`)
                 RecentlyUsed.add(author.id)
 
