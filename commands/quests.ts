@@ -104,6 +104,7 @@ const Cmd: Command = {
     Name: "quests",
     Description: "Shows all of your active quests.",
     Usage: `\`${Config.prefix}quests\``,
+    Aliases: ["missions"],
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author

@@ -73,6 +73,7 @@ const Cmd: Command = {
     Name: "inventory",
     Description: "Displays your inventory.",
     Usage: `\`${Config.prefix}inventory\``,
+    Aliases: ["inv", "bp", "backpack"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author

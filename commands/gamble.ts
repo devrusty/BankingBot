@@ -10,6 +10,7 @@ const Cmd: Command = {
     Name: "gamble",
     Description: "Allows you to gamble your money. 1 in 4 chance of increasing your cash by x1.25 (x1.50 if premium)",
     Usage: `\`${Config.prefix}gamble\``,
+    Aliases: ["risk"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         if (!args[1]) {

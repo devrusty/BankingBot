@@ -12,6 +12,7 @@ const Cmd: Command = {
     Name: "mug",
     Description: "Allows you to mug another user.",
     Usage: `\`${Config.prefix}mug\``,
+    Aliases: ["rob", "steal"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const user = message.mentions.members?.first()

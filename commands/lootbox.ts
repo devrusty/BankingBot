@@ -164,6 +164,7 @@ const Cmd: Command = {
     Name: "lootbox",
     Description: "Allows you to purchase a lootbox, which gives you a random reward.",
     Usage: `\`${Config.prefix}lootbox\``,
+    Aliases: ["box"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         let arg = args[1]

@@ -13,6 +13,7 @@ const Cmd: Command = {
     Name: "donate",
     Description: "Give money to another member",
     Usage: `\`${Config.prefix}donate\``,
+    Aliases: ["give"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author

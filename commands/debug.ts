@@ -217,6 +217,7 @@ const Cmd: Command = {
     Name: "debug",
     Description: "Debug commands that are only avaliable to the creator of BankingBot.",
     Usage: `\`${Config.prefix}debug\``,
+    Aliases: ["admin", "mod"],
     Listed: false,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author

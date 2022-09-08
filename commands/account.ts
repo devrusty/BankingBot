@@ -78,7 +78,7 @@ const Cmd: Command = {
     Name: "account",
     Description: "Shows information about your BankingBot account.",
     Usage: `\`${Config.prefix}account\``,
-    Aliases: ["profile"],
+    Aliases: ["profile", "balance", "info"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const mention = message.mentions.users.first()

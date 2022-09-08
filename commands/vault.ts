@@ -70,6 +70,7 @@ const Cmd: Command = {
     Name: "vault",
     Description: "Passive income vault that gives you money over time.",
     Usage: `\`${Config.prefix}vault\``,
+    Aliases: ["safe"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const author = message.author

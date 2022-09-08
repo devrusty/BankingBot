@@ -19,6 +19,7 @@ const Cmd: Command = {
     Name: "leaderboard",
     Description: "Displays the BankingBot leaderboard.",
     Usage: `\`${Config.prefix}leaderboard\``,
+    Aliases: ["lb"],
     Listed: true,
     Invoke: async (client: Client, message: Message, args: string[]) => {
         const fields = await GetLeaderboard(message)
