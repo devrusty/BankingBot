@@ -6,7 +6,7 @@ import * as DatabaseMethods from "../Database"
 const RecentlyUsed = new Set()
 const MaxAmount = 5000
 const Fines = [250, 500, 1000]
-const Cooldown = 3600000
+const Cooldown = 900000
 
 const Cmd: Command = {
     Name: "mug",
@@ -18,7 +18,7 @@ const Cmd: Command = {
         const user = message.mentions.members?.first()
         const author = message.author
         if (RecentlyUsed.has(author.id)) {
-            message.channel.send("Please wait an hour before mugging someone again.")
+            message.channel.send("Please wait 15 minutes before mugging someone again.")
             return
         }
 
