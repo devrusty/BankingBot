@@ -8,7 +8,10 @@ const List: NPC[] = [
         age: 15,
         level: 1,
         antagonist: false,
-        givesQuests: true
+        givesQuests: true,
+        dialogue: [
+            "Hello my name is Rust! It is nice to see you wanderer."
+        ]
     },
     {
         name: "Joe",
@@ -17,7 +20,10 @@ const List: NPC[] = [
         age: 25,
         level: 5,
         antagonist: true,
-        givesQuests: false
+        givesQuests: false,
+        dialogue: [
+            "Hey, I am the king of Joeland. Why don't you stop by Joeland sometime?"
+        ]
     }
 ]
 

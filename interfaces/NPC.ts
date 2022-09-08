@@ -11,5 +11,6 @@ export default interface NPC {
     age: number,
     level: number,
     antagonist: boolean,
-    givesQuests: boolean
+    givesQuests: boolean,
+    dialogue: string[]
 }
