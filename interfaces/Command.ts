@@ -5,4 +5,5 @@ export default interface Command {
     Usage: string,
     Invoke: Function,
     Listed: Boolean
+    Aliases?: string[]
 }
