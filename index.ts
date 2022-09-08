@@ -75,7 +75,7 @@ Bot.on("messageCreate", async (message: Message) => {
     if (userRecord && userRecord.banned) {
         const bannedEmbed = new EmbedBuilder()
         bannedEmbed.setTitle("You're banned from using BankingBot")
-        bannedEmbed.setDescription("You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](https://discord.gg/Za5j3xvAzf).")
+        bannedEmbed.setDescription(`You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](${Config.permInvite}).`)
         bannedEmbed.setColor("Red")
 
         message.channel.send({
