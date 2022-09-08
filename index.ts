@@ -5,6 +5,7 @@ import * as DatabaseMethods from "./Database"
 import * as HeistMethods from "./methods/Heists"
 import Config from "./config"
 import * as NPCMethods from "./methods/NPCs"
+import Command from "./interfaces/Command"
 
 export const Bot: Client = new Client({
     intents: [
@@ -14,6 +15,8 @@ export const Bot: Client = new Client({
         "GuildMembers"
     ]
 })
+
+const Commands = new Array<Command>()
 const token = Config.production ? Config.token : Config.testToken
 const PermissionsRequired = [
     PermissionsBitField.Flags.ReadMessageHistory,
@@ -39,6 +42,13 @@ Bot.on("ready", async () => {
 
     await ItemShopMethods.InitializeUpdate()
     await HeistMethods.InitializeUpdate()
+
+    const commands = fs.readdirSync("./commands")
+    commands.forEach((c) => {
+        const data: Command = require(`./commands/${c}`).default
+        Commands.push(data)
+    })
+    console.log(Commands)
 })
 
 Bot.on("messageCreate", async (message: Message) => {
@@ -65,8 +75,8 @@ Bot.on("messageCreate", async (message: Message) => {
     const args = message.content.trim().split(/ +/g)
     const command: string = args[0].slice(Config.prefix.length).toLowerCase()
 
-    const commandFilePath: string = `./commands/${command}.ts`
-    if (!fs.existsSync(commandFilePath)) {
+    const commandData = Commands.find((c) => c.Name == command || c.Aliases?.includes(command))
+    if (!commandData) {
         message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
         return
     }
@@ -84,12 +94,7 @@ Bot.on("messageCreate", async (message: Message) => {
         return
     }
 
-    const invokeMethod = await require(commandFilePath).default.Invoke
-    if (!invokeMethod) {
-        message.channel.send("Invalid command.")
-        return
-    }
-    await invokeMethod(Bot, message, args)
+    await commandData.Invoke(Bot, message, args)
 })
 
 Bot.on("guildCreate", (guild: Guild) => {
