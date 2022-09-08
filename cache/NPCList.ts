@@ -6,7 +6,7 @@ const List: NPC[] = [
         description: "Rust is a major charcter in the BankingBot storyline.",
         gender: Gender.NonBinary,
         age: 15,
-        level: 50,
+        level: 1,
         antagonist: false,
         givesQuests: true
     },
@@ -15,7 +15,7 @@ const List: NPC[] = [
         description: "Joe is the king of Joeland, a major location in BankingBot.",
         gender: Gender.Male,
         age: 25,
-        level: 100,
+        level: 5,
         antagonist: true,
         givesQuests: false
     }
