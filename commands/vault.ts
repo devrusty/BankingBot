@@ -6,7 +6,7 @@ import * as MessageTemplates from "../methods/MessageTemplates"
 import FormatMoney from "../methods/FormatMoney";
 
 const Time = new Map<string, number>()
-const Rate = 250
+const Rate = 75
 const Capacity = 40000
 
 const SendCurrentVault = (message: Message, user: User) => {
