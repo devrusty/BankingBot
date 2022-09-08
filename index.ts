@@ -4,6 +4,7 @@ import * as ItemShopMethods from "./methods/ItemShop"
 import * as DatabaseMethods from "./Database"
 import * as HeistMethods from "./methods/Heists"
 import Config from "./config"
+import * as NPCMethods from "./methods/NPCs"
 
 export const Bot: Client = new Client({
     intents: [
@@ -41,47 +42,37 @@ Bot.on("ready", async () => {
 })
 
 Bot.on("messageCreate", async (message: Message) => {
-    try {
-        message.content = message.content.toLowerCase()
+    message.content = message.content.toLowerCase()
 
-        if (message.author.bot) return
-        if (!message.content.startsWith(Config.prefix)) return
-        if (!message.member) return
-        if (!message.guild) return
-        if (!Bot.user) return
+    if (message.author.bot) return
+    if (!message.content.startsWith(Config.prefix)) return
+    if (!message.member) return
+    if (!message.guild) return
+    if (!Bot.user) return
 
-        const guild = message.guild
-        const me = guild.members.me
+    const guild = message.guild
+    const me = guild.members.me
 
-        if (!me) {
-            console.log("BankingBot does not exist.")
-            return
-        }
-        if (!me.permissions.has(PermissionsRequired)) {
-            console.log("BankingBot does not have permissions.")
-            return
-        }
+    if (!me) {
+        console.log("BankingBot does not exist.")
+        return
+    }
+    if (!me.permissions.has(PermissionsRequired)) {
+        console.log("BankingBot does not have permissions.")
+        return
+    }
 
-        const args = message.content.trim().split(/ +/g)
-        const command: string = args[0].slice(Config.prefix.length).toLowerCase()
+    const args = message.content.trim().split(/ +/g)
+    const command: string = args[0].slice(Config.prefix.length).toLowerCase()
 
-        const commandFilePath: string = `./commands/${command}.ts`
-        if (!fs.existsSync(commandFilePath)) {
-            message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
-            return
-        }
+    const commandFilePath: string = `./commands/${command}.ts`
+    if (!fs.existsSync(commandFilePath)) {
+        message.channel.send(`Invalid command \`${command}\`. Please use \`${Config.prefix}help commands\` to view a list of commands.`)
+        return
+    }
 
-        const userRecord = await DatabaseMethods.UserMethods.GetUserRecord(message.author.id)
-        if (!userRecord || !userRecord.banned) {
-            const invokeMethod = await require(commandFilePath).default.Invoke
-            if (!invokeMethod) {
-                message.channel.send("Invalid command.")
-                return
-            }
-            await invokeMethod(Bot, message, args)
-            return
-        }
-
+    const userRecord = await DatabaseMethods.UserMethods.GetUserRecord(message.author.id)
+    if (userRecord && userRecord.banned) {
         const bannedEmbed = new EmbedBuilder()
         bannedEmbed.setTitle("You're banned from using BankingBot")
         bannedEmbed.setDescription("You have been banned from using BankingBot. If you think this is a mistake and would like to appeal, please join our [support server](https://discord.gg/Za5j3xvAzf).")
@@ -89,13 +80,16 @@ Bot.on("messageCreate", async (message: Message) => {
 
         message.channel.send({
             embeds: [bannedEmbed]
-        }).catch((err) => {
-            console.log(err)
-            return
         })
-    } catch (e) {
-        console.log(e)
+        return
     }
+
+    const invokeMethod = await require(commandFilePath).default.Invoke
+    if (!invokeMethod) {
+        message.channel.send("Invalid command.")
+        return
+    }
+    await invokeMethod(Bot, message, args)
 })
 
 Bot.on("guildCreate", (guild: Guild) => {
