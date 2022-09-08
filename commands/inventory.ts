@@ -1,7 +1,7 @@
 import Config from "../config"
 import * as DatabaseMethods from "../Database"
 import { Client, EmbedBuilder, Message } from "discord.js"
-import Command from "../interfaces/commandInterface"
+import Command from "../interfaces/Command"
 import * as Prisma from "@prisma/client"
 import FormatMoney from "../methods/FormatMoney"
 

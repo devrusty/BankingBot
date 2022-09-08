@@ -1,4 +1,4 @@
-import Command from "../interfaces/commandInterface";
+import Command from "../interfaces/Command";
 import { Client, Message, EmbedBuilder } from "discord.js"
 import * as DatabaseMethods from "../Database"
 import FormatMoney from "../methods/FormatMoney";

@@ -1,5 +1,5 @@
-import Command from "../interfaces/commandInterface";
-import { Client, Message, EmbedBuilder, MessagePayload, EmbedAssertions } from "discord.js"
+import Command from "../interfaces/Command";
+import { Client, Message, EmbedBuilder } from "discord.js"
 import Config from "../config"
 import * as DatabaseMethods from "../Database"
 import * as MessageTemplates from "../methods/MessageTemplates"

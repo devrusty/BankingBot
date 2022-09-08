@@ -1,4 +1,4 @@
-import Command from "../interfaces/commandInterface";
+import Command from "../interfaces/Command";
 import Config from "../config"
 import { Client, Message } from "discord.js"
 import * as DatabaseMethods from "../Database"
