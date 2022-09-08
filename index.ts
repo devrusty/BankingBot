@@ -48,7 +48,6 @@ Bot.on("ready", async () => {
         const data: Command = require(`./commands/${c}`).default
         Commands.push(data)
     })
-    console.log(Commands)
 })
 
 Bot.on("messageCreate", async (message: Message) => {
