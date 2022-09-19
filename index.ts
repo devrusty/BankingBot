@@ -104,4 +104,4 @@ Bot.on("guildDelete", () => {
     SetStatus()
 })
 
-Bot.login(token)
+Bot.login(token) 
