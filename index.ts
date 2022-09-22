@@ -29,7 +29,7 @@ const SetStatus = () => {
         status: "online",
         activities: [
             {
-                name: `${Bot.guilds.cache.size} servers`,
+                name: `${Bot.guilds.cache.size} servers | ${Config.prefix}help`,
                 type: ActivityType.Watching
             }
         ]
